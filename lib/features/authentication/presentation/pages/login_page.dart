@@ -3,6 +3,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/router/app_routes.dart';
+import '../../../../core/widgets/app_text_field.dart';
+import '../../../../core/widgets/auth_card.dart';
+import '../../../../core/widgets/neptune_logo.dart';
+import '../../../../core/widgets/primary_button.dart';
 import '../providers/auth_controller.dart';
 
 class LoginPage extends ConsumerStatefulWidget {
@@ -17,6 +21,8 @@ class _LoginPageState extends ConsumerState<LoginPage> {
 
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+
+  bool _obscurePassword = true;
 
   @override
   void dispose() {
@@ -51,8 +57,6 @@ class _LoginPageState extends ConsumerState<LoginPage> {
             content: Text('Login successful'),
           ),
         );
-
-        // The router now handles navigation automatically.
       },
     );
   }
@@ -70,79 +74,84 @@ class _LoginPageState extends ConsumerState<LoginPage> {
           padding: const EdgeInsets.all(24),
           child: ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 420),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const FlutterLogo(size: 90),
+            child: AuthCard(
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const NeptuneLogo(),
 
-                  const SizedBox(height: 32),
+                    const SizedBox(height: 32),
 
-                  TextFormField(
-                    controller: _emailController,
-                    keyboardType: TextInputType.emailAddress,
-                    decoration: const InputDecoration(
-                      labelText: 'Email',
-                      border: OutlineInputBorder(),
+                    AppTextField(
+                      controller: _emailController,
+                      label: 'Email',
+                      keyboardType: TextInputType.emailAddress,
+                      prefixIcon: Icons.email_outlined,
+                      validator: (value) {
+                        if (value == null || value.trim().isEmpty) {
+                          return 'Please enter your email.';
+                        }
+
+                        if (!value.contains('@')) {
+                          return 'Please enter a valid email.';
+                        }
+
+                        return null;
+                      },
                     ),
-                    validator: (value) {
-                      if (value == null || value.trim().isEmpty) {
-                        return 'Please enter your email.';
-                      }
 
-                      if (!value.contains('@')) {
-                        return 'Please enter a valid email.';
-                      }
+                    const SizedBox(height: 16),
 
-                      return null;
-                    },
-                  ),
+                    AppTextField(
+                      controller: _passwordController,
+                      label: 'Password',
+                      obscureText: _obscurePassword,
+                      prefixIcon: Icons.lock_outline,
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          _obscurePassword
+                              ? Icons.visibility_off
+                              : Icons.visibility,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            _obscurePassword = !_obscurePassword;
+                          });
+                        },
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter your password.';
+                        }
 
-                  const SizedBox(height: 16),
+                        if (value.length < 6) {
+                          return 'Password must be at least 6 characters.';
+                        }
 
-                  TextFormField(
-                    controller: _passwordController,
-                    obscureText: true,
-                    decoration: const InputDecoration(
-                      labelText: 'Password',
-                      border: OutlineInputBorder(),
+                        return null;
+                      },
                     ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter your password.';
-                      }
 
-                      if (value.length < 6) {
-                        return 'Password must be at least 6 characters.';
-                      }
+                    const SizedBox(height: 24),
 
-                      return null;
-                    },
-                  ),
-
-                  const SizedBox(height: 24),
-
-                  SizedBox(
-                    width: double.infinity,
-                    height: 50,
-                    child: ElevatedButton(
-                      onPressed: authState.isLoading ? null : _signIn,
-                      child: authState.isLoading
-                          ? const CircularProgressIndicator()
-                          : const Text('Sign In'),
+                    PrimaryButton(
+                      text: 'Sign In',
+                      isLoading: authState.isLoading,
+                      onPressed: _signIn,
                     ),
-                  ),
 
-                  const SizedBox(height: 16),
+                    const SizedBox(height: 16),
 
-                  TextButton(
-                    onPressed: () {
-                      context.go(AppRoutes.signup);
-                    },
-                    child: const Text('Create Account'),
-                  ),
-                ],
+                    TextButton(
+                      onPressed: () {
+                        context.go(AppRoutes.signup);
+                      },
+                      child: const Text('Create Account'),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
