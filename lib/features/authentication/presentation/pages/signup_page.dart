@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
+import '../../../../core/router/app_routes.dart';
 import '../providers/auth_controller.dart';
 
 class SignUpPage extends ConsumerStatefulWidget {
@@ -47,12 +49,12 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text(
-              'Account created. Please check your email to verify your account.',
+              'Account created successfully.',
             ),
           ),
         );
 
-        Navigator.pop(context);
+        context.go(AppRoutes.login);
       },
     );
   }

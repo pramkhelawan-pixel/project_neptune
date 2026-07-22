@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import '../../features/authentication/presentation/pages/login_page.dart';
 import '../../features/authentication/presentation/pages/signup_page.dart';
 import '../../features/authentication/presentation/pages/splash_page.dart';
-import '../../features/home/presentation/pages/home_page.dart';
+import '../../features/home/presentation/pages/main_shell_page.dart';
 import '../auth/auth_refresh_notifier.dart';
 import '../services/supabase_service.dart';
 import 'app_routes.dart';
@@ -17,7 +17,6 @@ class AppRouter {
 
   static final GoRouter router = GoRouter(
     initialLocation: AppRoutes.splash,
-
     refreshListenable: _authRefreshNotifier,
 
     redirect: (context, state) {
@@ -39,8 +38,7 @@ class AppRouter {
         return AppRoutes.login;
       }
 
-      if (isLoggedIn &&
-          (isSplash || isLogin || isSignup)) {
+      if (isLoggedIn && (isSplash || isLogin || isSignup)) {
         return AppRoutes.home;
       }
 
@@ -62,7 +60,7 @@ class AppRouter {
       ),
       GoRoute(
         path: AppRoutes.home,
-        builder: (context, state) => const HomePage(),
+        builder: (context, state) => const MainShellPage(),
       ),
     ],
 
