@@ -9,14 +9,14 @@ import '../../domain/repositories/marine_repository.dart';
 /// The UI depends on the abstraction (MarineRepository),
 /// while this provider supplies the concrete implementation.
 final marineRepositoryProvider = Provider<MarineRepository>(
-      (ref) => const MarineRepositoryImpl(),
+      (ref) => MarineRepositoryImpl(),
 );
 
 /// Loads the latest marine conditions.
 ///
-/// At the moment this returns mock data from the repository.
-/// Later it will transparently switch to live APIs without
-/// requiring changes in the UI.
+/// The repository retrieves marine conditions from the configured
+/// remote data source. The UI remains unaware of where the data
+/// originates.
 final marineConditionsProvider =
 FutureProvider<MarineConditions>((ref) async {
   final repository = ref.watch(marineRepositoryProvider);

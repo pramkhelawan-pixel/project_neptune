@@ -1,23 +1,26 @@
 import '../../domain/models/marine_conditions.dart';
 import '../models/marine_weather_dto.dart';
+import '../models/weather_dto.dart';
 
 class MarineMapper {
   const MarineMapper._();
 
-  static MarineConditions toDomain(MarineWeatherDto dto) {
+  static MarineConditions toDomain({
+    required WeatherDto weather,
+    required MarineWeatherDto marine,
+  }) {
     return MarineConditions(
-      windSpeed: dto.windSpeed,
-      windDirection: _degreesToCompass(dto.windDirection),
-      swellHeight: dto.waveHeight,
-      swellPeriod: dto.wavePeriod,
+      windSpeed: weather.windSpeed,
+      windDirection: _degreesToCompass(weather.windDirection),
+      swellHeight: marine.waveHeight,
+      swellPeriod: marine.wavePeriod,
 
-      // Temporary placeholders until additional
-      // data providers are integrated.
+      // Temporary placeholders until dedicated
+      // providers are integrated.
       tide: 'Not Available',
       moonPhase: 'Not Available',
 
-      // Temporary placeholders until astronomy
-      // integration is added.
+      // Temporary placeholders until astronomy integration.
       sunrise: DateTime.now(),
       sunset: DateTime.now(),
     );
@@ -35,7 +38,8 @@ class MarineMapper {
       'NW',
     ];
 
-    final index = ((degrees + 22.5) ~/ 45) % 8;
+    final normalized = degrees % 360;
+    final index = ((normalized + 22.5) ~/ 45) % directions.length;
 
     return directions[index];
   }

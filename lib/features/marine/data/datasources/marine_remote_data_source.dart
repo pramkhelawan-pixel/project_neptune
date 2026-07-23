@@ -1,31 +1,58 @@
+import '../../../../core/network/api_client.dart';
+import '../../../../core/network/api_constants.dart';
 import '../../domain/models/marine_conditions.dart';
+import '../mappers/marine_mapper.dart';
+import '../models/marine_weather_dto.dart';
+import '../models/weather_dto.dart';
 
-/// Defines how marine data is retrieved from a remote source.
-///
-/// The repository depends on this abstraction rather than a specific API.
-/// The implementation currently returns mock data but will shortly be
-/// replaced with live Open-Meteo integration.
+/// Defines how marine data is retrieved.
 abstract class MarineRemoteDataSource {
   Future<MarineConditions> getMarineConditions();
 }
 
-/// Temporary implementation using mock data.
-class MockMarineRemoteDataSource implements MarineRemoteDataSource {
-  const MockMarineRemoteDataSource();
+/// Retrieves live marine conditions from Open-Meteo.
+class OpenMeteoRemoteDataSource implements MarineRemoteDataSource {
+  final ApiClient apiClient;
+
+  const OpenMeteoRemoteDataSource({
+    required this.apiClient,
+  });
 
   @override
   Future<MarineConditions> getMarineConditions() async {
-    await Future.delayed(const Duration(milliseconds: 500));
+    final weatherResponse = await apiClient.getFromBaseUrl(
+      baseUrl: ApiConstants.weatherBaseUrl,
+      endpoint: ApiConstants.weatherForecast,
+      queryParameters: {
+        'latitude': ApiConstants.durbanLatitude,
+        'longitude': ApiConstants.durbanLongitude,
+        'hourly': 'wind_speed_10m,wind_direction_10m',
+        'forecast_days': 1,
+      },
+    );
 
-    return MarineConditions(
-      windSpeed: 14,
-      windDirection: 'NE',
-      swellHeight: 1.8,
-      swellPeriod: 12,
-      tide: 'Rising',
-      moonPhase: 'Waxing Gibbous',
-      sunrise: DateTime(2026, 7, 23, 6, 21),
-      sunset: DateTime(2026, 7, 23, 17, 18),
+    final marineResponse = await apiClient.getFromBaseUrl(
+      baseUrl: ApiConstants.marineBaseUrl,
+      endpoint: ApiConstants.marineForecast,
+      queryParameters: {
+        'latitude': ApiConstants.durbanLatitude,
+        'longitude': ApiConstants.durbanLongitude,
+        'hourly': 'wave_height,wave_period',
+        'forecast_days': 1,
+      },
+    );
+
+    final weatherDto = WeatherDto.fromJson(
+      weatherResponse.data as Map<String, dynamic>,
+    );
+
+    final marineDto = MarineWeatherDto.fromJson(
+      marineResponse.data as Map<String, dynamic>,
+    );
+
+    return MarineMapper.toDomain(
+      weather: weatherDto,
+      marine: marineDto,
     );
   }
 }
