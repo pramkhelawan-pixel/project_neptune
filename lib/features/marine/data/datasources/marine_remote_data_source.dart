@@ -3,16 +3,13 @@ import '../../domain/models/marine_conditions.dart';
 /// Defines how marine data is retrieved from a remote source.
 ///
 /// The repository depends on this abstraction rather than a specific API.
-/// Today it returns mock data; later it will call Stormglass,
-/// Open-Meteo and other services.
+/// The implementation currently returns mock data but will shortly be
+/// replaced with live Open-Meteo integration.
 abstract class MarineRemoteDataSource {
   Future<MarineConditions> getMarineConditions();
 }
 
 /// Temporary implementation using mock data.
-///
-/// This allows the rest of the architecture to remain unchanged while
-/// we prepare the live API integration.
 class MockMarineRemoteDataSource implements MarineRemoteDataSource {
   const MockMarineRemoteDataSource();
 
