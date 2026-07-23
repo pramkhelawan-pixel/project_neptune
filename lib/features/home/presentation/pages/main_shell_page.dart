@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'home_page.dart';
+import '../widgets/home_dashboard.dart';
 
 class MainShellPage extends StatefulWidget {
   const MainShellPage({super.key});
@@ -12,21 +12,21 @@ class MainShellPage extends StatefulWidget {
 class _MainShellPageState extends State<MainShellPage> {
   int _selectedIndex = 0;
 
-  late final List<Widget> _pages = [
-    const HomePage(),
-    const _PlaceholderPage(
+  late final List<Widget> _pages = const [
+    HomeDashboard(),
+    _PlaceholderPage(
       title: 'Marine',
       icon: Icons.waves,
     ),
-    const _PlaceholderPage(
+    _PlaceholderPage(
       title: 'Catches',
       icon: Icons.phishing,
     ),
-    const _PlaceholderPage(
+    _PlaceholderPage(
       title: 'Maps',
       icon: Icons.map,
     ),
-    const _PlaceholderPage(
+    _PlaceholderPage(
       title: 'Profile',
       icon: Icons.person,
     ),
@@ -35,6 +35,10 @@ class _MainShellPageState extends State<MainShellPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text(_titleForIndex(_selectedIndex)),
+        centerTitle: true,
+      ),
       body: IndexedStack(
         index: _selectedIndex,
         children: _pages,
@@ -76,6 +80,23 @@ class _MainShellPageState extends State<MainShellPage> {
       ),
     );
   }
+
+  String _titleForIndex(int index) {
+    switch (index) {
+      case 0:
+        return 'Neptune';
+      case 1:
+        return 'Marine';
+      case 2:
+        return 'Catches';
+      case 3:
+        return 'Maps';
+      case 4:
+        return 'Profile';
+      default:
+        return 'Neptune';
+    }
+  }
 }
 
 class _PlaceholderPage extends StatelessWidget {
@@ -89,31 +110,25 @@ class _PlaceholderPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(title),
-        centerTitle: true,
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              icon,
-              size: 80,
-            ),
-            const SizedBox(height: 20),
-            Text(
-              title,
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-            const SizedBox(height: 10),
-            const Text(
-              'Coming Soon',
-              style: TextStyle(fontSize: 18),
-            ),
-          ],
-        ),
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            icon,
+            size: 80,
+          ),
+          const SizedBox(height: 20),
+          Text(
+            title,
+            style: Theme.of(context).textTheme.headlineMedium,
+          ),
+          const SizedBox(height: 10),
+          const Text(
+            'Coming Soon',
+            style: TextStyle(fontSize: 18),
+          ),
+        ],
       ),
     );
   }
