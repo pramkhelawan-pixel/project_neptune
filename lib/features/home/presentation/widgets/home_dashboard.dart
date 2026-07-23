@@ -1,12 +1,42 @@
 import 'package:flutter/material.dart';
 
+import '../../../marine/domain/models/marine_conditions.dart';
+import '../../../marine/domain/services/readiness_engine.dart';
 import 'marine_conditions_card.dart';
+import 'readiness_card.dart';
 
 class HomeDashboard extends StatelessWidget {
   const HomeDashboard({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final conditions = MarineConditions(
+      windSpeed: 14,
+      windDirection: 'NE',
+      swellHeight: 1.8,
+      swellPeriod: 12,
+      tide: 'Rising',
+      moonPhase: 'Waxing Gibbous',
+      sunrise: DateTime(2026, 7, 23, 6, 21),
+      sunset: DateTime(2026, 7, 23, 17, 18),
+    );
+
+    final engine = ReadinessEngine();
+
+    final score = engine.calculate(conditions);
+
+    String status;
+
+    if (score >= 80) {
+      status = 'Excellent fishing conditions';
+    } else if (score >= 60) {
+      status = 'Good fishing conditions';
+    } else if (score >= 40) {
+      status = 'Fair fishing conditions';
+    } else {
+      status = 'Poor fishing conditions';
+    }
+
     final theme = Theme.of(context);
 
     return SafeArea(
@@ -27,42 +57,12 @@ class HomeDashboard extends StatelessWidget {
               style: theme.textTheme.bodyMedium,
             ),
             const SizedBox(height: 24),
-
-            Card(
-              elevation: 2,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(18),
-              ),
-              child: const Padding(
-                padding: EdgeInsets.all(24),
-                child: Column(
-                  children: [
-                    Text(
-                      'Neptune Readiness',
-                      style: TextStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    SizedBox(height: 16),
-                    Text(
-                      '87%',
-                      style: TextStyle(
-                        fontSize: 52,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    SizedBox(height: 8),
-                    Text('Excellent fishing conditions'),
-                  ],
-                ),
-              ),
+            ReadinessCard(
+              score: score,
+              status: status,
             ),
-
             const SizedBox(height: 20),
-
             const MarineConditionsCard(),
-
             const SizedBox(height: 24),
           ],
         ),
