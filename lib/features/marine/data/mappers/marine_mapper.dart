@@ -15,12 +15,19 @@ class MarineMapper {
       swellHeight: marine.waveHeight,
       swellPeriod: marine.wavePeriod,
 
-      // Temporary placeholders until dedicated
-      // providers are integrated.
+      // Placeholder until WorldTides integration.
       tide: 'Not Available',
+
+      // New tide intelligence fields.
+      tideHeight: 0.0,
+      nextHighTide: null,
+      nextLowTide: null,
+      tideState: 'Unknown',
+
+      // Placeholder until moon integration.
       moonPhase: 'Not Available',
 
-      // Temporary placeholders until astronomy integration.
+      // Placeholder until astronomy integration.
       sunrise: DateTime.now(),
       sunset: DateTime.now(),
     );

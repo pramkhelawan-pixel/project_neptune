@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import '../../../marine/domain/models/marine_conditions.dart';
 
@@ -9,6 +10,14 @@ class MarineConditionsCard extends StatelessWidget {
     super.key,
     required this.conditions,
   });
+
+  String _formatTime(DateTime? dateTime) {
+    if (dateTime == null) {
+      return 'Not Available';
+    }
+
+    return DateFormat('HH:mm').format(dateTime.toLocal());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,27 +38,59 @@ class MarineConditionsCard extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               ),
             ),
+
             const SizedBox(height: 20),
+
             _ConditionRow(
               icon: Icons.air,
               label: 'Wind',
               value:
               '${conditions.windSpeed.toStringAsFixed(0)} km/h ${conditions.windDirection}',
             ),
+
             const Divider(),
+
             _ConditionRow(
               icon: Icons.waves,
               label: 'Swell',
               value:
-              '${conditions.swellHeight.toStringAsFixed(1)} m @ ${conditions.swellPeriod}s',
+              '${conditions.swellHeight.toStringAsFixed(1)} m @ ${conditions.swellPeriod.toStringAsFixed(1)} s',
             ),
+
             const Divider(),
+
             _ConditionRow(
               icon: Icons.water,
               label: 'Tide',
-              value: conditions.tide,
+              value: conditions.tideState,
             ),
+
             const Divider(),
+
+            _ConditionRow(
+              icon: Icons.straighten,
+              label: 'Tide Height',
+              value: '${conditions.tideHeight.toStringAsFixed(2)} m',
+            ),
+
+            const Divider(),
+
+            _ConditionRow(
+              icon: Icons.arrow_upward,
+              label: 'Next High',
+              value: _formatTime(conditions.nextHighTide),
+            ),
+
+            const Divider(),
+
+            _ConditionRow(
+              icon: Icons.arrow_downward,
+              label: 'Next Low',
+              value: _formatTime(conditions.nextLowTide),
+            ),
+
+            const Divider(),
+
             _ConditionRow(
               icon: Icons.nightlight_round,
               label: 'Moon',
@@ -79,11 +120,19 @@ class _ConditionRow extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 6),
       child: Row(
         children: [
-          Icon(icon),
+          Icon(icon, size: 20),
+
           const SizedBox(width: 12),
+
           Expanded(
-            child: Text(label),
+            child: Text(
+              label,
+              style: const TextStyle(
+                fontWeight: FontWeight.w500,
+              ),
+            ),
           ),
+
           Text(
             value,
             style: const TextStyle(
