@@ -2,7 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../marine/presentation/providers/marine_provider.dart';
+import '../../../outlook/domain/fishing_outlook_engine.dart';
+import '../../../outlook/presentation/widgets/fishing_outlook_card.dart';
 import '../../../readiness/domain/readiness_engine.dart';
+import '../../../species/domain/species_engine.dart';
+import '../../../species/presentation/widgets/species_recommendation_card.dart';
 import 'marine_conditions_card.dart';
 import 'readiness_card.dart';
 
@@ -27,7 +31,14 @@ class HomeDashboard extends ConsumerWidget {
         ),
       ),
       data: (conditions) {
-        final result = const ReadinessEngine().calculate(conditions);
+        final readiness =
+        const ReadinessEngine().calculate(conditions);
+
+        final outlook =
+        const FishingOutlookEngine().generate(conditions);
+
+        final speciesRecommendation =
+        const SpeciesEngine().recommend(conditions);
 
         final theme = Theme.of(context);
 
@@ -54,7 +65,19 @@ class HomeDashboard extends ConsumerWidget {
                 const SizedBox(height: 24),
 
                 ReadinessCard(
-                  result: result,
+                  result: readiness,
+                ),
+
+                const SizedBox(height: 20),
+
+                SpeciesRecommendationCard(
+                  recommendation: speciesRecommendation,
+                ),
+
+                const SizedBox(height: 20),
+
+                FishingOutlookCard(
+                  outlook: outlook,
                 ),
 
                 const SizedBox(height: 20),

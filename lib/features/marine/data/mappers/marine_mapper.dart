@@ -11,43 +11,62 @@ class MarineMapper {
   }) {
     return MarineConditions(
       windSpeed: weather.windSpeed,
-      windDirection: _degreesToCompass(weather.windDirection),
+
+      windDirection: _windDirection(
+        weather.windDirection,
+      ),
+
       swellHeight: marine.waveHeight,
+
       swellPeriod: marine.wavePeriod,
 
-      // Placeholder until WorldTides integration.
-      tide: 'Not Available',
+      tide: 'Unknown',
 
-      // New tide intelligence fields.
-      tideHeight: 0.0,
+      tideHeight: 0,
+
       nextHighTide: null,
+
       nextLowTide: null,
+
       tideState: 'Unknown',
 
-      // Placeholder until moon integration.
       moonPhase: 'Not Available',
 
-      // Placeholder until astronomy integration.
-      sunrise: DateTime.now(),
-      sunset: DateTime.now(),
+      sunrise: weather.sunrise,
+
+      sunset: weather.sunset,
     );
   }
 
-  static String _degreesToCompass(double degrees) {
-    const directions = [
-      'N',
-      'NE',
-      'E',
-      'SE',
-      'S',
-      'SW',
-      'W',
-      'NW',
-    ];
+  static String _windDirection(double degrees) {
+    if (degrees >= 337.5 || degrees < 22.5) {
+      return 'N';
+    }
 
-    final normalized = degrees % 360;
-    final index = ((normalized + 22.5) ~/ 45) % directions.length;
+    if (degrees < 67.5) {
+      return 'NE';
+    }
 
-    return directions[index];
+    if (degrees < 112.5) {
+      return 'E';
+    }
+
+    if (degrees < 157.5) {
+      return 'SE';
+    }
+
+    if (degrees < 202.5) {
+      return 'S';
+    }
+
+    if (degrees < 247.5) {
+      return 'SW';
+    }
+
+    if (degrees < 292.5) {
+      return 'W';
+    }
+
+    return 'NW';
   }
 }

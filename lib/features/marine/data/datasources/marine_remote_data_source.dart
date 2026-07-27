@@ -26,7 +26,15 @@ class OpenMeteoRemoteDataSource implements MarineRemoteDataSource {
       queryParameters: {
         'latitude': ApiConstants.durbanLatitude,
         'longitude': ApiConstants.durbanLongitude,
-        'hourly': 'wind_speed_10m,wind_direction_10m',
+
+        'hourly':
+        'wind_speed_10m,wind_direction_10m',
+
+        'daily':
+        'sunrise,sunset',
+
+        'timezone': 'Africa/Johannesburg',
+
         'forecast_days': 1,
       },
     );
@@ -37,7 +45,12 @@ class OpenMeteoRemoteDataSource implements MarineRemoteDataSource {
       queryParameters: {
         'latitude': ApiConstants.durbanLatitude,
         'longitude': ApiConstants.durbanLongitude,
-        'hourly': 'wave_height,wave_period',
+
+        'hourly':
+        'wave_height,wave_period',
+
+        'timezone': 'Africa/Johannesburg',
+
         'forecast_days': 1,
       },
     );

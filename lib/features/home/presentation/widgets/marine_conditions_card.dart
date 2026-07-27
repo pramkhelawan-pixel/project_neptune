@@ -13,10 +13,31 @@ class MarineConditionsCard extends StatelessWidget {
 
   String _formatTime(DateTime? dateTime) {
     if (dateTime == null) {
-      return 'Not Available';
+      return '--';
     }
 
     return DateFormat('HH:mm').format(dateTime.toLocal());
+  }
+
+  String _countdown(DateTime? eventTime) {
+    if (eventTime == null) {
+      return '--';
+    }
+
+    final difference = eventTime.difference(DateTime.now());
+
+    if (difference.isNegative) {
+      return 'Now';
+    }
+
+    final hours = difference.inHours;
+    final minutes = difference.inMinutes.remainder(60);
+
+    if (hours > 0) {
+      return '${hours}h ${minutes}m';
+    }
+
+    return '${minutes}m';
   }
 
   @override
@@ -69,8 +90,9 @@ class MarineConditionsCard extends StatelessWidget {
 
             _ConditionRow(
               icon: Icons.straighten,
-              label: 'Tide Height',
-              value: '${conditions.tideHeight.toStringAsFixed(2)} m',
+              label: 'Current Height',
+              value:
+              '${conditions.tideHeight.toStringAsFixed(2)} m',
             ),
 
             const Divider(),
@@ -78,7 +100,8 @@ class MarineConditionsCard extends StatelessWidget {
             _ConditionRow(
               icon: Icons.arrow_upward,
               label: 'Next High',
-              value: _formatTime(conditions.nextHighTide),
+              value:
+              '${_formatTime(conditions.nextHighTide)} (${_countdown(conditions.nextHighTide)})',
             ),
 
             const Divider(),
@@ -86,7 +109,8 @@ class MarineConditionsCard extends StatelessWidget {
             _ConditionRow(
               icon: Icons.arrow_downward,
               label: 'Next Low',
-              value: _formatTime(conditions.nextLowTide),
+              value:
+              '${_formatTime(conditions.nextLowTide)} (${_countdown(conditions.nextLowTide)})',
             ),
 
             const Divider(),
@@ -95,6 +119,22 @@ class MarineConditionsCard extends StatelessWidget {
               icon: Icons.nightlight_round,
               label: 'Moon',
               value: conditions.moonPhase,
+            ),
+
+            const Divider(),
+
+            _ConditionRow(
+              icon: Icons.wb_sunny_outlined,
+              label: 'Sunrise',
+              value: _formatTime(conditions.sunrise),
+            ),
+
+            const Divider(),
+
+            _ConditionRow(
+              icon: Icons.nights_stay_outlined,
+              label: 'Sunset',
+              value: _formatTime(conditions.sunset),
             ),
           ],
         ),
@@ -117,10 +157,14 @@ class _ConditionRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 6),
+      padding: const EdgeInsets.symmetric(vertical: 7),
       child: Row(
         children: [
-          Icon(icon, size: 20),
+          Icon(
+            icon,
+            size: 20,
+            color: Theme.of(context).colorScheme.primary,
+          ),
 
           const SizedBox(width: 12),
 
@@ -128,7 +172,7 @@ class _ConditionRow extends StatelessWidget {
             child: Text(
               label,
               style: const TextStyle(
-                fontWeight: FontWeight.w500,
+                fontWeight: FontWeight.w600,
               ),
             ),
           ),
