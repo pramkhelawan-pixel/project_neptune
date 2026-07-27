@@ -5,6 +5,8 @@ import '../../../marine/presentation/providers/marine_provider.dart';
 import '../../../outlook/domain/fishing_outlook_engine.dart';
 import '../../../outlook/presentation/widgets/fishing_outlook_card.dart';
 import '../../../readiness/domain/readiness_engine.dart';
+import '../../../recommendation/presentation/providers/recommendation_provider.dart';
+import '../../../recommendation/presentation/widgets/neptune_recommendation_card.dart';
 import '../../../species/domain/species_engine.dart';
 import '../../../species/presentation/widgets/species_recommendation_card.dart';
 import 'marine_conditions_card.dart';
@@ -16,6 +18,7 @@ class HomeDashboard extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final marineAsync = ref.watch(marineConditionsProvider);
+    final recommendationAsync = ref.watch(recommendationProvider);
 
     return marineAsync.when(
       loading: () => const Center(
@@ -23,7 +26,7 @@ class HomeDashboard extends ConsumerWidget {
       ),
       error: (error, stackTrace) => Center(
         child: Padding(
-          padding: EdgeInsets.all(24),
+          padding: const EdgeInsets.all(24),
           child: Text(
             'Unable to load marine conditions.\n\n$error',
             textAlign: TextAlign.center,
@@ -72,6 +75,31 @@ class HomeDashboard extends ConsumerWidget {
 
                 SpeciesRecommendationCard(
                   recommendation: speciesRecommendation,
+                ),
+
+                const SizedBox(height: 20),
+
+                recommendationAsync.when(
+                  loading: () => const Card(
+                    child: Padding(
+                      padding: EdgeInsets.all(24),
+                      child: Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                    ),
+                  ),
+                  error: (error, stackTrace) => Card(
+                    child: Padding(
+                      padding: const EdgeInsets.all(24),
+                      child: Text(
+                        'Unable to generate recommendation.\n\n$error',
+                      ),
+                    ),
+                  ),
+                  data: (recommendation) =>
+                      NeptuneRecommendationCard(
+                        recommendation: recommendation,
+                      ),
                 ),
 
                 const SizedBox(height: 20),
