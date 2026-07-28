@@ -10,43 +10,48 @@ import '../../services/recommendation_pipeline.dart';
 import '../../services/recommendation_seed_provider.dart';
 import '../../services/score_engine.dart';
 
-final recommendationSeedProvider = Provider<RecommendationSeedProvider>(
-      (ref) => const RecommendationSeedProvider(),
+final recommendationSeedProvider =
+Provider<RecommendationSeedProvider>(
+      (ref) => RecommendationSeedProvider(
+    knowledgeService: ref.watch(
+      knowledgeServiceProvider,
+    ),
+  ),
 );
 
-final recommendationEngineProvider = Provider<RecommendationEngine>(
+final recommendationEngineProvider =
+Provider<RecommendationEngine>(
       (ref) => RecommendationEngine(
     scoreEngine: const ScoreEngine(),
     confidenceEngine: const ConfidenceEngine(),
   ),
 );
 
-final recommendationPipelineProvider = Provider<RecommendationPipeline>(
-      (ref) {
-    // We intentionally resolve the knowledge service now.
-    // The next sprint (KB-002) will inject it into the
-    // RecommendationSeedProvider.
-
-    ref.watch(knowledgeServiceProvider);
-
-    return RecommendationPipeline(
-      recommendationEngine: ref.watch(recommendationEngineProvider),
-      seedProvider: ref.watch(recommendationSeedProvider),
-    );
-  },
+final recommendationPipelineProvider =
+Provider<RecommendationPipeline>(
+      (ref) => RecommendationPipeline(
+    recommendationEngine:
+    ref.watch(recommendationEngineProvider),
+    seedProvider:
+    ref.watch(recommendationSeedProvider),
+  ),
 );
 
 final recommendationProvider =
-FutureProvider<RecommendationResponse>((ref) async {
-  final session = await ref.watch(fishingSessionProvider.future);
+FutureProvider<RecommendationResponse>(
+      (ref) async {
+    final session =
+    await ref.watch(fishingSessionProvider.future);
 
-  final pipeline = ref.watch(recommendationPipelineProvider);
+    final pipeline =
+    ref.watch(recommendationPipelineProvider);
 
-  return pipeline.execute(
-    RecommendationRequest(
-      marineConditions: session.marineConditions,
-      species: session.targetSpecies,
-      location: session.location,
-    ),
-  );
-});
+    return pipeline.execute(
+      RecommendationRequest(
+        marineConditions: session.marineConditions,
+        species: session.targetSpecies,
+        location: session.location,
+      ),
+    );
+  },
+);

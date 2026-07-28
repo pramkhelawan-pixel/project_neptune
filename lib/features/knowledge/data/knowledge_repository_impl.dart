@@ -1,6 +1,6 @@
 import '../domain/knowledge_record.dart';
 import '../repositories/knowledge_repository.dart';
-import 'shad_knowledge.dart';
+import 'species/shad_knowledge.dart';
 
 class KnowledgeRepositoryImpl
     implements KnowledgeRepository {

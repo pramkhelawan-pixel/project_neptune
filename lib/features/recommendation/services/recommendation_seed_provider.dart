@@ -1,3 +1,5 @@
+import '../../knowledge/domain/knowledge_category.dart';
+import '../../knowledge/services/knowledge_service.dart';
 import '../domain/recommendation_request.dart';
 
 class RecommendationSeed {
@@ -15,27 +17,29 @@ class RecommendationSeed {
 }
 
 class RecommendationSeedProvider {
-  const RecommendationSeedProvider();
+  final KnowledgeService? knowledgeService;
+
+  const RecommendationSeedProvider({
+    this.knowledgeService,
+  });
 
   RecommendationSeed getSeed(
       RecommendationRequest request,
       ) {
-    // Future versions will derive these values from:
-    // - Knowledge Packs
-    // - Rule Engine
-    // - Location Intelligence
-    // - Species Intelligence
-    // - Marine Conditions
+    final baitRecord = knowledgeService?.bestKnowledge(
+      species: request.species,
+      category: KnowledgeCategory.bait,
+    );
 
-    return const RecommendationSeed(
-      bait: 'Fresh Sardine',
+    return RecommendationSeed(
+      bait: baitRecord?.title ?? 'Fresh Sardine',
       bestTime: 'Sunrise',
-      weights: <int>[
+      weights: const <int>[
         15,
         20,
         18,
       ],
-      reasons: <String>[
+      reasons: const <String>[
         'Incoming tide',
         'Moderate swell',
         'Light offshore wind',

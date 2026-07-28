@@ -1,4 +1,4 @@
-import '../domain/rule.dart';
+import '../../domain/rule.dart';
 
 final shadRules = <Rule>[
   Rule(

@@ -1,7 +1,7 @@
-import '../domain/evidence_level.dart';
-import '../domain/knowledge_category.dart';
-import '../domain/knowledge_record.dart';
-import '../domain/knowledge_source.dart';
+import '../../domain/evidence_level.dart';
+import '../../domain/knowledge_category.dart';
+import '../../domain/knowledge_record.dart';
+import '../../domain/knowledge_source.dart';
 
 final shadKnowledge = <KnowledgeRecord>[
   KnowledgeRecord(
