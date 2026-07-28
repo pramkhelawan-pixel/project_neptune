@@ -1,5 +1,4 @@
-import '../../knowledge/domain/knowledge_category.dart';
-import '../../knowledge/services/knowledge_service.dart';
+import '../../knowledge/domain/services/knowledge_service.dart';
 import '../domain/recommendation_request.dart';
 
 class RecommendationSeed {
@@ -17,29 +16,28 @@ class RecommendationSeed {
 }
 
 class RecommendationSeedProvider {
-  final KnowledgeService? knowledgeService;
+  final KnowledgeService knowledgeService;
 
   const RecommendationSeedProvider({
-    this.knowledgeService,
+    required this.knowledgeService,
   });
 
   RecommendationSeed getSeed(
       RecommendationRequest request,
       ) {
-    final baitRecord = knowledgeService?.bestKnowledge(
-      species: request.species,
-      category: KnowledgeCategory.bait,
-    );
+    // MVP implementation.
+    // The Knowledge Service is injected and will be used in future sprints
+    // once the Knowledge Repository contains production fishing knowledge.
 
-    return RecommendationSeed(
-      bait: baitRecord?.title ?? 'Fresh Sardine',
+    return const RecommendationSeed(
+      bait: 'Fresh Sardine',
       bestTime: 'Sunrise',
-      weights: const <int>[
+      weights: [
         15,
         20,
         18,
       ],
-      reasons: const <String>[
+      reasons: [
         'Incoming tide',
         'Moderate swell',
         'Light offshore wind',
