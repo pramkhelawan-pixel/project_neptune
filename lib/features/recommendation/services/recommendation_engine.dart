@@ -4,7 +4,6 @@ import 'score_engine.dart';
 
 class RecommendationEngine {
   final ScoreEngine scoreEngine;
-
   final ConfidenceEngine confidenceEngine;
 
   const RecommendationEngine({
@@ -20,11 +19,13 @@ class RecommendationEngine {
     required List<int> weights,
     required List<String> reasons,
   }) {
-    final score =
-    scoreEngine.calculate(weights);
+    final score = scoreEngine.calculate(
+      weights,
+    );
 
-    final confidence =
-    confidenceEngine.calculate(score);
+    final confidence = confidenceEngine.calculate(
+      score,
+    );
 
     return Recommendation(
       species: species,

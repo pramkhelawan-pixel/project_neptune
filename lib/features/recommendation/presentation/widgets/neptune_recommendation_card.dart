@@ -64,8 +64,36 @@ class NeptuneRecommendationCard extends StatelessWidget {
             const SizedBox(height: 12),
 
             _InfoRow(
+              label: 'Recommended Hook',
+              value: recommendation.hook,
+            ),
+
+            const SizedBox(height: 12),
+
+            _InfoRow(
+              label: 'Leader',
+              value: recommendation.leader,
+            ),
+
+            const SizedBox(height: 12),
+
+            _InfoRow(
+              label: 'Presentation',
+              value: recommendation.presentation,
+            ),
+
+            const SizedBox(height: 12),
+
+            _InfoRow(
               label: 'Best Time',
               value: recommendation.bestTime,
+            ),
+
+            const SizedBox(height: 12),
+
+            _InfoRow(
+              label: 'Location',
+              value: recommendation.location,
             ),
 
             const SizedBox(height: 24),
@@ -81,7 +109,7 @@ class NeptuneRecommendationCard extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  '${recommendation.confidence}%',
+                  '${recommendation.confidence.toStringAsFixed(0)}%',
                   style: TextStyle(
                     color: _confidenceColor(),
                     fontWeight: FontWeight.bold,
@@ -94,7 +122,7 @@ class NeptuneRecommendationCard extends StatelessWidget {
             const SizedBox(height: 12),
 
             LinearProgressIndicator(
-              value: recommendation.confidence / 100,
+              value: recommendation.confidence / 100.0,
               minHeight: 10,
               borderRadius: BorderRadius.circular(10),
               color: _confidenceColor(),
@@ -107,7 +135,7 @@ class NeptuneRecommendationCard extends StatelessWidget {
             const SizedBox(height: 12),
 
             const Text(
-              'Why?',
+              'Why Neptune Recommended This',
               style: TextStyle(
                 fontSize: 17,
                 fontWeight: FontWeight.bold,
@@ -118,9 +146,12 @@ class NeptuneRecommendationCard extends StatelessWidget {
 
             ...recommendation.explanations.map(
                   (reason) => Padding(
-                padding: const EdgeInsets.symmetric(vertical: 4),
+                padding: const EdgeInsets.symmetric(
+                  vertical: 4,
+                ),
                 child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment:
+                  CrossAxisAlignment.start,
                   children: [
                     const Icon(
                       Icons.check_circle,
@@ -136,11 +167,13 @@ class NeptuneRecommendationCard extends StatelessWidget {
               ),
             ),
 
-            const SizedBox(height: 20),
+            const SizedBox(height: 24),
 
             FilledButton.icon(
               onPressed: () {},
-              icon: const Icon(Icons.psychology),
+              icon: const Icon(
+                Icons.psychology,
+              ),
               label: const Text(
                 'View Recommendation Details',
               ),

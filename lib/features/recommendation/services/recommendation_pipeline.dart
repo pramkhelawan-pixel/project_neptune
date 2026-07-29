@@ -7,19 +7,20 @@ import 'score_engine.dart';
 
 class RecommendationPipeline {
   RecommendationPipeline({
-    required RecommendationSeedProvider seedProvider,
     RecommendationEngine? recommendationEngine,
-  })  : _seedProvider = seedProvider,
-        _recommendationEngine =
-            recommendationEngine ??
-                RecommendationEngine(
-                  scoreEngine: const ScoreEngine(),
-                  confidenceEngine: const ConfidenceEngine(),
-                );
-
-  final RecommendationSeedProvider _seedProvider;
+    RecommendationSeedProvider? seedProvider,
+  })  : _recommendationEngine =
+      recommendationEngine ??
+          RecommendationEngine(
+            scoreEngine: const ScoreEngine(),
+            confidenceEngine: const ConfidenceEngine(),
+          ),
+        _seedProvider =
+            seedProvider ?? const RecommendationSeedProvider();
 
   final RecommendationEngine _recommendationEngine;
+
+  final RecommendationSeedProvider _seedProvider;
 
   RecommendationResponse execute(
       RecommendationRequest request,
@@ -37,10 +38,13 @@ class RecommendationPipeline {
 
     return RecommendationResponse(
       species: recommendation.species,
-      bait: recommendation.bait,
+      bait: seed.bait,
+      hook: seed.hook,
+      leader: seed.leader,
+      presentation: seed.presentation,
       location: recommendation.location,
       bestTime: recommendation.bestTime,
-      confidence: recommendation.confidence,
+      confidence: recommendation.confidence.toDouble(),
       explanations: recommendation.reasons,
     );
   }
