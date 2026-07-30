@@ -5,6 +5,9 @@ class MarineConditions {
   final double swellHeight;
   final double swellPeriod;
 
+  /// Sea surface temperature (°C)
+  final double waterTemperature;
+
   /// Existing field used by the current UI.
   final String tide;
 
@@ -31,6 +34,7 @@ class MarineConditions {
     required this.windDirection,
     required this.swellHeight,
     required this.swellPeriod,
+    required this.waterTemperature,
     required this.tide,
     required this.tideHeight,
     required this.nextHighTide,
@@ -46,6 +50,7 @@ class MarineConditions {
     String? windDirection,
     double? swellHeight,
     double? swellPeriod,
+    double? waterTemperature,
     String? tide,
     double? tideHeight,
     DateTime? nextHighTide,
@@ -60,6 +65,8 @@ class MarineConditions {
       windDirection: windDirection ?? this.windDirection,
       swellHeight: swellHeight ?? this.swellHeight,
       swellPeriod: swellPeriod ?? this.swellPeriod,
+      waterTemperature:
+      waterTemperature ?? this.waterTemperature,
       tide: tide ?? this.tide,
       tideHeight: tideHeight ?? this.tideHeight,
       nextHighTide: nextHighTide ?? this.nextHighTide,
