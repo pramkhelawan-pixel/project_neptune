@@ -1,68 +1,127 @@
-# Neptune Changelog
+# Neptune Fishing Intelligence Platform
 
-All notable changes to the Neptune Marine Intelligence Platform are documented here.
+# CHANGELOG
+
+All notable changes to Neptune are documented in this file.
+
+The format is based on semantic versioning and capability-based releases.
 
 ---
 
-# v0.1.0 - Foundation
+# v0.1.0 – Neptune Intelligence Core
 
-Status: Released
+**Status:** In Progress
 
 ## Added
 
-- Clean Architecture
-- Riverpod state management
-- Authentication
-- Marine Engine
-- Lunar Engine
-- Readiness Engine
-- Fishing Outlook Engine
-- Species Engine
-- Knowledge Framework
-- Rule Framework
-- Recommendation Framework
-- Fishing Session Domain
-- Engineering Documentation
-- GitHub version control
+### Architecture
+
+- Feature-First Clean Architecture
+- Domain-Driven Design (DDD)
+- Repository Pattern
+- Riverpod dependency injection
+- DTO → Mapper → Domain Model architecture
+
+### Engineering
+
+- Engineering documentation
+- Architecture decision log
+- Coding standards
+- Feature matrix
+- Git version control
+- Conventional commit workflow
+
+### Marine Intelligence
+
+- Marine engine
+- Marine repository
+- Open-Meteo integration
+- WorldTides integration
+- Marine mapper
+- Tide mapper
+- Marine conditions model
+
+### Environmental Intelligence
+
+- Environmental evaluator
+- Environmental readiness engine
+- Environmental dashboard
+- Species environmental profiles
+
+### Knowledge Engine
+
+- Knowledge repository
+- Knowledge service
+- Species knowledge framework
+- Rule framework
+- Expert knowledge framework
+
+### Recommendation Engine
+
+- Recommendation pipeline
+- Recommendation engine
+- Confidence engine
+- Score engine
+- Recommendation seed provider
+- Explainable recommendation framework
+
+### Session Management
+
+- Fishing session domain
+- Live marine condition integration
+
+### User Interface
+
+- Home dashboard
+- Environmental readiness card
+- Environmental analysis card
+- Recommendation details page
+- Neptune recommendation card
 
 ---
 
-# Upcoming
+## Changed
 
-## v0.2.0
-
-Planned
-
-- Recommendation Provider
-- Neptune Recommendation Card
-- Home Dashboard integration
-- Explainable recommendations
+- Refactored recommendation pipeline to use environmental evaluation.
+- Introduced capability-based sprint planning.
+- Standardised feature architecture across the project.
 
 ---
 
-## v0.3.0
+## Fixed
 
-Planned
-
-- Knowledge-driven recommendations
-- Rule evaluation
-- Improved confidence scoring
+- Consolidated repository architecture.
+- Improved dependency injection.
+- Resolved multiple analyzer issues during architecture migration.
 
 ---
 
-## v0.4.0
+# Upcoming Releases
 
-Planned
+## Release 0.2 – Live Ocean
 
-- Multi-species intelligence
-- Multi-location intelligence
+- GPS integration
+- Beach intelligence
+- Maps
+- Live marine forecasting
+- Weather dashboard
 
 ---
 
-## v1.0.0
+## Release 0.3 – Fishing Intelligence
 
-Commercial MVP
+- Catch logger
+- Personal analytics
+- Session history
+- AI fishing coach
 
-- Complete explainable fishing recommendations
-- KwaZulu-Natal coastline support
+---
+
+## Release 1.0 – Commercial MVP
+
 - Production-ready recommendation engine
+- Explainable AI recommendations
+- KwaZulu-Natal coastline support
+- Google Play release
+- Performance optimisation
+- User acceptance testing
