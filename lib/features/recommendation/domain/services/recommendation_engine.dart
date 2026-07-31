@@ -5,86 +5,104 @@ import '../entities/fishing_recommendation.dart';
 import '../entities/recommendation_level.dart';
 import '../entities/recommendation_reason.dart';
 
+import 'wind_evaluator.dart';
+import 'swell_evaluator.dart';
+import 'tide_evaluator.dart';
+import 'pressure_evaluator.dart';
+import 'moon_evaluator.dart';
+
+/// Neptune's core intelligence engine.
+///
+/// Coordinates the environmental evaluators and produces the final
+/// fishing recommendation.
+///
+/// Version 1 is rule-based and designed for future expansion.
 class RecommendationEngine {
   const RecommendationEngine();
+
+  final WindEvaluator _windEvaluator =
+  const WindEvaluator();
+
+  final SwellEvaluator _swellEvaluator =
+  const SwellEvaluator();
+
+  final TideEvaluator _tideEvaluator =
+  const TideEvaluator();
+
+  final PressureEvaluator _pressureEvaluator =
+  const PressureEvaluator();
+
+  final MoonEvaluator _moonEvaluator =
+  const MoonEvaluator();
 
   FishingRecommendation evaluate(
       FishingSession session,
       ) {
-    final MarineConditions marine = session.marineConditions;
+    final MarineConditions marine =
+        session.marineConditions;
 
     int score = 50;
 
     final reasons = <RecommendationReason>[];
 
+    //----------------------------------------------------------------------
     // Wind
+    //----------------------------------------------------------------------
 
-    if (marine.windSpeed <= 15) {
-      score += 10;
+    final wind =
+    _windEvaluator.evaluate(marine);
 
-      reasons.add(
-        const RecommendationReason(
-          title: 'Favourable wind',
-          explanation:
-          'Wind speed is suitable for most surf conditions.',
-          impact: 10,
-        ),
-      );
-    } else {
-      score -= 12;
+    score += wind.score;
 
-      reasons.add(
-        const RecommendationReason(
-          title: 'Strong wind',
-          explanation:
-          'Strong winds may reduce fishing quality.',
-          impact: -12,
-        ),
-      );
-    }
+    reasons.add(wind.reason);
 
+    //----------------------------------------------------------------------
     // Swell
+    //----------------------------------------------------------------------
 
-    if (marine.swellHeight <= 2.0) {
-      score += 8;
+    final swell =
+    _swellEvaluator.evaluate(marine);
 
-      reasons.add(
-        const RecommendationReason(
-          title: 'Manageable swell',
-          explanation:
-          'Sea conditions appear fishable.',
-          impact: 8,
-        ),
-      );
-    } else {
-      score -= 10;
+    score += swell.score;
 
-      reasons.add(
-        const RecommendationReason(
-          title: 'Heavy swell',
-          explanation:
-          'Large swell may reduce water clarity.',
-          impact: -10,
-        ),
-      );
-    }
+    reasons.add(swell.reason);
 
+    //----------------------------------------------------------------------
     // Tide
+    //----------------------------------------------------------------------
 
-    if (marine.tideHeight > 1.0) {
-      score += 6;
+    final tide =
+    _tideEvaluator.evaluate(marine);
 
-      reasons.add(
-        const RecommendationReason(
-          title: 'Good tidal movement',
-          explanation:
-          'Healthy tidal movement often increases feeding activity.',
-          impact: 6,
-        ),
-      );
-    }
+    score += tide.score;
 
-    // Clamp
+    reasons.add(tide.reason);
+
+    //----------------------------------------------------------------------
+    // Pressure
+    //----------------------------------------------------------------------
+
+    final pressure =
+    _pressureEvaluator.evaluate(marine);
+
+    score += pressure.score;
+
+    reasons.add(pressure.reason);
+
+    //----------------------------------------------------------------------
+    // Moon
+    //----------------------------------------------------------------------
+
+    final moon =
+    _moonEvaluator.evaluate(marine);
+
+    score += moon.score;
+
+    reasons.add(moon.reason);
+
+    //----------------------------------------------------------------------
+    // Clamp score
+    //----------------------------------------------------------------------
 
     if (score > 100) {
       score = 100;
@@ -93,6 +111,10 @@ class RecommendationEngine {
     if (score < 0) {
       score = 0;
     }
+
+    //----------------------------------------------------------------------
+    // Recommendation Level
+    //----------------------------------------------------------------------
 
     RecommendationLevel level;
 

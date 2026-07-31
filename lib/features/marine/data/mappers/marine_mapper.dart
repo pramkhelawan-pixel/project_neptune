@@ -20,9 +20,18 @@ class MarineMapper {
 
       swellPeriod: marine.wavePeriod,
 
-      // TODO(Neptune): Replace with real sea surface temperature
-      // once supported by the marine provider.
+      // TODO(Neptune):
+      // Replace with real sea surface temperature once supported
+      // by the marine provider.
       waterTemperature: 20.0,
+
+      // TODO(Neptune):
+      // Replace with real air temperature from the weather API.
+      airTemperature: 22.0,
+
+      // TODO(Neptune):
+      // Replace with real atmospheric pressure from the weather API.
+      atmosphericPressure: 1015.0,
 
       tide: 'Unknown',
 

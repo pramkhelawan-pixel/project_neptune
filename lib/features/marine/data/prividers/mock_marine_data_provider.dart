@@ -18,6 +18,12 @@ class MockMarineDataProvider implements MarineDataProvider {
 
       waterTemperature: 20.0,
 
+      // Air temperature (°C)
+      airTemperature: 23.5,
+
+      // Atmospheric pressure (hPa)
+      atmosphericPressure: 1016.5,
+
       tide: 'Incoming',
       tideHeight: 1.7,
 
