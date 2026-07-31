@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../marine/presentation/providers/marine_provider.dart';
-import '../../domain/fishing_session.dart';
+import '../../domain/entities/fishing_session.dart';
 
 final fishingSessionProvider =
 FutureProvider<FishingSession>((ref) async {

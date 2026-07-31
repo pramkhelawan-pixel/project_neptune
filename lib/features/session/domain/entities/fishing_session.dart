@@ -1,4 +1,4 @@
-import '../../marine/domain/models/marine_conditions.dart';
+import '../../../marine/domain/models/marine_conditions.dart';
 
 class FishingSession {
   final String id;
