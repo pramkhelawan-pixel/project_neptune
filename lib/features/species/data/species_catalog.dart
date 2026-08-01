@@ -1,10 +1,12 @@
 import 'garrick.dart';
 import 'kob.dart';
+import 'shad.dart';
 
 import '../domain/entities/fish_species.dart';
 
-/// Initial Neptune species catalogue.
+/// Neptune species catalogue.
 const List<FishSpecies> speciesCatalog = [
   kob,
   garrick,
+  shad,
 ];
