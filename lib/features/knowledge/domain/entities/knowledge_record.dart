@@ -2,70 +2,127 @@
 // Neptune Fishing Intelligence Platform
 // -----------------------------------------------------------------------------
 // File: knowledge_record.dart
-// Purpose:
-// Base entity for every knowledge item in the Neptune Knowledge Repository.
 //
-// Every specialised knowledge model either extends or composes this entity.
+// Purpose:
+// Canonical domain entity representing a single knowledge record within the
+// Neptune Knowledge Repository.
+//
+// This entity is the authoritative knowledge model for the entire platform.
+// All repositories, services, recommendation engines and AI components operate
+// exclusively on this model.
+//
+// STD-005:
+// This entity is part of Neptune's Canonical Domain and shall only be modified
+// through an approved architecture decision.
 // -----------------------------------------------------------------------------
+
+import 'knowledge_source.dart';
 
 import '../enums/confidence_level.dart';
 import '../enums/evidence_level.dart';
 import '../enums/knowledge_category.dart';
 
-/// Represents a single knowledge record within the Neptune Knowledge Repository.
-///
-/// This is the foundation for all structured knowledge used throughout Neptune,
-/// including species, bait, traces, knots, beaches, techniques and equipment.
+/// Represents a single structured knowledge record within Neptune.
 class KnowledgeRecord {
-  /// Unique identifier.
+  // ---------------------------------------------------------------------------
+  // Identity
+  // ---------------------------------------------------------------------------
+
+  /// Globally unique knowledge identifier.
   final String id;
+
+  // ---------------------------------------------------------------------------
+  // Species
+  // ---------------------------------------------------------------------------
+
+  /// Primary species associated with this knowledge.
+  ///
+  /// May be null for generic knowledge such as knots, safety,
+  /// regulations or equipment.
+  final String? species;
+
+  /// All species applicable to this knowledge.
+  ///
+  /// Normally contains the primary species but may contain multiple
+  /// species for generic knowledge.
+  final List<String> targetSpecies;
+
+  // ---------------------------------------------------------------------------
+  // Classification
+  // ---------------------------------------------------------------------------
 
   /// Primary knowledge category.
   final KnowledgeCategory category;
 
+  // ---------------------------------------------------------------------------
+  // Content
+  // ---------------------------------------------------------------------------
+
   /// Display title.
   final String title;
 
-  /// Full description.
+  /// Detailed knowledge description.
   final String description;
 
-  /// Source of the knowledge.
+  // ---------------------------------------------------------------------------
+  // Knowledge Quality
+  // ---------------------------------------------------------------------------
+
+  /// Evidence supporting this knowledge.
   final EvidenceLevel evidenceLevel;
 
-  /// Confidence in the knowledge.
+  /// Neptune confidence assessment.
   final ConfidenceLevel confidenceLevel;
 
-  /// Search tags.
-  final List<String> tags;
+  /// Supporting references.
+  final List<KnowledgeSource> sources;
 
-  /// Applicable South African regions.
+  // ---------------------------------------------------------------------------
+  // Search Metadata
+  // ---------------------------------------------------------------------------
+
+  /// Geographic regions where this knowledge applies.
   final List<String> regions;
 
-  /// Related target species.
-  final List<String> targetSpecies;
+  /// Applicable fishing seasons.
+  final List<String> seasons;
 
-  /// Premium content flag.
+  /// Search keywords.
+  final List<String> tags;
+
+  // ---------------------------------------------------------------------------
+  // Commercial
+  // ---------------------------------------------------------------------------
+
+  /// Premium content indicator.
   final bool premium;
 
-  /// Indicates that this knowledge has been verified.
+  /// Indicates the knowledge has been reviewed and approved.
   final bool verified;
 
-  /// Record creation date.
+  // ---------------------------------------------------------------------------
+  // Lifecycle
+  // ---------------------------------------------------------------------------
+
+  /// Creation timestamp.
   final DateTime createdAt;
 
-  /// Last modification date.
+  /// Last modification timestamp.
   final DateTime updatedAt;
 
   const KnowledgeRecord({
     required this.id,
+    this.species,
+    this.targetSpecies = const [],
     required this.category,
     required this.title,
     required this.description,
     required this.evidenceLevel,
     required this.confidenceLevel,
-    this.tags = const [],
+    this.sources = const [],
     this.regions = const [],
-    this.targetSpecies = const [],
+    this.seasons = const [],
+    this.tags = const [],
     this.premium = false,
     this.verified = false,
     required this.createdAt,
@@ -74,14 +131,17 @@ class KnowledgeRecord {
 
   KnowledgeRecord copyWith({
     String? id,
+    String? species,
+    List<String>? targetSpecies,
     KnowledgeCategory? category,
     String? title,
     String? description,
     EvidenceLevel? evidenceLevel,
     ConfidenceLevel? confidenceLevel,
-    List<String>? tags,
+    List<KnowledgeSource>? sources,
     List<String>? regions,
-    List<String>? targetSpecies,
+    List<String>? seasons,
+    List<String>? tags,
     bool? premium,
     bool? verified,
     DateTime? createdAt,
@@ -89,14 +149,17 @@ class KnowledgeRecord {
   }) {
     return KnowledgeRecord(
       id: id ?? this.id,
+      species: species ?? this.species,
+      targetSpecies: targetSpecies ?? this.targetSpecies,
       category: category ?? this.category,
       title: title ?? this.title,
       description: description ?? this.description,
       evidenceLevel: evidenceLevel ?? this.evidenceLevel,
       confidenceLevel: confidenceLevel ?? this.confidenceLevel,
-      tags: tags ?? this.tags,
+      sources: sources ?? this.sources,
       regions: regions ?? this.regions,
-      targetSpecies: targetSpecies ?? this.targetSpecies,
+      seasons: seasons ?? this.seasons,
+      tags: tags ?? this.tags,
       premium: premium ?? this.premium,
       verified: verified ?? this.verified,
       createdAt: createdAt ?? this.createdAt,
@@ -106,12 +169,19 @@ class KnowledgeRecord {
 
   @override
   String toString() {
-    return 'KnowledgeRecord(id: $id, title: $title, category: $category)';
+    return 'KnowledgeRecord('
+        'id: $id, '
+        'species: $species, '
+        'title: $title, '
+        'category: $category'
+        ')';
   }
 
   @override
   bool operator ==(Object other) {
-    if (identical(this, other)) return true;
+    if (identical(this, other)) {
+      return true;
+    }
 
     return other is KnowledgeRecord && other.id == id;
   }
