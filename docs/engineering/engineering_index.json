@@ -1,0 +1,14 @@
+﻿{
+    "project":  "Project Neptune",
+    "version":  "1.0.0",
+    "generated":  {
+                      "value":  "\/Date(1785699847212)\/",
+                      "DisplayHint":  2,
+                      "DateTime":  "Sunday, August 2, 2026 9:44:07 PM"
+                  },
+    "statistics":  {
+                       "dartFiles":  237,
+                       "markdownFiles":  26,
+                       "powershellFiles":  3
+                   }
+}

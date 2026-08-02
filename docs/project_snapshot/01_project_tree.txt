@@ -1,16 +1,22 @@
 Folder PATH listing
-Volume serial number is 00000009 B60C:8EFA
+Volume serial number is 0000005F B60C:8EFA
 C:.
 |   .env
 |   .flutter-plugins-dependencies
 |   .gitignore
 |   .metadata
 |   analysis_options.yaml
+|   docs (2).zip
+|   knowledge_tree.txt
 |   lib.zip
+|   lib_files.txt
+|   lib_structure.txt
 |   project_neptune.iml
+|   project_tree.txt
 |   pubspec.lock
 |   pubspec.yaml
 |   README.md
+|   test.zip
 |   
 +---.dart_tool
 |   |   package_config.json
@@ -23,23 +29,6 @@ C:.
 |   +---flutter_build
 |   |   |   dart_plugin_registrant.dart
 |   |   |   
-|   |   +---9b15291eba1f34b0a3b7dc516b171c04
-|   |   |       .filecache
-|   |   |       app.dill
-|   |   |       dart_build.d
-|   |   |       dart_build.stamp
-|   |   |       dart_build_result.json
-|   |   |       debug_android_application.stamp
-|   |   |       flutter_assets.d
-|   |   |       gen_dart_plugin_registrant.stamp
-|   |   |       gen_localizations.stamp
-|   |   |       install_code_assets.d
-|   |   |       install_code_assets.stamp
-|   |   |       kernel_snapshot_program.d
-|   |   |       kernel_snapshot_program.stamp
-|   |   |       native_assets.json
-|   |   |       outputs.json
-|   |   |       
 |   |   \---e3a58d166d6d802b560ee494a1fec844
 |   |           .filecache
 |   |           app.dill
@@ -57,44 +46,39 @@ C:.
 |   |           native_assets.json
 |   |           outputs.json
 |   |           
-|   +---hooks_runner
-|   |   +---objective_c
-|   |   |   +---337ce265dc
-|   |   |   |   |   .lock
-|   |   |   |   |   dependencies.dependencies_hash_file.json
-|   |   |   |   |   hook.dependencies_hash_file.json
-|   |   |   |   |   hook.dill
-|   |   |   |   |   hook.dill.d
-|   |   |   |   |   input.json
-|   |   |   |   |   output.json
-|   |   |   |   |   stderr.txt
-|   |   |   |   |   stdout.txt
-|   |   |   |   |   
-|   |   |   |   \---out
-|   |   |   \---6b74485d19
-|   |   |       |   .lock
-|   |   |       |   dependencies.dependencies_hash_file.json
-|   |   |       |   hook.dependencies_hash_file.json
-|   |   |       |   hook.dill
-|   |   |       |   hook.dill.d
-|   |   |       |   input.json
-|   |   |       |   output.json
-|   |   |       |   stderr.txt
-|   |   |       |   stdout.txt
-|   |   |       |   
-|   |   |       \---out
-|   |   \---shared
-|   |       \---objective_c
-|   |           |   .lock
-|   |           |   
-|   |           \---build
-|   |               +---337ce265dc
-|   |               \---6b74485d19
-|   \---pub
-|       \---bin
-|           \---build_runner
-|                   build_runner.dart-3.12.2.snapshot
-|                   
+|   \---hooks_runner
+|       +---objective_c
+|       |   +---337ce265dc
+|       |   |   |   .lock
+|       |   |   |   dependencies.dependencies_hash_file.json
+|       |   |   |   hook.dependencies_hash_file.json
+|       |   |   |   hook.dill
+|       |   |   |   hook.dill.d
+|       |   |   |   input.json
+|       |   |   |   output.json
+|       |   |   |   stderr.txt
+|       |   |   |   stdout.txt
+|       |   |   |   
+|       |   |   \---out
+|       |   \---6b74485d19
+|       |       |   .lock
+|       |       |   dependencies.dependencies_hash_file.json
+|       |       |   hook.dependencies_hash_file.json
+|       |       |   hook.dill
+|       |       |   hook.dill.d
+|       |       |   input.json
+|       |       |   output.json
+|       |       |   stderr.txt
+|       |       |   stdout.txt
+|       |       |   
+|       |       \---out
+|       \---shared
+|           \---objective_c
+|               |   .lock
+|               |   
+|               \---build
+|                   +---337ce265dc
+|                   \---6b74485d19
 +---.idea
 |   |   .gitignore
 |   |   deviceManager.xml
@@ -223,8 +207,6 @@ C:.
 |               
 +---build
 |   |   1440e92da5fcea1003b944440c5fd1be.cache.dill.track.dill
-|   |   abc6bb1dfe4276d4158ca37094b1c000.cache.dill.track.dill
-|   |   last_build_run.json
 |   |   
 |   +---.cxx
 |   |   \---debug
@@ -258,7 +240,7 @@ C:.
 |   |           |   |                   cmakeFiles-v1-fd384433a180d1bce6bd.json
 |   |           |   |                   codemodel-v2-8eb5cbf26ba6a1b59000.json
 |   |           |   |                   directory-.-debug-d0094a50bb2071803777.json
-|   |           |   |                   index-2026-07-25T10-26-35-0901.json
+|   |           |   |                   index-2026-07-31T23-11-20-0306.json
 |   |           |   |                   
 |   |           |   \---CMakeFiles
 |   |           |       |   cmake.check_cache
@@ -311,7 +293,7 @@ C:.
 |   |           |   |                   cmakeFiles-v1-7d0d40d1128cd9c49c63.json
 |   |           |   |                   codemodel-v2-0bc9f9ca0b613e19c7e6.json
 |   |           |   |                   directory-.-debug-d0094a50bb2071803777.json
-|   |           |   |                   index-2026-07-25T10-26-44-0581.json
+|   |           |   |                   index-2026-07-31T23-11-27-0833.json
 |   |           |   |                   
 |   |           |   \---CMakeFiles
 |   |           |       |   cmake.check_cache
@@ -364,7 +346,7 @@ C:.
 |   |               |                   cmakeFiles-v1-76963aced82fe7d83c1f.json
 |   |               |                   codemodel-v2-69bb96717a613424cff5.json
 |   |               |                   directory-.-debug-d0094a50bb2071803777.json
-|   |               |                   index-2026-07-25T10-26-47-0591.json
+|   |               |                   index-2026-07-31T23-11-31-0966.json
 |   |               |                   
 |   |               \---CMakeFiles
 |   |                   |   cmake.check_cache
@@ -522,27 +504,7 @@ C:.
 |   |   |   |           |   |       configure_command.bat
 |   |   |   |           |   |       configure_stderr.txt
 |   |   |   |           |   |       configure_stdout.txt
-|   |   |   |           |   |       generate_cxx_metadata_1070_timing.txt
-|   |   |   |           |   |       generate_cxx_metadata_156_timing.txt
-|   |   |   |           |   |       generate_cxx_metadata_196_timing.txt
-|   |   |   |           |   |       generate_cxx_metadata_197_timing.txt
-|   |   |   |           |   |       generate_cxx_metadata_199_timing.txt
-|   |   |   |           |   |       generate_cxx_metadata_212_timing.txt
-|   |   |   |           |   |       generate_cxx_metadata_319_timing.txt
-|   |   |   |           |   |       generate_cxx_metadata_327_timing.txt
-|   |   |   |           |   |       generate_cxx_metadata_445_timing.txt
-|   |   |   |           |   |       generate_cxx_metadata_446_timing.txt
-|   |   |   |           |   |       generate_cxx_metadata_454_timing.txt
-|   |   |   |           |   |       generate_cxx_metadata_569_timing.txt
-|   |   |   |           |   |       generate_cxx_metadata_579_timing.txt
-|   |   |   |           |   |       generate_cxx_metadata_700_timing.txt
-|   |   |   |           |   |       generate_cxx_metadata_710_timing.txt
-|   |   |   |           |   |       generate_cxx_metadata_78_timing.txt
-|   |   |   |           |   |       generate_cxx_metadata_824_timing.txt
 |   |   |   |           |   |       generate_cxx_metadata_82_timing.txt
-|   |   |   |           |   |       generate_cxx_metadata_84_timing.txt
-|   |   |   |           |   |       generate_cxx_metadata_857_timing.txt
-|   |   |   |           |   |       generate_cxx_metadata_950_timing.txt
 |   |   |   |           |   |       metadata_generation_record.json
 |   |   |   |           |   |       
 |   |   |   |           |   +---armeabi-v7a
@@ -550,28 +512,7 @@ C:.
 |   |   |   |           |   |       configure_command.bat
 |   |   |   |           |   |       configure_stderr.txt
 |   |   |   |           |   |       configure_stdout.txt
-|   |   |   |           |   |       generate_cxx_metadata_1070_timing.txt
 |   |   |   |           |   |       generate_cxx_metadata_156_timing.txt
-|   |   |   |           |   |       generate_cxx_metadata_196_timing.txt
-|   |   |   |           |   |       generate_cxx_metadata_197_timing.txt
-|   |   |   |           |   |       generate_cxx_metadata_199_timing.txt
-|   |   |   |           |   |       generate_cxx_metadata_212_timing.txt
-|   |   |   |           |   |       generate_cxx_metadata_213_timing.txt
-|   |   |   |           |   |       generate_cxx_metadata_319_timing.txt
-|   |   |   |           |   |       generate_cxx_metadata_327_timing.txt
-|   |   |   |           |   |       generate_cxx_metadata_445_timing.txt
-|   |   |   |           |   |       generate_cxx_metadata_446_timing.txt
-|   |   |   |           |   |       generate_cxx_metadata_454_timing.txt
-|   |   |   |           |   |       generate_cxx_metadata_569_timing.txt
-|   |   |   |           |   |       generate_cxx_metadata_579_timing.txt
-|   |   |   |           |   |       generate_cxx_metadata_700_timing.txt
-|   |   |   |           |   |       generate_cxx_metadata_710_timing.txt
-|   |   |   |           |   |       generate_cxx_metadata_78_timing.txt
-|   |   |   |           |   |       generate_cxx_metadata_824_timing.txt
-|   |   |   |           |   |       generate_cxx_metadata_82_timing.txt
-|   |   |   |           |   |       generate_cxx_metadata_84_timing.txt
-|   |   |   |           |   |       generate_cxx_metadata_857_timing.txt
-|   |   |   |           |   |       generate_cxx_metadata_951_timing.txt
 |   |   |   |           |   |       metadata_generation_record.json
 |   |   |   |           |   |       
 |   |   |   |           |   \---x86_64
@@ -579,28 +520,7 @@ C:.
 |   |   |   |           |           configure_command.bat
 |   |   |   |           |           configure_stderr.txt
 |   |   |   |           |           configure_stdout.txt
-|   |   |   |           |           generate_cxx_metadata_1070_timing.txt
-|   |   |   |           |           generate_cxx_metadata_196_timing.txt
-|   |   |   |           |           generate_cxx_metadata_197_timing.txt
-|   |   |   |           |           generate_cxx_metadata_199_timing.txt
-|   |   |   |           |           generate_cxx_metadata_209_timing.txt
-|   |   |   |           |           generate_cxx_metadata_212_timing.txt
-|   |   |   |           |           generate_cxx_metadata_319_timing.txt
-|   |   |   |           |           generate_cxx_metadata_327_timing.txt
-|   |   |   |           |           generate_cxx_metadata_445_timing.txt
-|   |   |   |           |           generate_cxx_metadata_446_timing.txt
-|   |   |   |           |           generate_cxx_metadata_454_timing.txt
-|   |   |   |           |           generate_cxx_metadata_569_timing.txt
-|   |   |   |           |           generate_cxx_metadata_579_timing.txt
-|   |   |   |           |           generate_cxx_metadata_700_timing.txt
-|   |   |   |           |           generate_cxx_metadata_710_timing.txt
-|   |   |   |           |           generate_cxx_metadata_78_timing.txt
-|   |   |   |           |           generate_cxx_metadata_79_timing.txt
-|   |   |   |           |           generate_cxx_metadata_827_timing.txt
-|   |   |   |           |           generate_cxx_metadata_82_timing.txt
-|   |   |   |           |           generate_cxx_metadata_84_timing.txt
-|   |   |   |           |           generate_cxx_metadata_857_timing.txt
-|   |   |   |           |           generate_cxx_metadata_951_timing.txt
+|   |   |   |           |           generate_cxx_metadata_83_timing.txt
 |   |   |   |           |           metadata_generation_record.json
 |   |   |   |           |           
 |   |   |   |           \---obj
@@ -3422,28 +3342,7 @@ C:.
 |   |   |   |           |   |       build_model.json
 |   |   |   |           |   |       build_stderr_jni.txt
 |   |   |   |           |   |       build_stdout_jni.txt
-|   |   |   |           |   |       generate_cxx_metadata_1070_timing.txt
-|   |   |   |           |   |       generate_cxx_metadata_198_timing.txt
-|   |   |   |           |   |       generate_cxx_metadata_199_timing.txt
-|   |   |   |           |   |       generate_cxx_metadata_201_timing.txt
-|   |   |   |           |   |       generate_cxx_metadata_211_timing.txt
-|   |   |   |           |   |       generate_cxx_metadata_212_timing.txt
-|   |   |   |           |   |       generate_cxx_metadata_313_timing.txt
-|   |   |   |           |   |       generate_cxx_metadata_325_timing.txt
-|   |   |   |           |   |       generate_cxx_metadata_442_timing.txt
-|   |   |   |           |   |       generate_cxx_metadata_450_timing.txt
-|   |   |   |           |   |       generate_cxx_metadata_452_timing.txt
-|   |   |   |           |   |       generate_cxx_metadata_571_timing.txt
-|   |   |   |           |   |       generate_cxx_metadata_584_timing.txt
-|   |   |   |           |   |       generate_cxx_metadata_695_timing.txt
-|   |   |   |           |   |       generate_cxx_metadata_710_timing.txt
-|   |   |   |           |   |       generate_cxx_metadata_78_timing.txt
-|   |   |   |           |   |       generate_cxx_metadata_79_timing.txt
-|   |   |   |           |   |       generate_cxx_metadata_81_timing.txt
-|   |   |   |           |   |       generate_cxx_metadata_828_timing.txt
-|   |   |   |           |   |       generate_cxx_metadata_82_timing.txt
-|   |   |   |           |   |       generate_cxx_metadata_861_timing.txt
-|   |   |   |           |   |       generate_cxx_metadata_950_timing.txt
+|   |   |   |           |   |       generate_cxx_metadata_156_timing.txt
 |   |   |   |           |   |       metadata_generation_record.json
 |   |   |   |           |   |       
 |   |   |   |           |   +---armeabi-v7a
@@ -3451,27 +3350,7 @@ C:.
 |   |   |   |           |   |       build_model.json
 |   |   |   |           |   |       build_stderr_jni.txt
 |   |   |   |           |   |       build_stdout_jni.txt
-|   |   |   |           |   |       generate_cxx_metadata_1070_timing.txt
-|   |   |   |           |   |       generate_cxx_metadata_198_timing.txt
-|   |   |   |           |   |       generate_cxx_metadata_199_timing.txt
-|   |   |   |           |   |       generate_cxx_metadata_200_timing.txt
-|   |   |   |           |   |       generate_cxx_metadata_212_timing.txt
-|   |   |   |           |   |       generate_cxx_metadata_313_timing.txt
-|   |   |   |           |   |       generate_cxx_metadata_325_timing.txt
-|   |   |   |           |   |       generate_cxx_metadata_442_timing.txt
-|   |   |   |           |   |       generate_cxx_metadata_449_timing.txt
-|   |   |   |           |   |       generate_cxx_metadata_455_timing.txt
-|   |   |   |           |   |       generate_cxx_metadata_571_timing.txt
-|   |   |   |           |   |       generate_cxx_metadata_584_timing.txt
-|   |   |   |           |   |       generate_cxx_metadata_695_timing.txt
-|   |   |   |           |   |       generate_cxx_metadata_710_timing.txt
-|   |   |   |           |   |       generate_cxx_metadata_78_timing.txt
-|   |   |   |           |   |       generate_cxx_metadata_79_timing.txt
-|   |   |   |           |   |       generate_cxx_metadata_81_timing.txt
-|   |   |   |           |   |       generate_cxx_metadata_828_timing.txt
-|   |   |   |           |   |       generate_cxx_metadata_82_timing.txt
-|   |   |   |           |   |       generate_cxx_metadata_861_timing.txt
-|   |   |   |           |   |       generate_cxx_metadata_950_timing.txt
+|   |   |   |           |   |       generate_cxx_metadata_156_timing.txt
 |   |   |   |           |   |       metadata_generation_record.json
 |   |   |   |           |   |       
 |   |   |   |           |   +---x86
@@ -3479,27 +3358,7 @@ C:.
 |   |   |   |           |   |       build_model.json
 |   |   |   |           |   |       build_stderr_jni.txt
 |   |   |   |           |   |       build_stdout_jni.txt
-|   |   |   |           |   |       generate_cxx_metadata_1069_timing.txt
-|   |   |   |           |   |       generate_cxx_metadata_198_timing.txt
-|   |   |   |           |   |       generate_cxx_metadata_199_timing.txt
-|   |   |   |           |   |       generate_cxx_metadata_200_timing.txt
-|   |   |   |           |   |       generate_cxx_metadata_212_timing.txt
-|   |   |   |           |   |       generate_cxx_metadata_313_timing.txt
-|   |   |   |           |   |       generate_cxx_metadata_325_timing.txt
-|   |   |   |           |   |       generate_cxx_metadata_442_timing.txt
-|   |   |   |           |   |       generate_cxx_metadata_449_timing.txt
-|   |   |   |           |   |       generate_cxx_metadata_455_timing.txt
-|   |   |   |           |   |       generate_cxx_metadata_572_timing.txt
-|   |   |   |           |   |       generate_cxx_metadata_586_timing.txt
-|   |   |   |           |   |       generate_cxx_metadata_695_timing.txt
-|   |   |   |           |   |       generate_cxx_metadata_710_timing.txt
-|   |   |   |           |   |       generate_cxx_metadata_78_timing.txt
-|   |   |   |           |   |       generate_cxx_metadata_79_timing.txt
-|   |   |   |           |   |       generate_cxx_metadata_81_timing.txt
-|   |   |   |           |   |       generate_cxx_metadata_828_timing.txt
-|   |   |   |           |   |       generate_cxx_metadata_82_timing.txt
-|   |   |   |           |   |       generate_cxx_metadata_858_timing.txt
-|   |   |   |           |   |       generate_cxx_metadata_950_timing.txt
+|   |   |   |           |   |       generate_cxx_metadata_156_timing.txt
 |   |   |   |           |   |       metadata_generation_record.json
 |   |   |   |           |   |       
 |   |   |   |           |   \---x86_64
@@ -3507,28 +3366,7 @@ C:.
 |   |   |   |           |           build_model.json
 |   |   |   |           |           build_stderr_jni.txt
 |   |   |   |           |           build_stdout_jni.txt
-|   |   |   |           |           generate_cxx_metadata_1065_timing.txt
-|   |   |   |           |           generate_cxx_metadata_197_timing.txt
-|   |   |   |           |           generate_cxx_metadata_199_timing.txt
-|   |   |   |           |           generate_cxx_metadata_201_timing.txt
-|   |   |   |           |           generate_cxx_metadata_212_timing.txt
-|   |   |   |           |           generate_cxx_metadata_213_timing.txt
-|   |   |   |           |           generate_cxx_metadata_313_timing.txt
-|   |   |   |           |           generate_cxx_metadata_325_timing.txt
-|   |   |   |           |           generate_cxx_metadata_442_timing.txt
-|   |   |   |           |           generate_cxx_metadata_449_timing.txt
-|   |   |   |           |           generate_cxx_metadata_452_timing.txt
-|   |   |   |           |           generate_cxx_metadata_572_timing.txt
-|   |   |   |           |           generate_cxx_metadata_586_timing.txt
-|   |   |   |           |           generate_cxx_metadata_695_timing.txt
-|   |   |   |           |           generate_cxx_metadata_710_timing.txt
-|   |   |   |           |           generate_cxx_metadata_78_timing.txt
-|   |   |   |           |           generate_cxx_metadata_79_timing.txt
-|   |   |   |           |           generate_cxx_metadata_81_timing.txt
-|   |   |   |           |           generate_cxx_metadata_828_timing.txt
-|   |   |   |           |           generate_cxx_metadata_82_timing.txt
-|   |   |   |           |           generate_cxx_metadata_861_timing.txt
-|   |   |   |           |           generate_cxx_metadata_954_timing.txt
+|   |   |   |           |           generate_cxx_metadata_156_timing.txt
 |   |   |   |           |           metadata_generation_record.json
 |   |   |   |           |           
 |   |   |   |           \---obj
@@ -5407,19 +5245,48 @@ C:.
 +---docs
 |   |   ARCHITECTURE.md
 |   |   CHANGELOG.md
+|   |   CODING_STANDARDS.md
+|   |   DECISION_LOG.md
 |   |   ENGINEERING_PRINCIPLES.md
+|   |   FEATURE_MATRIX.md
+|   |   KNOWLEDGE_MIGRATION_PLAN.md
 |   |   KNOWLEDGE_STANDARD.md
+|   |   neptune_intelligence_graph.md
+|   |   NEPTUNE_MASTER.md
+|   |   RELEASE_PLAN.md
 |   |   ROADMAP.md
+|   |   species_gold_standard.md
 |   |   
-|   \---project_snapshot
-|           01_project_tree.txt
-|           dart_files.txt
-|           flutter_analyze.txt
-|           git_log.txt
-|           git_status.txt
-|           project_tree.txt
-|           pub_deps.txt
-|           statistics.txt
+|   +---architecture
+|   |       BOUNDED_CONTEXTS.md
+|   |       DOMAIN_MODEL.md
+|   |       ENGINEERING_CONSTITUTION.md
+|   |       SYSTEM_ARCHITECTURE.md
+|   |       
+|   +---project_snapshot
+|   |       01_project_tree.txt
+|   |       02_flutter_analyze.txt
+|   |       03_pub_dependencies.txt
+|   |       04_dart_files.txt
+|   |       05_providers.txt
+|   |       06_repositories.txt
+|   |       07_services.txt
+|   |       08_models.txt
+|   |       09_widgets.txt
+|   |       10_routes.txt
+|   |       11_git_status.txt
+|   |       12_git_log.txt
+|   |       13_statistics.txt
+|   |       dart_files.txt
+|   |       flutter_analyze.txt
+|   |       git_log.txt
+|   |       git_status.txt
+|   |       project_tree.txt
+|   |       pub_deps.txt
+|   |       statistics.txt
+|   |       
+|   \---standards
+|           CODING_STANDARDS.md
 |           
 +---ios
 |   |   .gitignore
@@ -5550,6 +5417,8 @@ C:.
 |   |           primary_button.dart
 |   |           
 |   +---features
+|   |   |   home.zip
+|   |   |   knowledge.zip
 |   |   |   marine.zip
 |   |   |   
 |   |   +---authentication
@@ -5568,7 +5437,34 @@ C:.
 |   |   |               auth_controller.g.dart
 |   |   |               
 |   |   +---catches
+|   |   |   +---data
+|   |   |   |   \---repositories
+|   |   |   |           catch_repository_impl.dart
+|   |   |   |           
+|   |   |   +---domain
+|   |   |   |   +---entities
+|   |   |   |   |       catch_record.dart
+|   |   |   |   |       
+|   |   |   |   +---repositories
+|   |   |   |   |       catch_repository.dart
+|   |   |   |   |       
+|   |   |   |   \---services
+|   |   |   |           catch_service.dart
+|   |   |   |           
+|   |   |   \---presentation
+|   |   |       +---pages
+|   |   |       |       catch_history_page.dart
+|   |   |       |       log_catch_page.dart
+|   |   |       |       
+|   |   |       \---providers
+|   |   |               catch_provider.dart
+|   |   |               
+|   |   +---fishing_sessions
+|   |   |   \---domain
+|   |   |       \---entities
 |   |   +---home
+|   |   |   |   presentation.zip
+|   |   |   |   
 |   |   |   +---domain
 |   |   |   |   \---models
 |   |   |   |           readiness.dart
@@ -5585,24 +5481,69 @@ C:.
 |   |   |               
 |   |   +---knowledge
 |   |   |   +---data
-|   |   |   |   |   knowledge_repository_impl.dart
+|   |   |   |   |   species.zip
 |   |   |   |   |   
+|   |   |   |   +---repositories
+|   |   |   |   |       knowledge_repository_impl.dart
+|   |   |   |   |       
 |   |   |   |   \---species
 |   |   |   |           blacktail_knowledge.dart
 |   |   |   |           bronze_bream_knowledge.dart
+|   |   |   |           garrick_bait.dart
+|   |   |   |           garrick_biology.dart
+|   |   |   |           garrick_expert_tips.dart
+|   |   |   |           garrick_hooks.dart
 |   |   |   |           garrick_knowledge.dart
+|   |   |   |           garrick_presentations.dart
+|   |   |   |           kob_bait.dart
+|   |   |   |           kob_expert_tips.dart
+|   |   |   |           kob_hooks.dart
 |   |   |   |           kob_knowledge.dart
+|   |   |   |           kob_leaders.dart
+|   |   |   |           kob_presentations.dart
+|   |   |   |           kob_species.dart
+|   |   |   |           leaders.dart
+|   |   |   |           shad_bait.dart
+|   |   |   |           shad_expert_tips.dart
+|   |   |   |           shad_hooks.dart
+|   |   |   |           shad_knots.dart
 |   |   |   |           shad_knowledge.dart
+|   |   |   |           shad_presentations.dart
 |   |   |   |           shad_rules.dart
+|   |   |   |           shad_sinkers.dart
+|   |   |   |           shad_species.dart
+|   |   |   |           shad_trace.dart
 |   |   |   |           
 |   |   |   +---domain
-|   |   |   |       evidence_level.dart
-|   |   |   |       knowledge_category.dart
-|   |   |   |       knowledge_record.dart
-|   |   |   |       knowledge_source.dart
-|   |   |   |       knowledge_topic.dart
-|   |   |   |       rule.dart
-|   |   |   |       
+|   |   |   |   |   evidence_level.dart
+|   |   |   |   |   knowledge_category.dart
+|   |   |   |   |   knowledge_ids.dart
+|   |   |   |   |   knowledge_record.dart
+|   |   |   |   |   knowledge_relationship.dart
+|   |   |   |   |   knowledge_source.dart
+|   |   |   |   |   knowledge_tags.dart
+|   |   |   |   |   knowledge_topic.dart
+|   |   |   |   |   rule.dart
+|   |   |   |   |   
+|   |   |   |   +---entities
+|   |   |   |   |       bait_profile.dart
+|   |   |   |   |       knowledge_metadata.dart
+|   |   |   |   |       knowledge_record.dart
+|   |   |   |   |       knowledge_reference.dart
+|   |   |   |   |       species_profile.dart
+|   |   |   |   |       trace_profile.dart
+|   |   |   |   |       
+|   |   |   |   +---enums
+|   |   |   |   |       confidence_level.dart
+|   |   |   |   |       evidence_level.dart
+|   |   |   |   |       knowledge_category.dart
+|   |   |   |   |       
+|   |   |   |   +---repositories
+|   |   |   |   |       knowledge_repository.dart
+|   |   |   |   |       
+|   |   |   |   \---services
+|   |   |   |           knowledge_service.dart
+|   |   |   |           
 |   |   |   +---presentation
 |   |   |   |   \---providers
 |   |   |   |           knowledge_provider.dart
@@ -5628,6 +5569,9 @@ C:.
 |   |   |           
 |   |   +---maps
 |   |   +---marine
+|   |   |   |   domain.zip
+|   |   |   |   presentation.zip
+|   |   |   |   
 |   |   |   +---data
 |   |   |   |   +---datasources
 |   |   |   |   |       marine_remote_data_source.dart
@@ -5643,12 +5587,18 @@ C:.
 |   |   |   |   |       tide_dto.dart
 |   |   |   |   |       weather_dto.dart
 |   |   |   |   |       
+|   |   |   |   +---prividers
+|   |   |   |   |       mock_marine_data_provider.dart
+|   |   |   |   |       
 |   |   |   |   \---repositories
 |   |   |   |           marine_repository_impl.dart
 |   |   |   |           
 |   |   |   +---domain
 |   |   |   |   +---models
 |   |   |   |   |       marine_conditions.dart
+|   |   |   |   |       
+|   |   |   |   +---providers
+|   |   |   |   |       marine_data_provider.dart
 |   |   |   |   |       
 |   |   |   |   +---repositories
 |   |   |   |   |       marine_repository.dart
@@ -5675,12 +5625,42 @@ C:.
 |   |   |           readiness_engine.dart
 |   |   |           
 |   |   +---recommendation
-|   |   |   +---domain
-|   |   |   |       decision_context.dart
-|   |   |   |       recommendation_metadata.dart
-|   |   |   |       recommendation_request.dart
-|   |   |   |       recommendation_response.dart
+|   |   |   +---data
+|   |   |   |       species_environment_profiles.dart
 |   |   |   |       
+|   |   |   +---domain
+|   |   |   |   |   decision_context.dart
+|   |   |   |   |   environmental_readiness.dart
+|   |   |   |   |   recommendation_metadata.dart
+|   |   |   |   |   recommendation_request.dart
+|   |   |   |   |   recommendation_response.dart
+|   |   |   |   |   species_environment_profile.dart
+|   |   |   |   |   
+|   |   |   |   +---entities
+|   |   |   |   |       evaluation_result.dart
+|   |   |   |   |       fishing_recommendation.dart
+|   |   |   |   |       recommendation_breakdown.dart
+|   |   |   |   |       recommendation_factor.dart
+|   |   |   |   |       recommendation_insight.dart
+|   |   |   |   |       recommendation_level.dart
+|   |   |   |   |       recommendation_reason.dart
+|   |   |   |   |       recommendation_result.dart
+|   |   |   |   |       recommendation_score.dart
+|   |   |   |   |       recommendation_statistics.dart
+|   |   |   |   |       
+|   |   |   |   +---services
+|   |   |   |   |       current_evaluator.dart
+|   |   |   |   |       fishing_window_evaluator.dart
+|   |   |   |   |       fishing_window_formatter.dart
+|   |   |   |   |       moon_evaluator.dart
+|   |   |   |   |       pressure_evaluator.dart
+|   |   |   |   |       recommendation_engine.dart
+|   |   |   |   |       recommendation_evaluator.dart
+|   |   |   |   |       swell_evaluator.dart
+|   |   |   |   |       tide_evaluator.dart
+|   |   |   |   |       wind_evaluator.dart
+|   |   |   |   |       
+|   |   |   |   \---value_objects
 |   |   |   +---models
 |   |   |   |       recommendation.dart
 |   |   |   |       
@@ -5695,10 +5675,17 @@ C:.
 |   |   |   |   |       recommendation_seed_provider.dart
 |   |   |   |   |       
 |   |   |   |   \---widgets
+|   |   |   |           environmental_breakdown_card.dart
+|   |   |   |           environmental_readiness_card.dart
+|   |   |   |           fishing_window_card.dart
 |   |   |   |           neptune_recommendation_card.dart
+|   |   |   |           recommendation_summary_card.dart
+|   |   |   |           why_neptune_card.dart
 |   |   |   |           
 |   |   |   \---services
 |   |   |           confidence_engine.dart
+|   |   |           environmental_evaluator.dart
+|   |   |           environmental_readiness_calculator.dart
 |   |   |           recommendation_engine.dart
 |   |   |           recommendation_pipeline.dart
 |   |   |           recommendation_seed_provider.dart
@@ -5720,8 +5707,13 @@ C:.
 |   |   |           
 |   |   +---session
 |   |   |   +---domain
-|   |   |   |       fishing_session.dart
-|   |   |   |       
+|   |   |   |   \---entities
+|   |   |   |           fishing_session.dart
+|   |   |   |           session_equipment.dart
+|   |   |   |           session_metadata.dart
+|   |   |   |           session_outcome.dart
+|   |   |   |           session_statistics.dart
+|   |   |   |           
 |   |   |   \---presentation
 |   |   |       \---providers
 |   |   |               fishing_session_provider.dart
@@ -5729,16 +5721,85 @@ C:.
 |   |   +---settings
 |   |   +---species
 |   |   |   +---data
+|   |   |   |       galjoen.dart
+|   |   |   |       galjoen_characteristics.dart
+|   |   |   |       galjoen_profile.dart
+|   |   |   |       garrick.dart
+|   |   |   |       garrick_profile.dart
+|   |   |   |       kob.dart
+|   |   |   |       kob_profile.dart
+|   |   |   |       shad.dart
 |   |   |   |       shad_profile.dart
+|   |   |   |       species_catalog.dart
+|   |   |   |       species_knowledge_repository_impl.dart
+|   |   |   |       species_profiles.dart
 |   |   |   |       
 |   |   |   +---domain
-|   |   |   |       species.dart
-|   |   |   |       species_engine.dart
-|   |   |   |       species_recommendation.dart
-|   |   |   |       
+|   |   |   |   |   species.dart
+|   |   |   |   |   species_engine.dart
+|   |   |   |   |   species_recommendation.dart
+|   |   |   |   |   
+|   |   |   |   +---entities
+|   |   |   |   |       daily_species_recommendation.dart
+|   |   |   |   |       fish_species.dart
+|   |   |   |   |       hook_recommendation.dart
+|   |   |   |   |       knowledge_confidence.dart
+|   |   |   |   |       knowledge_source.dart
+|   |   |   |   |       leader_recommendation.dart
+|   |   |   |   |       species_activity.dart
+|   |   |   |   |       species_advice.dart
+|   |   |   |   |       species_behaviour.dart
+|   |   |   |   |       species_characteristics.dart
+|   |   |   |   |       species_conservation.dart
+|   |   |   |   |       species_diet.dart
+|   |   |   |   |       species_difficulty.dart
+|   |   |   |   |       species_feeding_zone.dart
+|   |   |   |   |       species_habitat.dart
+|   |   |   |   |       species_knowledge.dart
+|   |   |   |   |       species_profile.dart
+|   |   |   |   |       species_rating.dart
+|   |   |   |   |       species_recommendation.dart
+|   |   |   |   |       species_reference.dart
+|   |   |   |   |       species_season.dart
+|   |   |   |   |       species_size_class.dart
+|   |   |   |   |       
+|   |   |   |   +---repositories
+|   |   |   |   |       repository.dart
+|   |   |   |   |       species_knowledge_repository.dart
+|   |   |   |   |       species_repository_impl.dart
+|   |   |   |   |       
+|   |   |   |   \---services
+|   |   |   |           bait_recommendation_engine.dart
+|   |   |   |           daily_recommendation_service.dart
+|   |   |   |           daily_species_ranker.dart
+|   |   |   |           hook_recommendation_engine.dart
+|   |   |   |           rig_recommendation_engine.dart
+|   |   |   |           species_advice_builder.dart
+|   |   |   |           species_matcher.dart
+|   |   |   |           species_recommendation_engine.dart
+|   |   |   |           species_score_formatter.dart
+|   |   |   |           species_summary_builder.dart
+|   |   |   |           species_validation_service.dart
+|   |   |   |           top_species_selector.dart
+|   |   |   |           
 |   |   |   +---presentation
+|   |   |   |   +---mappers
+|   |   |   |   |       species_recommendation_mapper.dart
+|   |   |   |   |       
+|   |   |   |   +---models
+|   |   |   |   |       species_recommendation_view_model.dart
+|   |   |   |   |       
+|   |   |   |   +---pages
+|   |   |   |   |       daily_recommendation_page.dart
+|   |   |   |   |       
+|   |   |   |   +---providers
+|   |   |   |   |       daily_recommendation_provider.dart
+|   |   |   |   |       species_knowledge_provider.dart
+|   |   |   |   |       
 |   |   |   |   \---widgets
+|   |   |   |           species_advice_card.dart
 |   |   |   |           species_recommendation_card.dart
+|   |   |   |           species_recommendation_tile.dart
 |   |   |   |           
 |   |   |   \---services
 |   |   |           species_advice.dart
