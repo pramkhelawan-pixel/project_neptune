@@ -3,7 +3,15 @@
 /// Neptune distinguishes between different sources of knowledge.
 /// This allows the platform to explain *why* it makes recommendations
 /// and to improve confidence over time.
+///
+/// During the KNOW-001 migration, legacy values are retained for backward
+/// compatibility. They will be removed once all knowledge datasets have been
+/// migrated to the canonical model.
 enum EvidenceLevel {
+  // ---------------------------------------------------------------------------
+  // Canonical evidence levels
+  // ---------------------------------------------------------------------------
+
   /// Verified scientific research.
   scientific,
 
@@ -13,7 +21,7 @@ enum EvidenceLevel {
   /// Published literature or recognised reference works.
   literature,
 
-  /// Validated field observations from experienced anglers.
+  /// Validated field observations from recognised experts.
   expert,
 
   /// Community knowledge that has been validated.
@@ -27,4 +35,14 @@ enum EvidenceLevel {
 
   /// User observation awaiting validation.
   observation,
+
+  // ---------------------------------------------------------------------------
+  // Legacy compatibility (temporary)
+  // ---------------------------------------------------------------------------
+
+  /// Legacy alias for expert.
+  experiencedAngler,
+
+  /// Legacy alias for regulatory.
+  regulation,
 }

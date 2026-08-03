@@ -1,4 +1,4 @@
-import '../../knowledge/domain/knowledge_category.dart';
+import '../../knowledge/domain/enums/knowledge_category.dart';
 import '../../knowledge/services/knowledge_service.dart';
 
 import '../data/species_environment_profiles.dart';
@@ -28,6 +28,7 @@ class RecommendationSeed {
 
 class RecommendationSeedProvider {
   final KnowledgeService? knowledgeService;
+
   final EnvironmentalEvaluator _environmentalEvaluator =
   const EnvironmentalEvaluator();
 
@@ -35,35 +36,32 @@ class RecommendationSeedProvider {
     this.knowledgeService,
   });
 
-  RecommendationSeed getSeed(
+  Future<RecommendationSeed> getSeed(
       RecommendationRequest request,
-      ) {
-    final bait = knowledgeService?.bestKnowledge(
+      ) async {
+    final bait = await knowledgeService?.bestKnowledge(
       species: request.species,
       category: KnowledgeCategory.bait,
     );
 
-    final hook = knowledgeService?.bestKnowledge(
+    final hook = await knowledgeService?.bestKnowledge(
       species: request.species,
-      category: KnowledgeCategory.hooks,
+      category: KnowledgeCategory.hook,
     );
 
-    final leader = knowledgeService?.bestKnowledge(
+    final leader = await knowledgeService?.bestKnowledge(
       species: request.species,
       category: KnowledgeCategory.leader,
     );
 
-    final presentation = knowledgeService?.bestKnowledge(
+    final presentation = await knowledgeService?.bestKnowledge(
       species: request.species,
       category: KnowledgeCategory.presentation,
     );
 
-    final profile = _profileForSpecies(
-      request.species,
-    );
+    final profile = _profileForSpecies(request.species);
 
-    final evaluation =
-    _environmentalEvaluator.evaluate(
+    final evaluation = _environmentalEvaluator.evaluate(
       profile: profile,
       conditions: request.marineConditions,
     );
@@ -72,13 +70,9 @@ class RecommendationSeedProvider {
       bait: bait?.title ?? 'No bait available',
       hook: hook?.title ?? 'No hook available',
       leader: leader?.title ?? 'No leader available',
-      presentation:
-      presentation?.title ??
-          'No presentation available',
+      presentation: presentation?.title ?? 'No presentation available',
       bestTime: 'Sunrise',
-      weights: [
-        evaluation.score,
-      ],
+      weights: [evaluation.score],
       reasons: evaluation.reasons,
     );
   }
@@ -88,8 +82,7 @@ class RecommendationSeedProvider {
       ) {
     return environmentProfiles.firstWhere(
           (profile) =>
-      profile.species.toLowerCase() ==
-          species.toLowerCase(),
+      profile.species.toLowerCase() == species.toLowerCase(),
       orElse: () => shadEnvironmentProfile,
     );
   }

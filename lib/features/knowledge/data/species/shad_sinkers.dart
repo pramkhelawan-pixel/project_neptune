@@ -1,75 +1,83 @@
-import '../../domain/evidence_level.dart';
-import '../../domain/knowledge_category.dart';
-import '../../domain/knowledge_record.dart';
-import '../../domain/knowledge_source.dart';
+import '../../domain/entities/knowledge_record.dart';
+import '../../domain/entities/knowledge_source.dart';
+
+import '../../domain/enums/confidence_level.dart';
+import '../../domain/enums/evidence_level.dart';
+import '../../domain/enums/knowledge_category.dart';
 
 final List<KnowledgeRecord> shadSinkerKnowledge = [
   KnowledgeRecord(
     id: 'NKS-SHD-SINKER-0001',
     species: 'Shad',
-    category: KnowledgeCategory.tackle,
+    targetSpecies: const ['Shad'],
+    category: KnowledgeCategory.sinker,
     title: '4 oz Grapnel Sinker',
     description:
     'A 4 oz grapnel sinker provides reliable holding power in light to moderate surf while allowing natural bait presentations for Shad.',
-    evidenceLevel: EvidenceLevel.experiencedAngler,
-    confidence: 0.96,
-    sources: [
-      const KnowledgeSource(
+    evidenceLevel: EvidenceLevel.expert,
+    confidenceLevel: ConfidenceLevel.high,
+    sources: const [
+      KnowledgeSource(
         name: 'Neptune Knowledge Base',
         type: 'Expert Knowledge',
         reference: 'NKS-SHD-SINKER-0001',
         reliability: 0.96,
       ),
     ],
-    regions: [
+    regions: const [
       'KwaZulu-Natal',
       'Eastern Cape',
       'Western Cape',
     ],
-    seasons: [
+    seasons: const [
       'Autumn',
       'Winter',
       'Spring',
     ],
-    tags: [
+    tags: const [
       'sinker',
       'grapnel',
       '4 oz',
       'shad',
     ],
-    lastUpdated: DateTime(2026, 7, 29),
+    verified: true,
+    createdAt: DateTime(2026, 7, 29),
+    updatedAt: DateTime(2026, 7, 29),
   ),
   KnowledgeRecord(
     id: 'NKS-SHD-SINKER-0002',
     species: 'Shad',
-    category: KnowledgeCategory.tackle,
+    targetSpecies: const ['Shad'],
+    category: KnowledgeCategory.sinker,
     title: '5 oz Grapnel Sinker',
     description:
     'A 5 oz grapnel sinker is preferred when stronger currents or heavier surf require additional holding power while maintaining bait position.',
-    evidenceLevel: EvidenceLevel.experiencedAngler,
-    confidence: 0.94,
-    sources: [
-      const KnowledgeSource(
+    evidenceLevel: EvidenceLevel.expert,
+    confidenceLevel: ConfidenceLevel.high,
+    sources: const [
+      KnowledgeSource(
         name: 'Neptune Knowledge Base',
         type: 'Expert Knowledge',
         reference: 'NKS-SHD-SINKER-0002',
         reliability: 0.95,
       ),
     ],
-    regions: [
+    regions: const [
       'KwaZulu-Natal',
       'Eastern Cape',
     ],
-    seasons: [
+    seasons: const [
       'Winter',
       'Spring',
     ],
-    tags: [
+    tags: const [
       'sinker',
       'grapnel',
       '5 oz',
       'heavy surf',
     ],
-    lastUpdated: DateTime(2026, 7, 29),
+    verified: true,
+    createdAt: DateTime(2026, 7, 29),
+    updatedAt: DateTime(2026, 7, 29),
   ),
 ];

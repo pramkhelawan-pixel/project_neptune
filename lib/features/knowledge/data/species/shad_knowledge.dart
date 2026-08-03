@@ -1,19 +1,22 @@
-import '../../domain/evidence_level.dart';
-import '../../domain/knowledge_category.dart';
-import '../../domain/knowledge_record.dart';
-import '../../domain/knowledge_source.dart';
+import '../../domain/entities/knowledge_record.dart';
+import '../../domain/entities/knowledge_source.dart';
 
-final shadKnowledge = <KnowledgeRecord>[
+import '../../domain/enums/confidence_level.dart';
+import '../../domain/enums/evidence_level.dart';
+import '../../domain/enums/knowledge_category.dart';
+
+final List<KnowledgeRecord> shadKnowledge = [
   KnowledgeRecord(
     id: 'NKB-SHD-BAIT-0001',
     species: 'Shad',
+    targetSpecies: const ['Shad'],
     category: KnowledgeCategory.bait,
     title: 'Fresh Sardine',
     description:
     'Fresh sardine is one of the highest confidence natural baits for targeting Shad along the KwaZulu-Natal coastline.',
-    evidenceLevel: EvidenceLevel.experiencedAngler,
-    confidence: 0.94,
-    sources: [
+    evidenceLevel: EvidenceLevel.expert,
+    confidenceLevel: ConfidenceLevel.high,
+    sources: const [
       KnowledgeSource(
         name: 'Neptune Research',
         type: 'Knowledge',
@@ -21,33 +24,32 @@ final shadKnowledge = <KnowledgeRecord>[
         reliability: 0.90,
       ),
     ],
-    regions: [
+    regions: const [
       'KwaZulu-Natal',
     ],
-    seasons: [
+    seasons: const [
       'Winter',
     ],
-    tags: [
+    tags: const [
       'bait',
       'fresh sardine',
       'shad',
     ],
-    lastUpdated: DateTime(
-      2026,
-      7,
-      27,
-    ),
+    verified: true,
+    createdAt: DateTime(2026, 7, 27),
+    updatedAt: DateTime(2026, 7, 27),
   ),
   KnowledgeRecord(
     id: 'NKB-SHD-LURE-0001',
     species: 'Shad',
+    targetSpecies: const ['Shad'],
     category: KnowledgeCategory.lure,
     title: 'Metal Spoon',
     description:
     'Metal spoons are among the most widely used artificial lures for targeting Shad from the South African surf, particularly when fish are actively feeding.',
-    evidenceLevel: EvidenceLevel.experiencedAngler,
-    confidence: 0.93,
-    sources: [
+    evidenceLevel: EvidenceLevel.expert,
+    confidenceLevel: ConfidenceLevel.high,
+    sources: const [
       KnowledgeSource(
         name: 'Neptune Research',
         type: 'Knowledge',
@@ -55,35 +57,34 @@ final shadKnowledge = <KnowledgeRecord>[
         reliability: 0.91,
       ),
     ],
-    regions: [
+    regions: const [
       'KwaZulu-Natal',
     ],
-    seasons: [
+    seasons: const [
       'Autumn',
       'Winter',
       'Spring',
     ],
-    tags: [
+    tags: const [
       'lure',
       'metal spoon',
       'shad',
     ],
-    lastUpdated: DateTime(
-      2026,
-      7,
-      27,
-    ),
+    verified: true,
+    createdAt: DateTime(2026, 7, 27),
+    updatedAt: DateTime(2026, 7, 27),
   ),
   KnowledgeRecord(
     id: 'NKB-SHD-PRESENTATION-0001',
     species: 'Shad',
+    targetSpecies: const ['Shad'],
     category: KnowledgeCategory.presentation,
     title: 'Fast Retrieve',
     description:
     'A consistently fast retrieve is commonly effective when Shad are actively hunting baitfish in the surf zone.',
-    evidenceLevel: EvidenceLevel.experiencedAngler,
-    confidence: 0.89,
-    sources: [
+    evidenceLevel: EvidenceLevel.expert,
+    confidenceLevel: ConfidenceLevel.high,
+    sources: const [
       KnowledgeSource(
         name: 'Neptune Research',
         type: 'Knowledge',
@@ -91,35 +92,34 @@ final shadKnowledge = <KnowledgeRecord>[
         reliability: 0.89,
       ),
     ],
-    regions: [
+    regions: const [
       'KwaZulu-Natal',
     ],
-    seasons: [
+    seasons: const [
       'Autumn',
       'Winter',
       'Spring',
     ],
-    tags: [
+    tags: const [
       'presentation',
       'fast retrieve',
       'shad',
     ],
-    lastUpdated: DateTime(
-      2026,
-      7,
-      27,
-    ),
+    verified: true,
+    createdAt: DateTime(2026, 7, 27),
+    updatedAt: DateTime(2026, 7, 27),
   ),
   KnowledgeRecord(
     id: 'NKB-SHD-PRESENTATION-0002',
     species: 'Shad',
+    targetSpecies: const ['Shad'],
     category: KnowledgeCategory.presentation,
     title: 'Erratic Retrieve',
     description:
     'Introducing pauses and changes in retrieve speed may trigger strikes from following Shad under suitable conditions.',
-    evidenceLevel: EvidenceLevel.experiencedAngler,
-    confidence: 0.79,
-    sources: [
+    evidenceLevel: EvidenceLevel.expert,
+    confidenceLevel: ConfidenceLevel.moderate,
+    sources: const [
       KnowledgeSource(
         name: 'Neptune Research',
         type: 'Knowledge',
@@ -127,23 +127,21 @@ final shadKnowledge = <KnowledgeRecord>[
         reliability: 0.82,
       ),
     ],
-    regions: [
+    regions: const [
       'KwaZulu-Natal',
     ],
-    seasons: [
+    seasons: const [
       'Autumn',
       'Winter',
       'Spring',
     ],
-    tags: [
+    tags: const [
       'presentation',
       'erratic retrieve',
       'shad',
     ],
-    lastUpdated: DateTime(
-      2026,
-      7,
-      27,
-    ),
+    verified: true,
+    createdAt: DateTime(2026, 7, 27),
+    updatedAt: DateTime(2026, 7, 27),
   ),
 ];

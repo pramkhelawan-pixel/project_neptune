@@ -1,78 +1,85 @@
-import '../../domain/evidence_level.dart';
-import '../../domain/knowledge_category.dart';
-import '../../domain/knowledge_record.dart';
-import '../../domain/knowledge_source.dart';
+import '../../domain/entities/knowledge_record.dart';
+import '../../domain/entities/knowledge_source.dart';
+
+import '../../domain/enums/confidence_level.dart';
+import '../../domain/enums/evidence_level.dart';
+import '../../domain/enums/knowledge_category.dart';
 
 final List<KnowledgeRecord> shadPresentationKnowledge = [
   KnowledgeRecord(
     id: 'NKS-SHD-PRES-0001',
     species: 'Shad',
+    targetSpecies: const ['Shad'],
     category: KnowledgeCategory.presentation,
     title: 'Butterfly Sardine Presentation',
     description:
     'Butterflying a fresh sardine produces a natural profile while exposing scent and oils. It is one of the most productive presentations for Shad in South African surf fishing.',
-    evidenceLevel: EvidenceLevel.experiencedAngler,
-    confidence: 0.99,
-    sources: [
-      const KnowledgeSource(
+    evidenceLevel: EvidenceLevel.expert,
+    confidenceLevel: ConfidenceLevel.veryHigh,
+    sources: const [
+      KnowledgeSource(
         name: 'Neptune Knowledge Base',
         type: 'Expert Knowledge',
         reference: 'NKS-SHD-PRES-0001',
         reliability: 0.99,
       ),
     ],
-    regions: [
+    regions: const [
       'KwaZulu-Natal',
       'Eastern Cape',
       'Western Cape',
     ],
-    seasons: [
+    seasons: const [
       'Autumn',
       'Winter',
       'Spring',
     ],
-    tags: [
+    tags: const [
       'presentation',
       'butterfly',
       'sardine',
       'natural bait',
       'shad',
     ],
-    lastUpdated: DateTime(2026, 7, 29),
+    verified: true,
+    createdAt: DateTime(2026, 7, 29),
+    updatedAt: DateTime(2026, 7, 29),
   ),
-
   KnowledgeRecord(
     id: 'NKS-SHD-PRES-0002',
     species: 'Shad',
+    targetSpecies: const ['Shad'],
     category: KnowledgeCategory.presentation,
     title: 'Fillet Presentation',
     description:
     'A streamlined sardine fillet is ideal when longer casts are required and a more aerodynamic bait is preferred.',
-    evidenceLevel: EvidenceLevel.experiencedAngler,
-    confidence: 0.95,
-    sources: [
-      const KnowledgeSource(
+    evidenceLevel: EvidenceLevel.expert,
+    confidenceLevel: ConfidenceLevel.high,
+    sources: const [
+      KnowledgeSource(
         name: 'Neptune Knowledge Base',
         type: 'Expert Knowledge',
         reference: 'NKS-SHD-PRES-0002',
         reliability: 0.95,
       ),
     ],
-    regions: [
+    regions: const [
       'KwaZulu-Natal',
       'Eastern Cape',
     ],
-    seasons: [
+    seasons: const [
       'Autumn',
       'Winter',
       'Spring',
     ],
-    tags: [
+    tags: const [
       'presentation',
       'fillet',
       'casting',
       'shad',
     ],
-    lastUpdated: DateTime(2026, 7, 29),
+    verified: true,
+    createdAt: DateTime(2026, 7, 29),
+    updatedAt: DateTime(2026, 7, 29),
   ),
 ];

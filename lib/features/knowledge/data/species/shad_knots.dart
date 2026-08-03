@@ -1,79 +1,87 @@
-import '../../domain/evidence_level.dart';
-import '../../domain/knowledge_category.dart';
-import '../../domain/knowledge_record.dart';
-import '../../domain/knowledge_source.dart';
+import '../../domain/entities/knowledge_record.dart';
+import '../../domain/entities/knowledge_source.dart';
+
+import '../../domain/enums/confidence_level.dart';
+import '../../domain/enums/evidence_level.dart';
+import '../../domain/enums/knowledge_category.dart';
 
 final List<KnowledgeRecord> shadKnotKnowledge = [
   KnowledgeRecord(
     id: 'NKS-SHD-KNOT-0001',
     species: 'Shad',
-    category: KnowledgeCategory.knots,
+    targetSpecies: const ['Shad'],
+    category: KnowledgeCategory.knot,
     title: 'Figure Eight Knot',
     description:
     'The Figure Eight Knot is commonly used to form secure loops in trace construction. It is easy to tie, reliable and retains a high percentage of line strength.',
-    evidenceLevel: EvidenceLevel.experiencedAngler,
-    confidence: 0.97,
-    sources: [
-      const KnowledgeSource(
+    evidenceLevel: EvidenceLevel.expert,
+    confidenceLevel: ConfidenceLevel.high,
+    sources: const [
+      KnowledgeSource(
         name: 'Neptune Knowledge Base',
         type: 'Expert Knowledge',
         reference: 'NKS-SHD-KNOT-0001',
         reliability: 0.97,
       ),
     ],
-    regions: [
+    regions: const [
       'KwaZulu-Natal',
       'Eastern Cape',
       'Western Cape',
     ],
-    seasons: [
+    seasons: const [
       'Autumn',
       'Winter',
       'Spring',
       'Summer',
     ],
-    tags: [
+    tags: const [
       'knot',
       'figure eight',
       'loop',
       'trace',
       'shad',
     ],
-    lastUpdated: DateTime(2026, 7, 29),
+    verified: true,
+    createdAt: DateTime(2026, 7, 29),
+    updatedAt: DateTime(2026, 7, 29),
   ),
   KnowledgeRecord(
     id: 'NKS-SHD-KNOT-0002',
     species: 'Shad',
-    category: KnowledgeCategory.knots,
+    targetSpecies: const ['Shad'],
+    category: KnowledgeCategory.knot,
     title: 'Improved Clinch Knot',
     description:
     'The Improved Clinch Knot is a dependable choice for securing hooks and swivels when targeting Shad with light to medium tackle.',
-    evidenceLevel: EvidenceLevel.experiencedAngler,
-    confidence: 0.95,
-    sources: [
-      const KnowledgeSource(
+    evidenceLevel: EvidenceLevel.expert,
+    confidenceLevel: ConfidenceLevel.high,
+    sources: const [
+      KnowledgeSource(
         name: 'Neptune Knowledge Base',
         type: 'Expert Knowledge',
         reference: 'NKS-SHD-KNOT-0002',
         reliability: 0.95,
       ),
     ],
-    regions: [
+    regions: const [
       'KwaZulu-Natal',
       'Eastern Cape',
     ],
-    seasons: [
+    seasons: const [
       'Autumn',
       'Winter',
       'Spring',
     ],
-    tags: [
+    tags: const [
       'knot',
       'clinch',
       'hook',
       'swivel',
       'shad',
     ],
-    lastUpdated: DateTime(2026, 7, 29),
+    verified: true,
+    createdAt: DateTime(2026, 7, 29),
+    updatedAt: DateTime(2026, 7, 29),
   ),
 ];

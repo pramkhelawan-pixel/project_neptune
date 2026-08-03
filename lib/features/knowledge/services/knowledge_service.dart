@@ -1,6 +1,6 @@
-import '../domain/knowledge_category.dart';
-import '../domain/knowledge_record.dart';
-import '../repositories/knowledge_repository.dart';
+import '../domain/entities/knowledge_record.dart';
+import '../domain/enums/knowledge_category.dart';
+import '../domain/repositories/knowledge_repository.dart';
 
 class KnowledgeService {
   final KnowledgeRepository repository;
@@ -9,39 +9,29 @@ class KnowledgeService {
     required this.repository,
   });
 
-  List<KnowledgeRecord> forSpecies(
+  Future<List<KnowledgeRecord>> forSpecies(
       String species,
       ) {
-    return repository.forSpecies(species);
+    return repository.getBySpecies(species);
   }
 
-  List<KnowledgeRecord> byCategory({
+  Future<List<KnowledgeRecord>> byCategory({
     required String species,
     required KnowledgeCategory category,
   }) {
-    return repository.byCategory(
-      species,
-      category.name,
+    return repository.getBySpeciesAndCategory(
+      species: species,
+      category: category,
     );
   }
 
-  KnowledgeRecord? bestKnowledge({
+  Future<KnowledgeRecord?> bestKnowledge({
     required String species,
     required KnowledgeCategory category,
   }) {
-    final records = repository.byCategory(
-      species,
-      category.name,
+    return repository.getBestKnowledge(
+      species: species,
+      category: category,
     );
-
-    if (records.isEmpty) {
-      return null;
-    }
-
-    records.sort(
-          (a, b) => b.confidence.compareTo(a.confidence),
-    );
-
-    return records.first;
   }
 }

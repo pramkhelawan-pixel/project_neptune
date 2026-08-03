@@ -1,5 +1,6 @@
 import '../domain/recommendation_request.dart';
 import '../domain/recommendation_response.dart';
+
 import 'confidence_engine.dart';
 import 'recommendation_engine.dart';
 import 'recommendation_seed_provider.dart';
@@ -19,13 +20,12 @@ class RecommendationPipeline {
             seedProvider ?? const RecommendationSeedProvider();
 
   final RecommendationEngine _recommendationEngine;
-
   final RecommendationSeedProvider _seedProvider;
 
-  RecommendationResponse execute(
+  Future<RecommendationResponse> execute(
       RecommendationRequest request,
-      ) {
-    final seed = _seedProvider.getSeed(request);
+      ) async {
+    final seed = await _seedProvider.getSeed(request);
 
     final recommendation = _recommendationEngine.build(
       species: request.species,

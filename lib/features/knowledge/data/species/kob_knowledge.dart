@@ -1,4 +1,4 @@
-import '../../domain/knowledge_record.dart';
+import '../../domain/entities/knowledge_record.dart';
 
 import 'kob_bait.dart';
 import 'kob_expert_tips.dart';

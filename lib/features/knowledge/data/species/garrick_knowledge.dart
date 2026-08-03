@@ -1,19 +1,22 @@
-import '../../domain/evidence_level.dart';
-import '../../domain/knowledge_category.dart';
-import '../../domain/knowledge_record.dart';
-import '../../domain/knowledge_source.dart';
+import '../../domain/entities/knowledge_record.dart';
+import '../../domain/entities/knowledge_source.dart';
 
-final garrickKnowledge = <KnowledgeRecord>[
+import '../../domain/enums/confidence_level.dart';
+import '../../domain/enums/evidence_level.dart';
+import '../../domain/enums/knowledge_category.dart';
+
+final List<KnowledgeRecord> garrickKnowledge = [
   KnowledgeRecord(
     id: 'NKB-GRK-IDENTITY-0001',
     species: 'Garrick',
+    targetSpecies: const ['Garrick'],
     category: KnowledgeCategory.identity,
     title: 'Species Overview',
     description:
     'Garrick, also known as Leervis, is a powerful predatory game fish commonly encountered along the South African coastline. It actively hunts schools of baitfish in the surf zone, estuary mouths and along beaches.',
-    evidenceLevel: EvidenceLevel.experiencedAngler,
-    confidence: 0.94,
-    sources: [
+    evidenceLevel: EvidenceLevel.expert,
+    confidenceLevel: ConfidenceLevel.high,
+    sources: const [
       KnowledgeSource(
         name: 'Neptune Research',
         type: 'Knowledge',
@@ -21,39 +24,37 @@ final garrickKnowledge = <KnowledgeRecord>[
         reliability: 0.91,
       ),
     ],
-    regions: [
+    regions: const [
       'KwaZulu-Natal',
       'Eastern Cape',
       'Western Cape',
     ],
-    seasons: [
+    seasons: const [
       'Spring',
       'Summer',
       'Autumn',
     ],
-    tags: [
+    tags: const [
       'identity',
       'garrick',
       'leervis',
       'predator',
     ],
-    lastUpdated: DateTime(
-      2026,
-      8,
-      2,
-    ),
+    verified: true,
+    createdAt: DateTime(2026, 8, 2),
+    updatedAt: DateTime(2026, 8, 2),
   ),
-
   KnowledgeRecord(
     id: 'NKB-GRK-HABITAT-0001',
     species: 'Garrick',
+    targetSpecies: const ['Garrick'],
     category: KnowledgeCategory.habitat,
     title: 'Preferred Habitat',
     description:
     'Garrick commonly patrol surf zones, estuary mouths and areas where baitfish congregate. They are frequently found in clean, moving water close to the shoreline.',
-    evidenceLevel: EvidenceLevel.experiencedAngler,
-    confidence: 0.91,
-    sources: [
+    evidenceLevel: EvidenceLevel.expert,
+    confidenceLevel: ConfidenceLevel.high,
+    sources: const [
       KnowledgeSource(
         name: 'Neptune Research',
         type: 'Knowledge',
@@ -61,37 +62,35 @@ final garrickKnowledge = <KnowledgeRecord>[
         reliability: 0.90,
       ),
     ],
-    regions: [
+    regions: const [
       'KwaZulu-Natal',
     ],
-    seasons: [
+    seasons: const [
       'Spring',
       'Summer',
       'Autumn',
     ],
-    tags: [
+    tags: const [
       'habitat',
       'surf',
       'estuary',
       'baitfish',
     ],
-    lastUpdated: DateTime(
-      2026,
-      8,
-      2,
-    ),
+    verified: true,
+    createdAt: DateTime(2026, 8, 2),
+    updatedAt: DateTime(2026, 8, 2),
   ),
-
   KnowledgeRecord(
     id: 'NKB-GRK-BEHAVIOUR-0001',
     species: 'Garrick',
+    targetSpecies: const ['Garrick'],
     category: KnowledgeCategory.behaviour,
     title: 'Predatory Behaviour',
     description:
     'Garrick are visual predators that actively hunt baitfish in the surf zone, around estuary mouths and along current lines. They often attack fast-moving prey close to the surface.',
-    evidenceLevel: EvidenceLevel.experiencedAngler,
-    confidence: 0.93,
-    sources: [
+    evidenceLevel: EvidenceLevel.expert,
+    confidenceLevel: ConfidenceLevel.high,
+    sources: const [
       KnowledgeSource(
         name: 'Neptune Research',
         type: 'Knowledge',
@@ -99,39 +98,37 @@ final garrickKnowledge = <KnowledgeRecord>[
         reliability: 0.92,
       ),
     ],
-    regions: [
+    regions: const [
       'KwaZulu-Natal',
       'Eastern Cape',
       'Western Cape',
     ],
-    seasons: [
+    seasons: const [
       'Spring',
       'Summer',
       'Autumn',
     ],
-    tags: [
+    tags: const [
       'behaviour',
       'predator',
       'baitfish',
       'surface feeding',
     ],
-    lastUpdated: DateTime(
-      2026,
-      8,
-      2,
-    ),
+    verified: true,
+    createdAt: DateTime(2026, 8, 2),
+    updatedAt: DateTime(2026, 8, 2),
   ),
-
   KnowledgeRecord(
     id: 'NKB-GRK-FEEDING-0001',
     species: 'Garrick',
-    category: KnowledgeCategory.behaviour,
+    targetSpecies: const ['Garrick'],
+    category: KnowledgeCategory.feeding,
     title: 'Feeding Behaviour',
     description:
     'Garrick primarily feed on small baitfish including mullet and other estuarine species. Feeding activity often increases where baitfish are concentrated.',
-    evidenceLevel: EvidenceLevel.experiencedAngler,
-    confidence: 0.92,
-    sources: [
+    evidenceLevel: EvidenceLevel.expert,
+    confidenceLevel: ConfidenceLevel.high,
+    sources: const [
       KnowledgeSource(
         name: 'Neptune Research',
         type: 'Knowledge',
@@ -139,36 +136,34 @@ final garrickKnowledge = <KnowledgeRecord>[
         reliability: 0.91,
       ),
     ],
-    regions: [
+    regions: const [
       'KwaZulu-Natal',
     ],
-    seasons: [
+    seasons: const [
       'Spring',
       'Summer',
       'Autumn',
     ],
-    tags: [
+    tags: const [
       'feeding',
       'baitfish',
       'mullet',
     ],
-    lastUpdated: DateTime(
-      2026,
-      8,
-      2,
-    ),
+    verified: true,
+    createdAt: DateTime(2026, 8, 2),
+    updatedAt: DateTime(2026, 8, 2),
   ),
-
   KnowledgeRecord(
     id: 'NKB-GRK-SEASON-0001',
     species: 'Garrick',
-    category: KnowledgeCategory.season,
+    targetSpecies: const ['Garrick'],
+    category: KnowledgeCategory.seasonality,
     title: 'Seasonal Activity',
     description:
     'Garrick are commonly targeted during the warmer months when water temperatures and baitfish activity are favourable.',
-    evidenceLevel: EvidenceLevel.experiencedAngler,
-    confidence: 0.90,
-    sources: [
+    evidenceLevel: EvidenceLevel.expert,
+    confidenceLevel: ConfidenceLevel.high,
+    sources: const [
       KnowledgeSource(
         name: 'Neptune Research',
         type: 'Knowledge',
@@ -176,23 +171,21 @@ final garrickKnowledge = <KnowledgeRecord>[
         reliability: 0.90,
       ),
     ],
-    regions: [
+    regions: const [
       'KwaZulu-Natal',
     ],
-    seasons: [
+    seasons: const [
       'Spring',
       'Summer',
       'Autumn',
     ],
-    tags: [
+    tags: const [
       'season',
       'summer',
       'spring',
     ],
-    lastUpdated: DateTime(
-      2026,
-      8,
-      2,
-    ),
+    verified: true,
+    createdAt: DateTime(2026, 8, 2),
+    updatedAt: DateTime(2026, 8, 2),
   ),
 ];

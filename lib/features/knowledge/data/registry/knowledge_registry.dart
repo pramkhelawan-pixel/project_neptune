@@ -11,7 +11,7 @@
 // rather than importing individual species files directly.
 // -----------------------------------------------------------------------------
 
-import '../../domain/knowledge_record.dart';
+import '../../domain/entities/knowledge_record.dart';
 
 // Garrick
 import '../species/garrick_bait.dart';

@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../data/repositories/knowledge_repository_impl.dart';
-import '../../repositories/knowledge_repository.dart';
+import '../../domain/repositories/knowledge_repository.dart';
 import '../../services/knowledge_service.dart';
 
 final knowledgeRepositoryProvider =

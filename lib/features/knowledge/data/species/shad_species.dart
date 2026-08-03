@@ -1,21 +1,21 @@
-import '../../domain/evidence_level.dart';
-import '../../domain/knowledge_category.dart';
-import '../../domain/knowledge_record.dart';
-import '../../domain/knowledge_source.dart';
+import '../../domain/entities/knowledge_record.dart';
+import '../../domain/entities/knowledge_source.dart';
+
+import '../../domain/enums/confidence_level.dart';
+import '../../domain/enums/evidence_level.dart';
+import '../../domain/enums/knowledge_category.dart';
 
 final List<KnowledgeRecord> shadSpeciesKnowledge = [
   KnowledgeRecord(
     id: 'NKR-SPC-000001',
     species: 'Shad',
+    targetSpecies: const ['Shad'],
     category: KnowledgeCategory.identity,
     title: 'Shad (Elf)',
     description:
-    'Shad (Pomatomus saltatrix), also known as Elf in the Western Cape, '
-        'is South Africa\'s most popular surf predatory game fish. It is an '
-        'aggressive shoaling hunter that feeds primarily on sardine, anchovy '
-        'and other baitfish close to the shoreline.',
-    evidenceLevel: EvidenceLevel.experiencedAngler,
-    confidence: 0.99,
+    'Shad (Pomatomus saltatrix), also known as Elf in the Western Cape, is South Africa\'s most popular surf predatory game fish. It is an aggressive shoaling hunter that feeds primarily on sardine, anchovy and other baitfish close to the shoreline.',
+    evidenceLevel: EvidenceLevel.expert,
+    confidenceLevel: ConfidenceLevel.veryHigh,
     sources: const [
       KnowledgeSource(
         name: 'Neptune Research',
@@ -24,17 +24,17 @@ final List<KnowledgeRecord> shadSpeciesKnowledge = [
         reliability: 0.99,
       ),
     ],
-    regions: [
+    regions: const [
       'KwaZulu-Natal',
       'Eastern Cape',
       'Western Cape',
     ],
-    seasons: [
+    seasons: const [
       'Autumn',
       'Winter',
       'Spring',
     ],
-    tags: [
+    tags: const [
       'species',
       'predator',
       'surf',
@@ -42,6 +42,8 @@ final List<KnowledgeRecord> shadSpeciesKnowledge = [
       'shad',
       'elf',
     ],
-    lastUpdated: DateTime(2026, 7, 29),
+    verified: true,
+    createdAt: DateTime(2026, 7, 29),
+    updatedAt: DateTime(2026, 7, 29),
   ),
 ];

@@ -1,74 +1,142 @@
-import '../../domain/knowledge_record.dart';
-import '../../repositories/knowledge_repository.dart';
+import '../../domain/entities/knowledge_record.dart';
+import '../../domain/enums/evidence_level.dart';
+import '../../domain/enums/knowledge_category.dart';
+import '../../domain/repositories/knowledge_repository.dart';
 
-import '../species/kob_bait.dart';
-import '../species/kob_expert_tips.dart';
-import '../species/kob_hooks.dart';
-import '../species/kob_leaders.dart';
-import '../species/kob_presentations.dart';
-import '../species/kob_species.dart';
-
-import '../species/shad_bait.dart';
-import '../species/shad_expert_tips.dart';
-import '../species/shad_hooks.dart';
-import '../species/shad_knowledge.dart';
-import '../species/shad_presentations.dart';
-import '../species/shad_sinkers.dart';
-import '../species/shad_species.dart';
-import '../species/shad_trace.dart';
+import '../registry/knowledge_registry.dart';
 
 class KnowledgeRepositoryImpl implements KnowledgeRepository {
   const KnowledgeRepositoryImpl();
 
-  @override
-  List<KnowledgeRecord> all() {
-    return [
-      // Shad
-      ...shadKnowledge,
-      ...shadSpeciesKnowledge,
-      ...shadBaitKnowledge,
-      ...shadHookKnowledge,
-      ...shadPresentationKnowledge,
-      ...shadSinkerKnowledge,
-      ...shadTraceKnowledge,
-      ...shadExpertTipKnowledge,
+  static const KnowledgeRegistry _registry = KnowledgeRegistry();
 
-      // Dusky Kob
-      ...kobSpeciesKnowledge,
-      ...kobBaitKnowledge,
-      ...kobHookKnowledge,
-      ...kobLeaderKnowledge,
-      ...kobPresentationKnowledge,
-      ...kobExpertTipKnowledge,
-    ];
+  @override
+  Future<List<KnowledgeRecord>> getAll() async {
+    return _registry.getAll();
   }
 
   @override
-  List<KnowledgeRecord> forSpecies(
-      String species,
-      ) {
-    return all()
+  Future<KnowledgeRecord?> getById(String id) async {
+    final records = _registry.getAll();
+
+    for (final record in records) {
+      if (record.id == id) {
+        return record;
+      }
+    }
+
+    return null;
+  }
+
+  @override
+  Future<List<KnowledgeRecord>> search(String query) async {
+    final search = query.toLowerCase();
+
+    return _registry.getAll().where((record) {
+      return record.title.toLowerCase().contains(search) ||
+          record.description.toLowerCase().contains(search) ||
+          record.tags.any(
+                (tag) => tag.toLowerCase().contains(search),
+          );
+    }).toList();
+  }
+
+  @override
+  Future<List<KnowledgeRecord>> getBySpecies(String species) async {
+    return _registry
+        .getAll()
         .where(
           (record) =>
-      record.species.toLowerCase() ==
-          species.toLowerCase(),
+      record.species?.toLowerCase() == species.toLowerCase(),
     )
         .toList();
   }
 
   @override
-  List<KnowledgeRecord> byCategory(
-      String species,
-      String category,
-      ) {
-    return all()
+  Future<List<KnowledgeRecord>> getBySpeciesAndCategory({
+    required String species,
+    required KnowledgeCategory category,
+  }) async {
+    return _registry
+        .getAll()
         .where(
           (record) =>
-      record.species.toLowerCase() ==
-          species.toLowerCase() &&
-          record.category.name.toLowerCase() ==
-              category.toLowerCase(),
+      record.species?.toLowerCase() == species.toLowerCase() &&
+          record.category == category,
     )
         .toList();
+  }
+
+  @override
+  Future<KnowledgeRecord?> getBestKnowledge({
+    required String species,
+    required KnowledgeCategory category,
+  }) async {
+    final records = await getBySpeciesAndCategory(
+      species: species,
+      category: category,
+    );
+
+    if (records.isEmpty) {
+      return null;
+    }
+
+    return records.first;
+  }
+
+  @override
+  Future<List<KnowledgeRecord>> getByCategory(
+      KnowledgeCategory category,
+      ) async {
+    return _registry
+        .getAll()
+        .where(
+          (record) => record.category == category,
+    )
+        .toList();
+  }
+
+  @override
+  Future<List<KnowledgeRecord>> getByEvidenceLevel(
+      EvidenceLevel evidenceLevel,
+      ) async {
+    return _registry
+        .getAll()
+        .where(
+          (record) => record.evidenceLevel == evidenceLevel,
+    )
+        .toList();
+  }
+
+  @override
+  Future<List<KnowledgeRecord>> getByTags(
+      List<String> tags,
+      ) async {
+    return _registry
+        .getAll()
+        .where(
+          (record) =>
+          tags.any((tag) => record.tags.contains(tag)),
+    )
+        .toList();
+  }
+
+  @override
+  Future<List<KnowledgeRecord>> getByRegion(
+      String region,
+      ) async {
+    return _registry
+        .getAll()
+        .where(
+          (record) => record.regions.contains(region),
+    )
+        .toList();
+  }
+
+  @override
+  Future<List<KnowledgeRecord>> getRelatedKnowledge(
+      String knowledgeId,
+      ) async {
+    return [];
   }
 }

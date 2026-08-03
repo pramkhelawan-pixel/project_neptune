@@ -1,19 +1,22 @@
-import '../../domain/evidence_level.dart';
-import '../../domain/knowledge_category.dart';
-import '../../domain/knowledge_record.dart';
-import '../../domain/knowledge_source.dart';
+import '../../domain/entities/knowledge_record.dart';
+import '../../domain/entities/knowledge_source.dart';
+
+import '../../domain/enums/confidence_level.dart';
+import '../../domain/enums/evidence_level.dart';
+import '../../domain/enums/knowledge_category.dart';
 
 final List<KnowledgeRecord> garrickBiologyKnowledge = [
   KnowledgeRecord(
     id: 'NKB-GRK-BIO-0001',
     species: 'Garrick',
-    category: KnowledgeCategory.species,
+    targetSpecies: const ['Garrick'],
+    category: KnowledgeCategory.taxonomy,
     title: 'Taxonomy',
     description:
     'Garrick (Lichia amia) is a large predatory marine fish belonging to the family Carangidae (jacks and trevallies).',
     evidenceLevel: EvidenceLevel.scientific,
-    confidence: 1.00,
-    sources: [
+    confidenceLevel: ConfidenceLevel.veryHigh,
+    sources: const [
       KnowledgeSource(
         name: 'FishBase',
         type: 'Scientific Database',
@@ -21,28 +24,31 @@ final List<KnowledgeRecord> garrickBiologyKnowledge = [
         reliability: 1.00,
       ),
     ],
-    regions: [
+    regions: const [
       'South Africa',
     ],
     seasons: const [],
-    tags: [
+    tags: const [
       'biology',
       'taxonomy',
       'carangidae',
       'lichia amia',
     ],
-    lastUpdated: DateTime(2026, 8, 3),
+    verified: true,
+    createdAt: DateTime(2026, 8, 3),
+    updatedAt: DateTime(2026, 8, 3),
   ),
   KnowledgeRecord(
     id: 'NKB-GRK-BIO-0002',
     species: 'Garrick',
-    category: KnowledgeCategory.fishAnatomy,
+    targetSpecies: const ['Garrick'],
+    category: KnowledgeCategory.anatomy,
     title: 'Growth',
     description:
     'Garrick are a relatively fast-growing coastal predator capable of exceeding one metre in length under favourable conditions.',
     evidenceLevel: EvidenceLevel.scientific,
-    confidence: 0.97,
-    sources: [
+    confidenceLevel: ConfidenceLevel.veryHigh,
+    sources: const [
       KnowledgeSource(
         name: 'FishBase',
         type: 'Scientific Database',
@@ -50,27 +56,30 @@ final List<KnowledgeRecord> garrickBiologyKnowledge = [
         reliability: 0.98,
       ),
     ],
-    regions: [
+    regions: const [
       'South Africa',
     ],
     seasons: const [],
-    tags: [
+    tags: const [
       'growth',
       'biology',
       'length',
     ],
-    lastUpdated: DateTime(2026, 8, 3),
+    verified: true,
+    createdAt: DateTime(2026, 8, 3),
+    updatedAt: DateTime(2026, 8, 3),
   ),
   KnowledgeRecord(
     id: 'NKB-GRK-BIO-0003',
     species: 'Garrick',
-    category: KnowledgeCategory.fishBehaviour,
+    targetSpecies: const ['Garrick'],
+    category: KnowledgeCategory.behaviour,
     title: 'Life History',
     description:
     'Juvenile Garrick commonly utilise estuaries as nursery habitats before moving into coastal marine environments as they mature.',
     evidenceLevel: EvidenceLevel.scientific,
-    confidence: 0.98,
-    sources: [
+    confidenceLevel: ConfidenceLevel.veryHigh,
+    sources: const [
       KnowledgeSource(
         name: 'South African Marine Research',
         type: 'Scientific Literature',
@@ -78,28 +87,31 @@ final List<KnowledgeRecord> garrickBiologyKnowledge = [
         reliability: 0.98,
       ),
     ],
-    regions: [
+    regions: const [
       'South Africa',
     ],
     seasons: const [],
-    tags: [
+    tags: const [
       'nursery',
       'juvenile',
       'estuary',
       'life history',
     ],
-    lastUpdated: DateTime(2026, 8, 3),
+    verified: true,
+    createdAt: DateTime(2026, 8, 3),
+    updatedAt: DateTime(2026, 8, 3),
   ),
   KnowledgeRecord(
     id: 'NKB-GRK-BIO-0004',
     species: 'Garrick',
-    category: KnowledgeCategory.fishAnatomy,
+    targetSpecies: const ['Garrick'],
+    category: KnowledgeCategory.anatomy,
     title: 'Predatory Adaptation',
     description:
     'Garrick possess a streamlined body, powerful caudal fin and excellent vision, enabling rapid pursuit of schooling baitfish in surf and estuarine environments.',
     evidenceLevel: EvidenceLevel.scientific,
-    confidence: 0.96,
-    sources: [
+    confidenceLevel: ConfidenceLevel.veryHigh,
+    sources: const [
       KnowledgeSource(
         name: 'Neptune Scientific Review',
         type: 'Scientific Summary',
@@ -107,16 +119,18 @@ final List<KnowledgeRecord> garrickBiologyKnowledge = [
         reliability: 0.96,
       ),
     ],
-    regions: [
+    regions: const [
       'South Africa',
     ],
     seasons: const [],
-    tags: [
+    tags: const [
       'predator',
       'adaptation',
       'biology',
       'anatomy',
     ],
-    lastUpdated: DateTime(2026, 8, 3),
+    verified: true,
+    createdAt: DateTime(2026, 8, 3),
+    updatedAt: DateTime(2026, 8, 3),
   ),
 ];
