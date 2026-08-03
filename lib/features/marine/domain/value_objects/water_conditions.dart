@@ -11,6 +11,8 @@
 //
 // -----------------------------------------------------------------------------
 
+import '../enums/water_colour.dart';
+
 class WaterConditions {
   /// Water temperature in degrees Celsius.
   final double temperature;
@@ -19,15 +21,9 @@ class WaterConditions {
   final double clarity;
 
   /// Observed water colour.
-  ///
-  /// Examples:
-  /// Green
-  /// Blue-Green
-  /// Brown
-  /// Dirty
-  final String colour;
+  final WaterColour colour;
 
-  /// Salinity in PSU (Practical Salinity Units).
+  /// Salinity in Practical Salinity Units (PSU).
   final double salinity;
 
   const WaterConditions({
@@ -46,6 +42,12 @@ class WaterConditions {
   /// Returns true when salinity is within the normal seawater range.
   bool get isNormalSalinity =>
       salinity >= 34.0 && salinity <= 36.0;
+
+  /// Returns true when the water is generally fishable.
+  bool get isFishable => colour.isFishable;
+
+  /// Returns true when the water is considered dirty.
+  bool get isDirty => colour.isDirty;
 
   @override
   bool operator ==(Object other) {
@@ -71,7 +73,7 @@ class WaterConditions {
     return 'WaterConditions('
         'temperature: ${temperature.toStringAsFixed(1)} °C, '
         'clarity: ${clarity.toStringAsFixed(1)} m, '
-        'colour: $colour, '
+        'colour: ${colour.displayName}, '
         'salinity: ${salinity.toStringAsFixed(1)} PSU'
         ')';
   }

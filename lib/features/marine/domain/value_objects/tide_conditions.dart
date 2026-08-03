@@ -11,15 +11,11 @@
 //
 // -----------------------------------------------------------------------------
 
+import '../enums/tide_state.dart';
+
 class TideConditions {
   /// Current tidal state.
-  ///
-  /// Examples:
-  /// - Incoming
-  /// - Outgoing
-  /// - High
-  /// - Low
-  final String state;
+  final TideState state;
 
   /// Tide height in metres.
   final double height;
@@ -38,20 +34,22 @@ class TideConditions {
   });
 
   /// Returns true when the tide is incoming.
-  bool get isIncoming =>
-      state.toLowerCase() == 'incoming';
+  bool get isIncoming => state.isIncoming;
 
   /// Returns true when the tide is outgoing.
-  bool get isOutgoing =>
-      state.toLowerCase() == 'outgoing';
+  bool get isOutgoing => state.isOutgoing;
 
   /// Returns true when the tide is high.
-  bool get isHigh =>
-      state.toLowerCase() == 'high';
+  bool get isHigh => state.isHigh;
 
   /// Returns true when the tide is low.
-  bool get isLow =>
-      state.toLowerCase() == 'low';
+  bool get isLow => state.isLow;
+
+  /// Returns true when the tide is running.
+  bool get isRunning => state.isRunning;
+
+  /// Returns true when the tide is slack.
+  bool get isSlack => state.isSlack;
 
   @override
   bool operator ==(Object other) {
@@ -75,7 +73,7 @@ class TideConditions {
   @override
   String toString() {
     return 'TideConditions('
-        'state: $state, '
+        'state: ${state.displayName}, '
         'height: ${height.toStringAsFixed(2)} m'
         ')';
   }

@@ -11,12 +11,14 @@
 //
 // -----------------------------------------------------------------------------
 
+import '../enums/wind_direction.dart';
+
 class WindConditions {
   /// Wind speed in kilometres per hour.
   final double speed;
 
-  /// Wind direction (e.g. N, NE, E, SE, S, SW, W, NW).
-  final String direction;
+  /// Wind direction.
+  final WindDirection direction;
 
   /// Maximum observed wind gust in kilometres per hour.
   final double gust;
@@ -50,9 +52,9 @@ class WindConditions {
   @override
   String toString() {
     return 'WindConditions('
-        'speed: $speed km/h, '
-        'direction: $direction, '
-        'gust: $gust km/h'
+        'speed: ${speed.toStringAsFixed(1)} km/h, '
+        'direction: ${direction.displayName}, '
+        'gust: ${gust.toStringAsFixed(1)} km/h'
         ')';
   }
 }

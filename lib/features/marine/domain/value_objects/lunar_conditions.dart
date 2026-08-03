@@ -11,19 +11,11 @@
 //
 // -----------------------------------------------------------------------------
 
+import '../enums/moon_phase.dart';
+
 class LunarConditions {
   /// Current moon phase.
-  ///
-  /// Examples:
-  /// - New Moon
-  /// - Waxing Crescent
-  /// - First Quarter
-  /// - Waxing Gibbous
-  /// - Full Moon
-  /// - Waning Gibbous
-  /// - Last Quarter
-  /// - Waning Crescent
-  final String phase;
+  final MoonPhase phase;
 
   /// Moon illumination percentage.
   final double illumination;
@@ -34,16 +26,19 @@ class LunarConditions {
   });
 
   /// Returns true when the moon is new.
-  bool get isNewMoon =>
-      phase.toLowerCase() == 'new moon';
+  bool get isNewMoon => phase.isNew;
 
   /// Returns true when the moon is full.
-  bool get isFullMoon =>
-      phase.toLowerCase() == 'full moon';
+  bool get isFullMoon => phase.isFull;
+
+  /// Returns true when the moon is waxing.
+  bool get isWaxing => phase.isWaxing;
+
+  /// Returns true when the moon is waning.
+  bool get isWaning => phase.isWaning;
 
   /// Returns true when illumination exceeds 90%.
-  bool get isHighlyIlluminated =>
-      illumination >= 90.0;
+  bool get isHighlyIlluminated => illumination >= 90.0;
 
   @override
   bool operator ==(Object other) {
@@ -63,7 +58,7 @@ class LunarConditions {
   @override
   String toString() {
     return 'LunarConditions('
-        'phase: $phase, '
+        'phase: ${phase.displayName}, '
         'illumination: ${illumination.toStringAsFixed(0)}%'
         ')';
   }
