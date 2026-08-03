@@ -1,6 +1,13 @@
 class WeatherDto {
   final double windSpeed;
   final double windDirection;
+  final double windGust;
+
+  final double airTemperature;
+  final double humidity;
+  final double pressure;
+  final double visibility;
+  final double cloudCover;
 
   final DateTime sunrise;
   final DateTime sunset;
@@ -8,6 +15,12 @@ class WeatherDto {
   const WeatherDto({
     required this.windSpeed,
     required this.windDirection,
+    required this.windGust,
+    required this.airTemperature,
+    required this.humidity,
+    required this.pressure,
+    required this.visibility,
+    required this.cloudCover,
     required this.sunrise,
     required this.sunset,
   });
@@ -47,6 +60,12 @@ class WeatherDto {
     return WeatherDto(
       windSpeed: firstDouble('wind_speed_10m'),
       windDirection: firstDouble('wind_direction_10m'),
+      windGust: firstDouble('wind_gusts_10m'),
+      airTemperature: firstDouble('temperature_2m'),
+      humidity: firstDouble('relative_humidity_2m'),
+      pressure: firstDouble('pressure_msl'),
+      visibility: firstDouble('visibility'),
+      cloudCover: firstDouble('cloud_cover'),
       sunrise: firstDateTime('sunrise'),
       sunset: firstDateTime('sunset'),
     );

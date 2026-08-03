@@ -1,24 +1,30 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../data/mappers/marine_conditions_legacy_mapper.dart';
 import '../../data/repositories/marine_repository_impl.dart';
+
 import '../../domain/models/marine_conditions.dart';
 import '../../domain/repositories/marine_repository.dart';
+import '../../domain/value_objects/location_conditions.dart';
 
-/// Repository provider.
-///
-/// The UI depends on the abstraction (MarineRepository),
-/// while this provider supplies the concrete implementation.
 final marineRepositoryProvider = Provider<MarineRepository>(
       (ref) => MarineRepositoryImpl(),
 );
 
-/// Loads the latest marine conditions.
-///
-/// The repository retrieves marine conditions from the configured
-/// remote data source. The UI remains unaware of where the data
-/// originates.
 final marineConditionsProvider =
 FutureProvider<MarineConditions>((ref) async {
   final repository = ref.watch(marineRepositoryProvider);
-  return repository.getMarineConditions();
+
+  final entity = await repository.getCurrentConditions(
+    location: const LocationConditions(
+      country: 'South Africa',
+      province: 'KwaZulu-Natal',
+      region: 'Durban',
+      beach: 'Durban',
+      latitude: -29.8587,
+      longitude: 31.0218,
+    ),
+  );
+
+  return MarineConditionsLegacyMapper.toLegacy(entity);
 });
