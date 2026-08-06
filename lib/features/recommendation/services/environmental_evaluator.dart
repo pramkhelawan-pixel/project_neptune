@@ -44,11 +44,12 @@ class EnvironmentalEvaluator {
     }
 
     // Tide
-    if (profile.preferredTides.any(
-          (tide) =>
-      conditions.tide.toLowerCase() ==
-          tide.toLowerCase(),
-    )) {
+    final tideName = conditions.canonicalTideState?.name;
+
+    if (tideName != null &&
+        profile.preferredTides.any(
+              (tide) => tide.toLowerCase() == tideName,
+        )) {
       score += 20;
       reasons.add(
         'Tide matches preferred conditions.',

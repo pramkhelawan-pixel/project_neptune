@@ -33,8 +33,6 @@ class MarineMapper {
       // Replace with real atmospheric pressure from the weather API.
       atmosphericPressure: 1015.0,
 
-      tide: 'Unknown',
-
       tideHeight: 0,
 
       nextHighTide: null,

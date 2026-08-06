@@ -134,7 +134,13 @@ class ReadinessCard extends StatelessWidget {
             const SizedBox(height: 20),
 
             FilledButton.icon(
-              onPressed: () {},
+              onPressed: () {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Detailed analysis is coming soon.'),
+                  ),
+                );
+              },
               icon: const Icon(Icons.insights),
               label: const Text('Detailed Analysis'),
             ),

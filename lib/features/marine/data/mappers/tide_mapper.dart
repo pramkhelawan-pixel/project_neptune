@@ -42,10 +42,6 @@ class TideMapper {
         nextHigh: nextHigh,
         nextLow: nextLow,
       ),
-      tide: _determineTideState(
-        nextHigh: nextHigh,
-        nextLow: nextLow,
-      ),
     );
   }
 

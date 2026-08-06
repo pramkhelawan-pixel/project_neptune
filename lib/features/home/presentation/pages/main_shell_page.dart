@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../catches/presentation/pages/catch_history_page.dart';
 import '../widgets/home_dashboard.dart';
 
 class MainShellPage extends StatefulWidget {
@@ -18,10 +19,7 @@ class _MainShellPageState extends State<MainShellPage> {
       title: 'Marine',
       icon: Icons.waves,
     ),
-    _PlaceholderPage(
-      title: 'Catches',
-      icon: Icons.phishing,
-    ),
+    CatchHistoryPage(),
     _PlaceholderPage(
       title: 'Maps',
       icon: Icons.map,

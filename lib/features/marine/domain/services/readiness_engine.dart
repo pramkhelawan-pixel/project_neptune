@@ -14,7 +14,7 @@ class ReadinessEngine {
       score += 25;
     }
 
-    if (conditions.tide == 'Rising') {
+    if (conditions.tideState == 'Rising') {
       score += 25;
     }
 

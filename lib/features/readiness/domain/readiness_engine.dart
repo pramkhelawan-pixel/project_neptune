@@ -59,27 +59,23 @@ class ReadinessEngine {
     // TIDE
     //-----------------------------------
 
-    switch (conditions.tideState.toLowerCase()) {
-      case 'incoming':
-      case 'rising':
-        score += 25;
-        reasons.add('Incoming tide');
-        break;
+    final tideState = conditions.canonicalTideState;
 
-      case 'high':
-        score += 20;
-        reasons.add('High tide');
-        break;
-
-      case 'outgoing':
-      case 'falling':
-        score += 10;
-        reasons.add('Outgoing tide');
-        break;
-
-      default:
-        score += 5;
-        reasons.add('Unknown tide');
+    if (tideState != null && tideState.isIncoming) {
+      score += 25;
+      reasons.add('Incoming tide');
+    } else if (tideState != null && tideState.isHigh) {
+      score += 20;
+      reasons.add('High tide');
+    } else if (tideState != null && tideState.isOutgoing) {
+      score += 10;
+      reasons.add('Outgoing tide');
+    } else if (tideState != null && tideState.isLow) {
+      score += 10;
+      reasons.add('Low tide');
+    } else {
+      score += 5;
+      reasons.add('Unknown tide');
     }
 
     //-----------------------------------

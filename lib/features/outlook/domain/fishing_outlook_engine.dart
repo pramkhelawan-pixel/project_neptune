@@ -42,25 +42,18 @@ class FishingOutlookEngine {
     // Tide
     //--------------------------------
 
-    switch (conditions.tideState.toLowerCase()) {
-      case 'incoming':
-      case 'rising':
-        confidence += 15;
-        highlights.add('Incoming tide is building.');
-        break;
+    final tideState = conditions.canonicalTideState;
 
-      case 'high':
-        confidence += 10;
-        highlights.add('High tide is approaching.');
-        break;
-
-      case 'outgoing':
-      case 'falling':
-        highlights.add('Outgoing tide may suit selected species.');
-        break;
-
-      default:
-        highlights.add('Tide trend unavailable.');
+    if (tideState != null && tideState.isIncoming) {
+      confidence += 15;
+      highlights.add('Incoming tide is building.');
+    } else if (tideState != null && tideState.isHigh) {
+      confidence += 10;
+      highlights.add('High tide is approaching.');
+    } else if (tideState != null && tideState.isOutgoing) {
+      highlights.add('Outgoing tide may suit selected species.');
+    } else {
+      highlights.add('Tide trend unavailable.');
     }
 
     if (confidence > 100) {

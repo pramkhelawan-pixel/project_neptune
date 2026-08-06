@@ -1,5 +1,6 @@
 class CatchRecord {
   final String id;
+  final String sessionId;
   final DateTime dateTime;
 
   final String species;
@@ -18,6 +19,7 @@ class CatchRecord {
 
   const CatchRecord({
     required this.id,
+    required this.sessionId,
     required this.dateTime,
     required this.species,
     required this.location,
@@ -32,6 +34,7 @@ class CatchRecord {
 
   CatchRecord copyWith({
     String? id,
+    String? sessionId,
     DateTime? dateTime,
     String? species,
     String? location,
@@ -45,6 +48,7 @@ class CatchRecord {
   }) {
     return CatchRecord(
       id: id ?? this.id,
+      sessionId: sessionId ?? this.sessionId,
       dateTime: dateTime ?? this.dateTime,
       species: species ?? this.species,
       location: location ?? this.location,

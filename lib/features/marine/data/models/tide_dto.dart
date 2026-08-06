@@ -4,12 +4,14 @@ import 'package:equatable/equatable.dart';
 class TideDto extends Equatable {
   final int status;
   final String station;
+  final String? error;
   final List<TideHeightDto> heights;
   final List<TideExtremeDto> extremes;
 
   const TideDto({
     required this.status,
     required this.station,
+    this.error,
     required this.heights,
     required this.extremes,
   });
@@ -18,6 +20,7 @@ class TideDto extends Equatable {
     return TideDto(
       status: json['status'] as int? ?? 0,
       station: json['station'] as String? ?? '',
+      error: json['error'] as String?,
       heights: (json['heights'] as List<dynamic>? ?? [])
           .map(
             (item) => TideHeightDto.fromJson(
@@ -39,6 +42,7 @@ class TideDto extends Equatable {
   List<Object?> get props => [
     status,
     station,
+    error,
     heights,
     extremes,
   ];

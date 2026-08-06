@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../domain/recommendation_response.dart';
+import '../pages/recommendation_details_page.dart';
 
 class NeptuneRecommendationCard extends StatelessWidget {
   final RecommendationResponse recommendation;
@@ -170,7 +171,15 @@ class NeptuneRecommendationCard extends StatelessWidget {
             const SizedBox(height: 24),
 
             FilledButton.icon(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => RecommendationDetailsPage(
+                      recommendation: recommendation,
+                    ),
+                  ),
+                );
+              },
               icon: const Icon(
                 Icons.psychology,
               ),

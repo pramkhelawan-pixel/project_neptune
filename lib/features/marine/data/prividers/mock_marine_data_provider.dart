@@ -24,7 +24,6 @@ class MockMarineDataProvider implements MarineDataProvider {
       // Atmospheric pressure (hPa)
       atmosphericPressure: 1016.5,
 
-      tide: 'Incoming',
       tideHeight: 1.7,
 
       nextHighTide: DateTime.now().add(

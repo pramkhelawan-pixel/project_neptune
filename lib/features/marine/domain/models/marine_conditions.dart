@@ -10,6 +10,8 @@
 // This model is designed to evolve as Neptune's prediction engine grows.
 // -----------------------------------------------------------------------------
 
+import '../enums/tide_state.dart';
+
 class MarineConditions {
   /// Wind speed (km/h).
   final double windSpeed;
@@ -32,14 +34,18 @@ class MarineConditions {
   /// Atmospheric pressure (hPa).
   final double atmosphericPressure;
 
-  /// Tide description used by the UI.
-  final String tide;
-
   /// Tide height (m).
   final double tideHeight;
 
   /// Tide state.
   final String tideState;
+
+  /// Canonical tide state enum, populated by
+  /// [MarineConditionsLegacyMapper] from the canonical Marine domain.
+  ///
+  /// Null for construction paths that predate the canonical migration
+  /// (mocks, legacy mappers) — callers must treat null as "unknown".
+  final TideState? canonicalTideState;
 
   /// Next predicted high tide.
   final DateTime? nextHighTide;
@@ -64,9 +70,9 @@ class MarineConditions {
     required this.waterTemperature,
     required this.airTemperature,
     required this.atmosphericPressure,
-    required this.tide,
     required this.tideHeight,
     required this.tideState,
+    this.canonicalTideState,
     required this.nextHighTide,
     required this.nextLowTide,
     required this.moonPhase,
@@ -82,9 +88,9 @@ class MarineConditions {
     double? waterTemperature,
     double? airTemperature,
     double? atmosphericPressure,
-    String? tide,
     double? tideHeight,
     String? tideState,
+    TideState? canonicalTideState,
     DateTime? nextHighTide,
     DateTime? nextLowTide,
     String? moonPhase,
@@ -100,9 +106,9 @@ class MarineConditions {
       airTemperature: airTemperature ?? this.airTemperature,
       atmosphericPressure:
       atmosphericPressure ?? this.atmosphericPressure,
-      tide: tide ?? this.tide,
       tideHeight: tideHeight ?? this.tideHeight,
       tideState: tideState ?? this.tideState,
+      canonicalTideState: canonicalTideState ?? this.canonicalTideState,
       nextHighTide: nextHighTide ?? this.nextHighTide,
       nextLowTide: nextLowTide ?? this.nextLowTide,
       moonPhase: moonPhase ?? this.moonPhase,

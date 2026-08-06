@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../providers/catch_provider.dart';
+import 'log_catch_page.dart';
 
 class CatchHistoryPage extends ConsumerWidget {
   const CatchHistoryPage({
@@ -15,6 +16,16 @@ class CatchHistoryPage extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Catch History'),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => const LogCatchPage(),
+            ),
+          );
+        },
+        child: const Icon(Icons.add),
       ),
       body: catches.when(
         data: (records) {

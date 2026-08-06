@@ -16,8 +16,11 @@ class SpeciesEngine {
     // Tide
     //--------------------------------
 
-    if (shadProfile.preferredTides
-        .contains(conditions.tideState)) {
+    final tideName = conditions.canonicalTideState?.name;
+
+    if (tideName != null &&
+        shadProfile.preferredTides
+            .any((tide) => tide.toLowerCase() == tideName)) {
       score += 30;
 
       reasons.add(

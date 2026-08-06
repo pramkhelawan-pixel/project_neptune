@@ -1,5 +1,6 @@
 import '../../../../core/config/app_config.dart';
 import '../../../../core/network/api_client.dart';
+import '../../../../core/network/network_exception.dart';
 
 import '../models/tide_dto.dart';
 
@@ -26,8 +27,16 @@ class TideRemoteDataSource {
       },
     );
 
-    return TideDto.fromJson(
+    final dto = TideDto.fromJson(
       response.data as Map<String, dynamic>,
     );
+
+    if (dto.status != 200) {
+      throw NetworkException(
+        dto.error ?? 'Tide data unavailable (status ${dto.status}).',
+      );
+    }
+
+    return dto;
   }
 }
