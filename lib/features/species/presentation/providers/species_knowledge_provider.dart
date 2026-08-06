@@ -1,18 +1,14 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../data/species_knowledge_repository_impl.dart';
-import '../../domain/entities/species_knowledge.dart';
-import '../../domain/repositories/species_knowledge_repository.dart';
+import '../../../knowledge/domain/entities/knowledge_record.dart';
+import '../../../knowledge/presentation/providers/knowledge_provider.dart';
 
-/// Temporary provider.
-///
-/// This will later source its data from Supabase or another
-/// persistent store.
-final speciesKnowledgeRepositoryProvider =
-Provider<SpeciesKnowledgeRepository>(
-      (ref) {
-    return const SpeciesKnowledgeRepositoryImpl(
-      knowledge: <SpeciesKnowledge>[],
-    );
+/// Returns every knowledge record Neptune holds for a given species name.
+final speciesKnowledgeProvider =
+FutureProvider.family<List<KnowledgeRecord>, String>(
+      (ref, species) async {
+    final service = ref.watch(knowledgeServiceProvider);
+
+    return service.forSpecies(species);
   },
 );

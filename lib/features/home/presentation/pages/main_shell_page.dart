@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../catches/presentation/pages/catch_history_page.dart';
+import '../../../species/presentation/pages/species_list_page.dart';
 import '../widgets/home_dashboard.dart';
 
 class MainShellPage extends StatefulWidget {
@@ -20,6 +21,7 @@ class _MainShellPageState extends State<MainShellPage> {
       icon: Icons.waves,
     ),
     CatchHistoryPage(),
+    SpeciesListPage(),
     _PlaceholderPage(
       title: 'Maps',
       icon: Icons.map,
@@ -65,6 +67,11 @@ class _MainShellPageState extends State<MainShellPage> {
             label: 'Catches',
           ),
           NavigationDestination(
+            icon: Icon(Icons.menu_book_outlined),
+            selectedIcon: Icon(Icons.menu_book),
+            label: 'Species',
+          ),
+          NavigationDestination(
             icon: Icon(Icons.map_outlined),
             selectedIcon: Icon(Icons.map),
             label: 'Maps',
@@ -88,8 +95,10 @@ class _MainShellPageState extends State<MainShellPage> {
       case 2:
         return 'Catches';
       case 3:
-        return 'Maps';
+        return 'Species';
       case 4:
+        return 'Maps';
+      case 5:
         return 'Profile';
       default:
         return 'Neptune';
