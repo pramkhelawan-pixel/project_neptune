@@ -4,12 +4,12 @@ import '../domain/species.dart';
 const kobSpeciesProfile = Species(
   id: 'kob',
 
-  name: 'Kob',
+  name: 'Dusky Kob',
 
   scientificName: 'Argyrosomus japonicus',
 
   aliases: [
-    'Dusky Kob',
+    'Kob',
     'Kabeljou',
   ],
 
