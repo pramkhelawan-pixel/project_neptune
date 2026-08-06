@@ -77,6 +77,12 @@ class Species {
   /// Additional expert notes.
   final String notes;
 
+  /// Whether this species is targeted for the table.
+  ///
+  /// `false` marks catch-and-release sport species (e.g. sharks and rays)
+  /// that anglers pursue for the fight rather than to eat.
+  final bool isEdible;
+
   const Species({
     required this.id,
     required this.name,
@@ -101,5 +107,6 @@ class Species {
     this.seasons = const [],
     this.feedingBehaviour = '',
     required this.notes,
+    this.isEdible = true,
   });
 }

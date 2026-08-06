@@ -110,6 +110,62 @@ import '../species/springer_hooks.dart';
 import '../species/springer_knowledge.dart';
 import '../species/springer_presentations.dart';
 
+// Spotted Gully Shark
+import '../species/spotted_gully_shark_bait.dart';
+import '../species/spotted_gully_shark_expert_tips.dart';
+import '../species/spotted_gully_shark_hooks.dart';
+import '../species/spotted_gully_shark_knowledge.dart';
+import '../species/spotted_gully_shark_presentations.dart';
+
+// Ragged-tooth Shark
+import '../species/raggedtooth_shark_bait.dart';
+import '../species/raggedtooth_shark_expert_tips.dart';
+import '../species/raggedtooth_shark_hooks.dart';
+import '../species/raggedtooth_shark_knowledge.dart';
+import '../species/raggedtooth_shark_presentations.dart';
+
+// Bronze Whaler
+import '../species/bronze_whaler_bait.dart';
+import '../species/bronze_whaler_expert_tips.dart';
+import '../species/bronze_whaler_hooks.dart';
+import '../species/bronze_whaler_knowledge.dart';
+import '../species/bronze_whaler_presentations.dart';
+
+// Smoothhound Shark
+import '../species/smoothhound_shark_bait.dart';
+import '../species/smoothhound_shark_expert_tips.dart';
+import '../species/smoothhound_shark_hooks.dart';
+import '../species/smoothhound_shark_knowledge.dart';
+import '../species/smoothhound_shark_presentations.dart';
+
+// Duckbill Ray
+import '../species/duckbill_ray_bait.dart';
+import '../species/duckbill_ray_expert_tips.dart';
+import '../species/duckbill_ray_hooks.dart';
+import '../species/duckbill_ray_knowledge.dart';
+import '../species/duckbill_ray_presentations.dart';
+
+// Eagle Ray
+import '../species/eagle_ray_bait.dart';
+import '../species/eagle_ray_expert_tips.dart';
+import '../species/eagle_ray_hooks.dart';
+import '../species/eagle_ray_knowledge.dart';
+import '../species/eagle_ray_presentations.dart';
+
+// Diamond Ray
+import '../species/diamond_ray_bait.dart';
+import '../species/diamond_ray_expert_tips.dart';
+import '../species/diamond_ray_hooks.dart';
+import '../species/diamond_ray_knowledge.dart';
+import '../species/diamond_ray_presentations.dart';
+
+// Guitarfish
+import '../species/guitarfish_bait.dart';
+import '../species/guitarfish_expert_tips.dart';
+import '../species/guitarfish_hooks.dart';
+import '../species/guitarfish_knowledge.dart';
+import '../species/guitarfish_presentations.dart';
+
 class KnowledgeRegistry {
   const KnowledgeRegistry();
 
@@ -211,6 +267,62 @@ class KnowledgeRegistry {
       ...springerHookKnowledge,
       ...springerPresentationKnowledge,
       ...springerExpertTipKnowledge,
+
+      // Spotted Gully Shark
+      ...spottedGullySharkKnowledge,
+      ...spottedGullySharkBaitKnowledge,
+      ...spottedGullySharkHookKnowledge,
+      ...spottedGullySharkPresentationKnowledge,
+      ...spottedGullySharkExpertTipKnowledge,
+
+      // Ragged-tooth Shark
+      ...raggedtoothSharkKnowledge,
+      ...raggedtoothSharkBaitKnowledge,
+      ...raggedtoothSharkHookKnowledge,
+      ...raggedtoothSharkPresentationKnowledge,
+      ...raggedtoothSharkExpertTipKnowledge,
+
+      // Bronze Whaler
+      ...bronzeWhalerKnowledge,
+      ...bronzeWhalerBaitKnowledge,
+      ...bronzeWhalerHookKnowledge,
+      ...bronzeWhalerPresentationKnowledge,
+      ...bronzeWhalerExpertTipKnowledge,
+
+      // Smoothhound Shark
+      ...smoothhoundSharkKnowledge,
+      ...smoothhoundSharkBaitKnowledge,
+      ...smoothhoundSharkHookKnowledge,
+      ...smoothhoundSharkPresentationKnowledge,
+      ...smoothhoundSharkExpertTipKnowledge,
+
+      // Duckbill Ray
+      ...duckbillRayKnowledge,
+      ...duckbillRayBaitKnowledge,
+      ...duckbillRayHookKnowledge,
+      ...duckbillRayPresentationKnowledge,
+      ...duckbillRayExpertTipKnowledge,
+
+      // Eagle Ray
+      ...eagleRayKnowledge,
+      ...eagleRayBaitKnowledge,
+      ...eagleRayHookKnowledge,
+      ...eagleRayPresentationKnowledge,
+      ...eagleRayExpertTipKnowledge,
+
+      // Diamond Ray
+      ...diamondRayKnowledge,
+      ...diamondRayBaitKnowledge,
+      ...diamondRayHookKnowledge,
+      ...diamondRayPresentationKnowledge,
+      ...diamondRayExpertTipKnowledge,
+
+      // Guitarfish
+      ...guitarfishKnowledge,
+      ...guitarfishBaitKnowledge,
+      ...guitarfishHookKnowledge,
+      ...guitarfishPresentationKnowledge,
+      ...guitarfishExpertTipKnowledge,
     ];
   }
 }
