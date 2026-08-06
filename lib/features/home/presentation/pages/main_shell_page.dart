@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 
 import '../../../catches/presentation/pages/catch_history_page.dart';
+import '../../../maps/presentation/pages/maps_page.dart';
+import '../../../marine/presentation/pages/marine_page.dart';
+import '../../../profile/presentation/pages/profile_page.dart';
 import '../../../species/presentation/pages/species_list_page.dart';
 import '../widgets/home_dashboard.dart';
 
@@ -16,20 +19,11 @@ class _MainShellPageState extends State<MainShellPage> {
 
   late final List<Widget> _pages = const [
     HomeDashboard(),
-    _PlaceholderPage(
-      title: 'Marine',
-      icon: Icons.waves,
-    ),
+    MarinePage(),
     CatchHistoryPage(),
     SpeciesListPage(),
-    _PlaceholderPage(
-      title: 'Maps',
-      icon: Icons.map,
-    ),
-    _PlaceholderPage(
-      title: 'Profile',
-      icon: Icons.person,
-    ),
+    MapsPage(),
+    ProfilePage(),
   ];
 
   @override
@@ -103,40 +97,5 @@ class _MainShellPageState extends State<MainShellPage> {
       default:
         return 'Neptune';
     }
-  }
-}
-
-class _PlaceholderPage extends StatelessWidget {
-  final String title;
-  final IconData icon;
-
-  const _PlaceholderPage({
-    required this.title,
-    required this.icon,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(
-            icon,
-            size: 80,
-          ),
-          const SizedBox(height: 20),
-          Text(
-            title,
-            style: Theme.of(context).textTheme.headlineMedium,
-          ),
-          const SizedBox(height: 10),
-          const Text(
-            'Coming Soon',
-            style: TextStyle(fontSize: 18),
-          ),
-        ],
-      ),
-    );
   }
 }
