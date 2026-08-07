@@ -34,17 +34,23 @@ class _MapsPageState extends State<MapsPage> {
 
     try {
       if (!await Geolocator.isLocationServiceEnabled()) {
+        _showMessage('Enable location services to use this.');
         return;
       }
 
-      var permission = await Geolocator.checkPermission();
+      var permission = await Geolocator.checkPermission().timeout(
+        const Duration(seconds: 10),
+      );
 
       if (permission == LocationPermission.denied) {
-        permission = await Geolocator.requestPermission();
+        permission = await Geolocator.requestPermission().timeout(
+          const Duration(seconds: 30),
+        );
       }
 
       if (permission == LocationPermission.denied ||
           permission == LocationPermission.deniedForever) {
+        _showMessage('Location permission denied.');
         return;
       }
 
@@ -64,14 +70,19 @@ class _MapsPageState extends State<MapsPage> {
 
       _mapController.move(_userPosition!, 13);
     } catch (_) {
-      // Location unavailable (e.g. emulator without a mock location set,
-      // or the fix timed out). The map still works centred on the default
-      // location.
+      _showMessage("Couldn't get your location. Try again.");
     } finally {
       if (mounted) {
         setState(() => _locating = false);
       }
     }
+  }
+
+  void _showMessage(String message) {
+    if (!mounted) {
+      return;
+    }
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
   }
 
   void _showLocationDetails(Location location) {
@@ -97,7 +108,7 @@ class _MapsPageState extends State<MapsPage> {
           children: [
             TileLayer(
               urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-              userAgentPackageName: 'com.example.project_neptune',
+              userAgentPackageName: 'com.continuumdataguard.neptune',
             ),
             MarkerLayer(
               markers: [
