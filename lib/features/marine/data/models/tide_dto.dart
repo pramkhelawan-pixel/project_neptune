@@ -1,6 +1,8 @@
 import 'package:equatable/equatable.dart';
 
-/// Root DTO returned by the WorldTides API.
+/// Root DTO returned by the WorldTides API, as unwrapped from the
+/// get-tides Edge Function's cache envelope (`{data, source, warning,
+/// last_updated}` — see `supabase/functions/get-tides/index.ts`).
 class TideDto extends Equatable {
   final int status;
   final String station;
@@ -8,33 +10,48 @@ class TideDto extends Equatable {
   final List<TideHeightDto> heights;
   final List<TideExtremeDto> extremes;
 
+  /// How this response was served: "fresh" (WorldTides was just called),
+  /// "cache" (served from a non-expired cache row), or "stale_fallback"
+  /// (WorldTides was unavailable; an expired cache row was served instead).
+  final String source;
+
+  /// Set only when [source] is "stale_fallback" — a user-facing explanation
+  /// of why the data may be out of date.
+  final String? warning;
+
   const TideDto({
     required this.status,
     required this.station,
     this.error,
     required this.heights,
     required this.extremes,
+    required this.source,
+    this.warning,
   });
 
   factory TideDto.fromJson(Map<String, dynamic> json) {
+    final data = json['data'] as Map<String, dynamic>? ?? {};
+
     return TideDto(
-      status: json['status'] as int? ?? 0,
-      station: json['station'] as String? ?? '',
-      error: json['error'] as String?,
-      heights: (json['heights'] as List<dynamic>? ?? [])
+      status: data['status'] as int? ?? 0,
+      station: data['station'] as String? ?? '',
+      error: data['error'] as String?,
+      heights: (data['heights'] as List<dynamic>? ?? [])
           .map(
             (item) => TideHeightDto.fromJson(
           item as Map<String, dynamic>,
         ),
       )
           .toList(),
-      extremes: (json['extremes'] as List<dynamic>? ?? [])
+      extremes: (data['extremes'] as List<dynamic>? ?? [])
           .map(
             (item) => TideExtremeDto.fromJson(
           item as Map<String, dynamic>,
         ),
       )
           .toList(),
+      source: json['source'] as String? ?? 'unknown',
+      warning: json['warning'] as String?,
     );
   }
 
@@ -45,6 +62,8 @@ class TideDto extends Equatable {
     error,
     heights,
     extremes,
+    source,
+    warning,
   ];
 }
 

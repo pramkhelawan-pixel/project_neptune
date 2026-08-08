@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class NetworkException implements Exception {
   final String message;
@@ -53,6 +54,33 @@ class NetworkException implements Exception {
       case DioExceptionType.unknown:
         return NetworkException(
           exception.message ?? 'An unexpected network error occurred.',
+        );
+    }
+  }
+
+  factory NetworkException.fromFunctionException(
+    FunctionException exception,
+  ) {
+    switch (exception.status) {
+      case 401:
+      case 403:
+        return const NetworkException(
+          'You are not authorized to perform this request.',
+        );
+
+      case 404:
+        return const NetworkException(
+          'The requested service could not be found.',
+        );
+
+      case 503:
+        return const NetworkException(
+          'The service is temporarily unavailable. Please try again shortly.',
+        );
+
+      default:
+        return NetworkException(
+          exception.reasonPhrase ?? 'Server error: ${exception.status}',
         );
     }
   }

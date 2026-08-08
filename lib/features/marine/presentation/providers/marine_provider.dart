@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../data/mappers/marine_conditions_legacy_mapper.dart';
@@ -11,8 +13,17 @@ final marineRepositoryProvider = Provider<MarineRepository>(
       (ref) => MarineRepositoryImpl(),
 );
 
+/// Cheap to refresh this often now that repeat calls are served from the
+/// get-tides Edge Function's warm Postgres cache, not WorldTides directly.
+const _refreshInterval = Duration(minutes: 30);
+
 final marineConditionsProvider =
 FutureProvider<MarineConditions>((ref) async {
+  final timer = Timer.periodic(_refreshInterval, (_) {
+    ref.invalidateSelf();
+  });
+  ref.onDispose(timer.cancel);
+
   final repository = ref.watch(marineRepositoryProvider);
 
   final entity = await repository.getCurrentConditions(

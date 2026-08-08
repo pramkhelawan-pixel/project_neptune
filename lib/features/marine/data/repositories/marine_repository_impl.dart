@@ -12,6 +12,7 @@
 // -----------------------------------------------------------------------------
 
 import '../../../../core/network/api_client.dart';
+import '../../../../core/services/supabase_service.dart';
 
 
 import '../../domain/entities/marine_conditions.dart';
@@ -48,7 +49,7 @@ class MarineRepositoryImpl implements MarineRepository {
         tideRemoteDataSource =
             tideRemoteDataSource ??
                 TideRemoteDataSource(
-                  apiClient: ApiClient(),
+                  client: SupabaseService.client,
                 );
 
   @override
