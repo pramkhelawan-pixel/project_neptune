@@ -178,4 +178,29 @@ final List<KnowledgeRecord> eagleRayKnowledge = [
     createdAt: DateTime(2026, 8, 6),
     updatedAt: DateTime(2026, 8, 6),
   ),
+  KnowledgeRecord(
+    id: 'NKB-EGR-CONSERVATION-0001',
+    species: 'Eagle Ray',
+    targetSpecies: const ['Eagle Ray'],
+    category: KnowledgeCategory.conservation,
+    title: 'Bag Limit: Recreational Catch Restrictions',
+    description:
+    'South African regulations limit recreational anglers to 1 shark/ray per person per day (Class Chondrichthyes). Practice catch-and-release.',
+    evidenceLevel: EvidenceLevel.regulatory,
+    confidenceLevel: ConfidenceLevel.high,
+    sources: const [
+      KnowledgeSource(
+        name: 'Neptune Research',
+        type: 'Regulatory Guidance',
+        reference: 'NKB-EGR-016',
+        reliability: 0.89,
+      ),
+    ],
+    regions: const ['South Africa'],
+    seasons: const [],
+    tags: const ['conservation', 'regulations', 'bag limit', 'eagle ray'],
+    verified: true,
+    createdAt: DateTime(2026, 8, 8),
+    updatedAt: DateTime(2026, 8, 8),
+  ),
 ];

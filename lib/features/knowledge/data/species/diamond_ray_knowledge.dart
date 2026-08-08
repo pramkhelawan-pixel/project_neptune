@@ -173,4 +173,29 @@ final List<KnowledgeRecord> diamondRayKnowledge = [
     createdAt: DateTime(2026, 8, 6),
     updatedAt: DateTime(2026, 8, 6),
   ),
+  KnowledgeRecord(
+    id: 'NKB-DMR-CONSERVATION-0001',
+    species: 'Diamond Ray',
+    targetSpecies: const ['Diamond Ray'],
+    category: KnowledgeCategory.conservation,
+    title: 'Bag Limit: Recreational Catch Restrictions',
+    description:
+    'South African regulations limit recreational anglers to 1 shark/ray per person per day (Class Chondrichthyes). Practice catch-and-release.',
+    evidenceLevel: EvidenceLevel.regulatory,
+    confidenceLevel: ConfidenceLevel.high,
+    sources: const [
+      KnowledgeSource(
+        name: 'Neptune Research',
+        type: 'Regulatory Guidance',
+        reference: 'NKB-DMR-016',
+        reliability: 0.89,
+      ),
+    ],
+    regions: const ['South Africa'],
+    seasons: const [],
+    tags: const ['conservation', 'regulations', 'bag limit', 'diamond ray'],
+    verified: true,
+    createdAt: DateTime(2026, 8, 8),
+    updatedAt: DateTime(2026, 8, 8),
+  ),
 ];

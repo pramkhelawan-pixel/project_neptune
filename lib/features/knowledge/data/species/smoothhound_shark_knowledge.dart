@@ -176,4 +176,29 @@ final List<KnowledgeRecord> smoothhoundSharkKnowledge = [
     createdAt: DateTime(2026, 8, 6),
     updatedAt: DateTime(2026, 8, 6),
   ),
+  KnowledgeRecord(
+    id: 'NKB-SHS-CONSERVATION-0001',
+    species: 'Smoothhound Shark',
+    targetSpecies: const ['Smoothhound Shark'],
+    category: KnowledgeCategory.conservation,
+    title: 'Bag Limit: Recreational Catch Restrictions',
+    description:
+    'South African regulations limit recreational anglers to 1 shark/ray per person per day (Class Chondrichthyes). Practice catch-and-release.',
+    evidenceLevel: EvidenceLevel.regulatory,
+    confidenceLevel: ConfidenceLevel.high,
+    sources: const [
+      KnowledgeSource(
+        name: 'Neptune Research',
+        type: 'Regulatory Guidance',
+        reference: 'NKB-SHS-016',
+        reliability: 0.89,
+      ),
+    ],
+    regions: const ['South Africa'],
+    seasons: const [],
+    tags: const ['conservation', 'regulations', 'bag limit', 'smoothhound shark'],
+    verified: true,
+    createdAt: DateTime(2026, 8, 8),
+    updatedAt: DateTime(2026, 8, 8),
+  ),
 ];

@@ -333,10 +333,17 @@ class _KnowledgeSections extends StatelessWidget {
         .where((r) => SpeciesDetailPage._tipCategories.contains(r.category))
         .toList();
 
+    final regulatory = records
+        .where((r) => r.category == KnowledgeCategory.conservation)
+        .toList();
+
     final other = records
         .where(
           (r) =>
-      !overview.contains(r) && !tackle.contains(r) && !tips.contains(r),
+      !overview.contains(r) &&
+          !tackle.contains(r) &&
+          !tips.contains(r) &&
+          !regulatory.contains(r),
     )
         .toList();
 
@@ -350,6 +357,8 @@ class _KnowledgeSections extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        if (regulatory.isNotEmpty)
+          _RegulatoryNoticeSection(records: regulatory),
         if (overview.isNotEmpty)
           _KnowledgeSection(title: 'Species Knowledge', records: overview),
         if (tackle.isNotEmpty)
@@ -359,6 +368,71 @@ class _KnowledgeSections extends StatelessWidget {
         if (other.isNotEmpty)
           _KnowledgeSection(title: 'Other Knowledge', records: other),
       ],
+    );
+  }
+}
+
+class _RegulatoryNoticeSection extends StatelessWidget {
+  final List<KnowledgeRecord> records;
+
+  const _RegulatoryNoticeSection({required this.records});
+
+  @override
+  Widget build(BuildContext context) {
+    final accent = Colors.amber.shade800;
+
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(Icons.warning_amber_rounded, color: accent, size: 22),
+              const SizedBox(width: 8),
+              Text(
+                'Regulatory Notice',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: accent,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 10),
+          ...records.map(
+                (record) => Container(
+              margin: const EdgeInsets.only(bottom: 8),
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: Colors.amber.shade50,
+                borderRadius: BorderRadius.circular(14),
+                border: Border(
+                  left: BorderSide(color: accent, width: 4),
+                ),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    record.title,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.amber.shade900,
+                    ),
+                  ),
+                  const SizedBox(height: 6),
+                  Text(
+                    record.description,
+                    style: TextStyle(color: Colors.amber.shade900),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

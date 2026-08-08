@@ -185,4 +185,29 @@ final List<KnowledgeRecord> bronzeWhalerKnowledge = [
     createdAt: DateTime(2026, 8, 6),
     updatedAt: DateTime(2026, 8, 6),
   ),
+  KnowledgeRecord(
+    id: 'NKB-BWS-CONSERVATION-0001',
+    species: 'Bronze Whaler',
+    targetSpecies: const ['Bronze Whaler'],
+    category: KnowledgeCategory.conservation,
+    title: 'Bag Limit: Recreational Catch Restrictions',
+    description:
+    'South African regulations limit recreational anglers to 1 shark/ray per person per day (Class Chondrichthyes). Practice catch-and-release.',
+    evidenceLevel: EvidenceLevel.regulatory,
+    confidenceLevel: ConfidenceLevel.high,
+    sources: const [
+      KnowledgeSource(
+        name: 'Neptune Research',
+        type: 'Regulatory Guidance',
+        reference: 'NKB-BWS-016',
+        reliability: 0.89,
+      ),
+    ],
+    regions: const ['South Africa'],
+    seasons: const [],
+    tags: const ['conservation', 'regulations', 'bag limit', 'bronze whaler'],
+    verified: true,
+    createdAt: DateTime(2026, 8, 8),
+    updatedAt: DateTime(2026, 8, 8),
+  ),
 ];
