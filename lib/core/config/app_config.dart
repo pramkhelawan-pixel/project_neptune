@@ -13,9 +13,6 @@ class AppConfig {
   static String get openMeteoMarineBaseUrl =>
       dotenv.env['OPEN_METEO_MARINE_BASE_URL'] ?? '';
 
-  static String get worldTidesApiKey =>
-      dotenv.env['WORLDTIDES_API_KEY'] ?? '';
-
   static String get stormglassApiKey =>
       dotenv.env['STORMGLASS_API_KEY'] ?? '';
 
@@ -35,10 +32,6 @@ class AppConfig {
 
     if (openMeteoMarineBaseUrl.isEmpty) {
       missing.add('OPEN_METEO_MARINE_BASE_URL');
-    }
-
-    if (worldTidesApiKey.isEmpty) {
-      missing.add('WORLDTIDES_API_KEY');
     }
 
     if (missing.isNotEmpty) {
