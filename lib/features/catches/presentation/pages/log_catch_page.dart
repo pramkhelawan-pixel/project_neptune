@@ -5,6 +5,7 @@ import '../../../../core/widgets/app_text_field.dart';
 import '../../../../core/widgets/primary_button.dart';
 import '../providers/catch_provider.dart';
 import '../providers/log_catch_controller.dart';
+import '../widgets/species_dropdown_field.dart';
 
 class LogCatchPage extends ConsumerStatefulWidget {
   const LogCatchPage({
@@ -18,7 +19,7 @@ class LogCatchPage extends ConsumerStatefulWidget {
 class _LogCatchPageState extends ConsumerState<LogCatchPage> {
   final _formKey = GlobalKey<FormState>();
 
-  final _speciesController = TextEditingController();
+  String? _selectedSpecies;
   final _locationController = TextEditingController();
   final _weightController = TextEditingController();
   final _lengthController = TextEditingController();
@@ -29,7 +30,6 @@ class _LogCatchPageState extends ConsumerState<LogCatchPage> {
 
   @override
   void dispose() {
-    _speciesController.dispose();
     _locationController.dispose();
     _weightController.dispose();
     _lengthController.dispose();
@@ -44,7 +44,7 @@ class _LogCatchPageState extends ConsumerState<LogCatchPage> {
     if (!_formKey.currentState!.validate()) return;
 
     await ref.read(logCatchControllerProvider.notifier).submit(
-      species: _speciesController.text.trim(),
+      species: _selectedSpecies!,
       location: _locationController.text.trim(),
       weightKg: double.tryParse(_weightController.text.trim()),
       lengthCm: double.tryParse(_lengthController.text.trim()),
@@ -99,14 +99,12 @@ class _LogCatchPageState extends ConsumerState<LogCatchPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              AppTextField(
-                controller: _speciesController,
-                label: 'Species',
-                validator: (value) {
-                  if (value == null || value.trim().isEmpty) {
-                    return 'Please enter the species.';
-                  }
-                  return null;
+              SpeciesDropdownField(
+                initialSelection: _selectedSpecies,
+                onChanged: (value) {
+                  setState(() {
+                    _selectedSpecies = value;
+                  });
                 },
               ),
 
