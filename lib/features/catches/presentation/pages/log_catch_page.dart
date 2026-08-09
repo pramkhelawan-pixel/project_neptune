@@ -66,8 +66,19 @@ class _LogCatchPageState extends ConsumerState<LogCatchPage> {
           ),
         );
       },
-      data: (_) {
+      data: (conditionsAttached) {
         ref.invalidate(catchHistoryProvider);
+
+        if (!conditionsAttached) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text(
+                'Catch saved, but conditions unavailable.',
+              ),
+            ),
+          );
+        }
+
         Navigator.of(context).pop();
       },
     );

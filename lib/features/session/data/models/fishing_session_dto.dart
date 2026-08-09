@@ -9,20 +9,20 @@ class FishingSessionDto {
   final String targetSpecies;
   final DateTime dateTime;
 
-  final double windSpeed;
-  final String windDirection;
-  final double swellHeight;
-  final double swellPeriod;
-  final double waterTemperature;
-  final double airTemperature;
-  final double atmosphericPressure;
-  final double tideHeight;
+  final double? windSpeed;
+  final String? windDirection;
+  final double? swellHeight;
+  final double? swellPeriod;
+  final double? waterTemperature;
+  final double? airTemperature;
+  final double? atmosphericPressure;
+  final double? tideHeight;
   final String? tideState;
   final DateTime? nextHighTide;
   final DateTime? nextLowTide;
-  final String moonPhase;
-  final DateTime sunrise;
-  final DateTime sunset;
+  final String? moonPhase;
+  final DateTime? sunrise;
+  final DateTime? sunset;
 
   const FishingSessionDto({
     required this.id,
@@ -30,20 +30,20 @@ class FishingSessionDto {
     required this.location,
     required this.targetSpecies,
     required this.dateTime,
-    required this.windSpeed,
-    required this.windDirection,
-    required this.swellHeight,
-    required this.swellPeriod,
-    required this.waterTemperature,
-    required this.airTemperature,
-    required this.atmosphericPressure,
-    required this.tideHeight,
+    this.windSpeed,
+    this.windDirection,
+    this.swellHeight,
+    this.swellPeriod,
+    this.waterTemperature,
+    this.airTemperature,
+    this.atmosphericPressure,
+    this.tideHeight,
     this.tideState,
     this.nextHighTide,
     this.nextLowTide,
-    required this.moonPhase,
-    required this.sunrise,
-    required this.sunset,
+    this.moonPhase,
+    this.sunrise,
+    this.sunset,
   });
 
   factory FishingSessionDto.fromJson(Map<String, dynamic> json) {
@@ -53,14 +53,14 @@ class FishingSessionDto {
       location: json['location'] as String,
       targetSpecies: json['target_species'] as String,
       dateTime: DateTime.parse(json['date_time'] as String),
-      windSpeed: (json['wind_speed'] as num).toDouble(),
-      windDirection: json['wind_direction'] as String,
-      swellHeight: (json['swell_height'] as num).toDouble(),
-      swellPeriod: (json['swell_period'] as num).toDouble(),
-      waterTemperature: (json['water_temperature'] as num).toDouble(),
-      airTemperature: (json['air_temperature'] as num).toDouble(),
-      atmosphericPressure: (json['atmospheric_pressure'] as num).toDouble(),
-      tideHeight: (json['tide_height'] as num).toDouble(),
+      windSpeed: (json['wind_speed'] as num?)?.toDouble(),
+      windDirection: json['wind_direction'] as String?,
+      swellHeight: (json['swell_height'] as num?)?.toDouble(),
+      swellPeriod: (json['swell_period'] as num?)?.toDouble(),
+      waterTemperature: (json['water_temperature'] as num?)?.toDouble(),
+      airTemperature: (json['air_temperature'] as num?)?.toDouble(),
+      atmosphericPressure: (json['atmospheric_pressure'] as num?)?.toDouble(),
+      tideHeight: (json['tide_height'] as num?)?.toDouble(),
       tideState: json['tide_state'] as String?,
       nextHighTide: json['next_high_tide'] == null
           ? null
@@ -68,9 +68,13 @@ class FishingSessionDto {
       nextLowTide: json['next_low_tide'] == null
           ? null
           : DateTime.parse(json['next_low_tide'] as String),
-      moonPhase: json['moon_phase'] as String,
-      sunrise: DateTime.parse(json['sunrise'] as String),
-      sunset: DateTime.parse(json['sunset'] as String),
+      moonPhase: json['moon_phase'] as String?,
+      sunrise: json['sunrise'] == null
+          ? null
+          : DateTime.parse(json['sunrise'] as String),
+      sunset: json['sunset'] == null
+          ? null
+          : DateTime.parse(json['sunset'] as String),
     );
   }
 
@@ -93,8 +97,8 @@ class FishingSessionDto {
       'next_high_tide': nextHighTide?.toIso8601String(),
       'next_low_tide': nextLowTide?.toIso8601String(),
       'moon_phase': moonPhase,
-      'sunrise': sunrise.toIso8601String(),
-      'sunset': sunset.toIso8601String(),
+      'sunrise': sunrise?.toIso8601String(),
+      'sunset': sunset?.toIso8601String(),
     };
   }
 }

@@ -38,8 +38,16 @@ class RecommendationEngine {
   FishingRecommendation evaluate(
       FishingSession session,
       ) {
-    final MarineConditions marine =
+    final MarineConditions? marineOrNull =
         session.marineConditions;
+
+    if (marineOrNull == null) {
+      throw StateError(
+        'RecommendationEngine requires a session with known marine conditions.',
+      );
+    }
+
+    final MarineConditions marine = marineOrNull;
 
     int score = 50;
 

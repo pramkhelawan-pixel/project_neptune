@@ -3,16 +3,20 @@ import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uuid/uuid.dart';
 
+import '../../../marine/domain/models/marine_conditions.dart';
 import '../../../marine/presentation/providers/marine_provider.dart';
 import '../../../session/domain/entities/fishing_session.dart';
 import '../../../session/presentation/providers/fishing_session_repository_provider.dart';
 import '../../domain/entities/catch_record.dart';
 import 'catch_provider.dart';
 
-class LogCatchController extends AsyncNotifier<void> {
+class LogCatchController extends AsyncNotifier<bool> {
   @override
-  FutureOr<void> build() {}
+  FutureOr<bool> build() => true;
 
+  /// Returns true once saved. The resolved state value indicates whether
+  /// marine conditions were actually attached (false if the fetch failed
+  /// and the save proceeded without them) — see fishing_session.dart.
   Future<void> submit({
     required String species,
     required String location,
@@ -28,9 +32,12 @@ class LogCatchController extends AsyncNotifier<void> {
     state = await AsyncValue.guard(() async {
       const uuid = Uuid();
 
-      final conditions = await ref.read(
-        marineConditionsProvider.future,
-      );
+      MarineConditions? conditions;
+      try {
+        conditions = await ref.read(marineConditionsProvider.future);
+      } catch (_) {
+        conditions = null;
+      }
 
       // TEMPORARY: 1:1 catch-session until real multi-catch session UI
       // exists. Every logged catch spawns its own dedicated FishingSession
@@ -63,11 +70,13 @@ class LogCatchController extends AsyncNotifier<void> {
       );
 
       await ref.read(catchRepositoryProvider).save(catchRecord);
+
+      return conditions != null;
     });
   }
 }
 
 final logCatchControllerProvider =
-AsyncNotifierProvider<LogCatchController, void>(
+AsyncNotifierProvider<LogCatchController, bool>(
   LogCatchController.new,
 );

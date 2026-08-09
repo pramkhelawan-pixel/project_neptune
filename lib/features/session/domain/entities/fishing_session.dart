@@ -5,14 +5,17 @@ class FishingSession {
   final String location;
   final String targetSpecies;
   final DateTime dateTime;
-  final MarineConditions marineConditions;
+
+  /// Null when conditions couldn't be fetched at save time (e.g. WorldTides
+  /// outage) — a session is still valid without them, see log_catch_controller.
+  final MarineConditions? marineConditions;
 
   const FishingSession({
     required this.id,
     required this.location,
     required this.targetSpecies,
     required this.dateTime,
-    required this.marineConditions,
+    this.marineConditions,
   });
 
   FishingSession copyWith({

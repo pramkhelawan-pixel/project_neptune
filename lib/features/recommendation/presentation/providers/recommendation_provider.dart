@@ -52,8 +52,20 @@ FutureProvider<RecommendationResponse>(
       recommendationPipelineProvider,
     );
 
+    final marineConditions = session.marineConditions;
+
+    if (marineConditions == null) {
+      // fishingSessionProvider always awaits a successful conditions fetch
+      // before building a session, so this should be unreachable — it's a
+      // safety net now that FishingSession.marineConditions is nullable to
+      // support catch logging without conditions (see log_catch_controller).
+      throw StateError(
+        'Recommendation requires a session with known marine conditions.',
+      );
+    }
+
     final request = RecommendationRequest(
-      marineConditions: session.marineConditions,
+      marineConditions: marineConditions,
       species: session.targetSpecies,
       location: session.location,
     );
