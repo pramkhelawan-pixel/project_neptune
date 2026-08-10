@@ -1,5 +1,6 @@
 import '../../marine/domain/models/marine_conditions.dart';
 import '../data/all_species_profiles.dart';
+import 'regulatory_rules.dart';
 import 'species.dart';
 import 'species_recommendation.dart';
 
@@ -11,18 +12,34 @@ import 'species_recommendation.dart';
 class SpeciesEngine {
   const SpeciesEngine();
 
+  static const _regulatoryRules = RegulatoryRules();
+
   /// Returns the single best-matching species recommendation.
   SpeciesRecommendation recommend(
-      MarineConditions conditions,
-      ) {
-    return rank(conditions).first;
+      MarineConditions conditions, {
+        DateTime? now,
+      }) {
+    return rank(conditions, now: now).first;
   }
 
   /// Returns every species recommendation, ranked best to worst.
+  ///
+  /// Excludes species that are fully protected (e.g. red steenbras) or
+  /// inside their closed season on [now] (defaults to the current date).
   List<SpeciesRecommendation> rank(
-      MarineConditions conditions,
-      ) {
-    final recommendations = allSpeciesProfiles
+      MarineConditions conditions, {
+        DateTime? now,
+      }) {
+    final evaluationDate = now ?? DateTime.now();
+
+    final eligibleProfiles = allSpeciesProfiles.where((profile) {
+      if (_regulatoryRules.isProtected(profile.name)) {
+        return false;
+      }
+      return !_regulatoryRules.isClosedOn(profile.name, evaluationDate);
+    });
+
+    final recommendations = eligibleProfiles
         .map((profile) => _evaluate(profile, conditions))
         .toList();
 
