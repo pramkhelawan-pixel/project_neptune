@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../core/theme/app_colors.dart';
 import '../../../knowledge/domain/entities/knowledge_record.dart';
 import '../../../knowledge/domain/enums/knowledge_category.dart';
 import '../../domain/species.dart';
@@ -132,8 +133,8 @@ class _HeaderCard extends StatelessWidget {
                   ...species.distribution.map(
                         (region) => Chip(
                       label: Text(region),
-                      backgroundColor:
-                      Theme.of(context).colorScheme.secondaryContainer,
+                      backgroundColor: AppColors.brassWash,
+                      side: const BorderSide(color: AppColors.hairline),
                     ),
                   ),
                 ],

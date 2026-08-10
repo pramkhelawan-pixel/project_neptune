@@ -30,13 +30,13 @@ class PrimaryButton extends StatelessWidget {
           height: 20,
           child: CircularProgressIndicator(
             strokeWidth: 2,
-            valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+            valueColor: AlwaysStoppedAnimation<Color>(AppColors.base),
           ),
         )
             : icon != null
             ? Icon(
           icon,
-          color: Colors.white,
+          color: AppColors.base,
         )
             : const SizedBox.shrink(),
         label: Text(
@@ -45,10 +45,10 @@ class PrimaryButton extends StatelessWidget {
         ),
         style: ElevatedButton.styleFrom(
           backgroundColor: AppColors.primary,
-          foregroundColor: Colors.white,
+          foregroundColor: AppColors.base,
           disabledBackgroundColor: AppColors.primary.withValues(alpha: 0.55),
-          disabledForegroundColor: Colors.white70,
-          elevation: 3,
+          disabledForegroundColor: AppColors.base.withValues(alpha: 0.6),
+          elevation: 0,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(14),
           ),

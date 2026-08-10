@@ -50,7 +50,7 @@ class _NeptuneAppState extends ConsumerState<NeptuneApp>
     return MaterialApp.router(
       title: 'Project Neptune',
       debugShowCheckedModeBanner: false,
-      theme: AppTheme.light,
+      theme: AppTheme.neptune,
       routerConfig: AppRouter.router,
     );
   }
