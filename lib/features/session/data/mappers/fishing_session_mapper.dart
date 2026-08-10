@@ -45,6 +45,7 @@ class FishingSessionMapper {
       targetSpecies: dto.targetSpecies,
       dateTime: dto.dateTime,
       marineConditions: marineConditions,
+      fishingSpotId: dto.fishingSpotId,
     );
   }
 
@@ -77,6 +78,7 @@ class FishingSessionMapper {
       moonPhase: conditions?.moonPhase,
       sunrise: conditions?.sunrise,
       sunset: conditions?.sunset,
+      fishingSpotId: session.fishingSpotId,
     );
   }
 }

@@ -10,12 +10,17 @@ class FishingSession {
   /// outage) — a session is still valid without them, see log_catch_controller.
   final MarineConditions? marineConditions;
 
+  /// Links to the fishing_spots directory entry, if the location was picked
+  /// from the catalog rather than typed as free text ("Other").
+  final String? fishingSpotId;
+
   const FishingSession({
     required this.id,
     required this.location,
     required this.targetSpecies,
     required this.dateTime,
     this.marineConditions,
+    this.fishingSpotId,
   });
 
   FishingSession copyWith({
@@ -24,6 +29,7 @@ class FishingSession {
     String? targetSpecies,
     DateTime? dateTime,
     MarineConditions? marineConditions,
+    String? fishingSpotId,
   }) {
     return FishingSession(
       id: id ?? this.id,
@@ -31,6 +37,7 @@ class FishingSession {
       targetSpecies: targetSpecies ?? this.targetSpecies,
       dateTime: dateTime ?? this.dateTime,
       marineConditions: marineConditions ?? this.marineConditions,
+      fishingSpotId: fishingSpotId ?? this.fishingSpotId,
     );
   }
 }

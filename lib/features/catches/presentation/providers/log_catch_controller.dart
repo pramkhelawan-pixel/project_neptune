@@ -20,6 +20,7 @@ class LogCatchController extends AsyncNotifier<bool> {
   Future<void> submit({
     required String species,
     required String location,
+    String? fishingSpotId,
     double? weightKg,
     double? lengthCm,
     required String bait,
@@ -49,6 +50,7 @@ class LogCatchController extends AsyncNotifier<bool> {
         targetSpecies: species,
         dateTime: DateTime.now(),
         marineConditions: conditions,
+        fishingSpotId: fishingSpotId,
       );
 
       await ref

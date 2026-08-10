@@ -24,6 +24,8 @@ class FishingSessionDto {
   final DateTime? sunrise;
   final DateTime? sunset;
 
+  final String? fishingSpotId;
+
   const FishingSessionDto({
     required this.id,
     required this.userId,
@@ -44,6 +46,7 @@ class FishingSessionDto {
     this.moonPhase,
     this.sunrise,
     this.sunset,
+    this.fishingSpotId,
   });
 
   factory FishingSessionDto.fromJson(Map<String, dynamic> json) {
@@ -75,6 +78,7 @@ class FishingSessionDto {
       sunset: json['sunset'] == null
           ? null
           : DateTime.parse(json['sunset'] as String),
+      fishingSpotId: json['fishing_spot_id'] as String?,
     );
   }
 
@@ -99,6 +103,7 @@ class FishingSessionDto {
       'moon_phase': moonPhase,
       'sunrise': sunrise?.toIso8601String(),
       'sunset': sunset?.toIso8601String(),
+      'fishing_spot_id': fishingSpotId,
     };
   }
 }

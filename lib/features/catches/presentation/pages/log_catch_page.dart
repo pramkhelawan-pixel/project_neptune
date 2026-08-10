@@ -5,6 +5,7 @@ import '../../../../core/widgets/app_text_field.dart';
 import '../../../../core/widgets/primary_button.dart';
 import '../providers/catch_provider.dart';
 import '../providers/log_catch_controller.dart';
+import '../widgets/location_dropdown_field.dart';
 import '../widgets/species_dropdown_field.dart';
 
 class LogCatchPage extends ConsumerStatefulWidget {
@@ -20,7 +21,7 @@ class _LogCatchPageState extends ConsumerState<LogCatchPage> {
   final _formKey = GlobalKey<FormState>();
 
   String? _selectedSpecies;
-  final _locationController = TextEditingController();
+  LocationSelection? _selectedLocation;
   final _weightController = TextEditingController();
   final _lengthController = TextEditingController();
   final _baitController = TextEditingController();
@@ -30,7 +31,6 @@ class _LogCatchPageState extends ConsumerState<LogCatchPage> {
 
   @override
   void dispose() {
-    _locationController.dispose();
     _weightController.dispose();
     _lengthController.dispose();
     _baitController.dispose();
@@ -45,7 +45,8 @@ class _LogCatchPageState extends ConsumerState<LogCatchPage> {
 
     await ref.read(logCatchControllerProvider.notifier).submit(
       species: _selectedSpecies!,
-      location: _locationController.text.trim(),
+      location: _selectedLocation!.locationName,
+      fishingSpotId: _selectedLocation!.fishingSpotId,
       weightKg: double.tryParse(_weightController.text.trim()),
       lengthCm: double.tryParse(_lengthController.text.trim()),
       bait: _baitController.text.trim(),
@@ -110,14 +111,12 @@ class _LogCatchPageState extends ConsumerState<LogCatchPage> {
 
               const SizedBox(height: 16),
 
-              AppTextField(
-                controller: _locationController,
-                label: 'Location',
-                validator: (value) {
-                  if (value == null || value.trim().isEmpty) {
-                    return 'Please enter the location.';
-                  }
-                  return null;
+              LocationDropdownField(
+                initialFishingSpotId: _selectedLocation?.fishingSpotId,
+                onChanged: (selection) {
+                  setState(() {
+                    _selectedLocation = selection;
+                  });
                 },
               ),
 
