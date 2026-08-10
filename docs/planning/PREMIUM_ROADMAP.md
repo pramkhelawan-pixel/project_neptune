@@ -44,6 +44,21 @@ likely useful as a companion to the trip cost calculator and catch logging.
 Social/community feature — scope not yet decided (feed, forums, groups, following
 other anglers, etc).
 
+## Neptune Community
+
+Fishing-specific social feed built around structured catch posts (species, spot,
+conditions, method — not just photos), rather than a generic social feature.
+Tiered business model: free community tier, premium intelligence tier, and a
+business/advertising marketplace tier.
+
+**Key design requirement, regardless of when built:** location-privacy controls
+(Exact / Approximate / Location-only / Private) on any shared catch location.
+Non-negotiable for angler trust — anglers are often protective of spot locations.
+
+**Status:** Major, multi-phase initiative (social feed, moderation, ad sales ops).
+Not scoped for near-term build — tracked here for future planning. May supersede
+or absorb the generic Fishing Community Page entry above once scoped.
+
 ## Photo Catch Upload
 
 Attach photos to logged catches/sessions. Depends on media storage infrastructure
