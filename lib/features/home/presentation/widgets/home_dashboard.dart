@@ -15,6 +15,20 @@ import 'readiness_card.dart';
 class HomeDashboard extends ConsumerWidget {
   const HomeDashboard({super.key});
 
+  String _greeting() {
+    final hour = DateTime.now().hour;
+
+    if (hour >= 5 && hour < 12) {
+      return '🌊 Good Morning';
+    }
+
+    if (hour >= 12 && hour < 17) {
+      return '🌊 Good Afternoon';
+    }
+
+    return '🌊 Good Evening';
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final marineAsync = ref.watch(marineConditionsProvider);
@@ -52,7 +66,7 @@ class HomeDashboard extends ConsumerWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  '🌊 Good Evening',
+                  _greeting(),
                   style: theme.textTheme.headlineSmall?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),

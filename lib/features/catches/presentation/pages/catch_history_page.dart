@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../providers/catch_provider.dart';
+import 'catch_detail_page.dart';
 import 'log_catch_page.dart';
 
 class CatchHistoryPage extends ConsumerWidget {
@@ -59,6 +60,14 @@ class CatchHistoryPage extends ConsumerWidget {
                 trailing: Text(
                   '${catchRecord.dateTime.day}/${catchRecord.dateTime.month}/${catchRecord.dateTime.year}',
                 ),
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          CatchDetailPage(catchRecord: catchRecord),
+                    ),
+                  );
+                },
               );
             },
           );
