@@ -12,6 +12,8 @@ class ReadinessCard extends StatelessWidget {
     required this.result,
   });
 
+  static const Curve _dialCurve = Cubic(0.22, 0.9, 0.3, 1.0);
+
   Color _ratingColor() {
     if (result.score >= 70) {
       return AppColors.success;
@@ -59,11 +61,18 @@ class ReadinessCard extends StatelessWidget {
                 child: Stack(
                   alignment: Alignment.center,
                   children: [
-                    CustomPaint(
-                      size: const Size(220, 220),
-                      painter: ReadinessDialPainter(
-                        sweepFraction: result.score / 100,
-                      ),
+                    TweenAnimationBuilder<double>(
+                      tween: Tween(begin: 0, end: result.score / 100),
+                      duration: const Duration(milliseconds: 700),
+                      curve: _dialCurve,
+                      builder: (context, sweepFraction, child) {
+                        return CustomPaint(
+                          size: const Size(220, 220),
+                          painter: ReadinessDialPainter(
+                            sweepFraction: sweepFraction,
+                          ),
+                        );
+                      },
                     ),
                     Column(
                       mainAxisSize: MainAxisSize.min,
