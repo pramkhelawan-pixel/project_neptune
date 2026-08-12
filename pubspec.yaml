@@ -68,6 +68,7 @@ dev_dependencies:
   riverpod_generator: ^2.6.5
 
   mocktail: ^1.0.4
+  flutter_launcher_icons: ^0.14.4
 
 flutter:
   uses-material-design: true
