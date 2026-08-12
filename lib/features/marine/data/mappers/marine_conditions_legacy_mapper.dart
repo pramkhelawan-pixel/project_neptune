@@ -24,6 +24,8 @@ class MarineConditionsLegacyMapper {
       waterTemperature: source.water.temperature,
       airTemperature: source.atmosphere.airTemperature,
       atmosphericPressure: source.atmosphere.pressure,
+      precipitation: source.atmosphere.precipitation,
+      precipitationProbability: source.atmosphere.precipitationProbability,
       tideHeight: source.tide.height,
       tideState: source.tide.state.displayName,
       canonicalTideState: source.tide.state,

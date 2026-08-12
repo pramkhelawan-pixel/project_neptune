@@ -29,12 +29,20 @@ class AtmosphericConditions {
   /// Cloud cover classification.
   final CloudCover cloudCover;
 
+  /// Precipitation amount in millimetres.
+  final double precipitation;
+
+  /// Forecast probability of precipitation as a percentage.
+  final double precipitationProbability;
+
   const AtmosphericConditions({
     required this.pressure,
     required this.humidity,
     required this.airTemperature,
     required this.visibility,
     required this.cloudCover,
+    required this.precipitation,
+    required this.precipitationProbability,
   });
 
   /// Returns true when atmospheric pressure is considered high.
@@ -61,7 +69,9 @@ class AtmosphericConditions {
         other.humidity == humidity &&
         other.airTemperature == airTemperature &&
         other.visibility == visibility &&
-        other.cloudCover == cloudCover;
+        other.cloudCover == cloudCover &&
+        other.precipitation == precipitation &&
+        other.precipitationProbability == precipitationProbability;
   }
 
   @override
@@ -71,6 +81,8 @@ class AtmosphericConditions {
     airTemperature,
     visibility,
     cloudCover,
+    precipitation,
+    precipitationProbability,
   );
 
   @override
@@ -80,7 +92,9 @@ class AtmosphericConditions {
         'humidity: ${humidity.toStringAsFixed(0)}%, '
         'airTemperature: ${airTemperature.toStringAsFixed(1)} °C, '
         'visibility: ${visibility.toStringAsFixed(1)} km, '
-        'cloudCover: ${cloudCover.displayName}'
+        'cloudCover: ${cloudCover.displayName}, '
+        'precipitation: ${precipitation.toStringAsFixed(1)} mm, '
+        'precipitationProbability: ${precipitationProbability.toStringAsFixed(0)}%'
         ')';
   }
 }

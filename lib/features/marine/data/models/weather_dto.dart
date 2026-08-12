@@ -8,6 +8,8 @@ class WeatherDto {
   final double pressure;
   final double visibility;
   final double cloudCover;
+  final double precipitation;
+  final double precipitationProbability;
 
   final DateTime sunrise;
   final DateTime sunset;
@@ -21,6 +23,8 @@ class WeatherDto {
     required this.pressure,
     required this.visibility,
     required this.cloudCover,
+    required this.precipitation,
+    required this.precipitationProbability,
     required this.sunrise,
     required this.sunset,
   });
@@ -66,6 +70,8 @@ class WeatherDto {
       pressure: firstDouble('pressure_msl'),
       visibility: firstDouble('visibility'),
       cloudCover: firstDouble('cloud_cover'),
+      precipitation: firstDouble('precipitation'),
+      precipitationProbability: firstDouble('precipitation_probability'),
       sunrise: firstDateTime('sunrise'),
       sunset: firstDateTime('sunset'),
     );

@@ -34,6 +34,18 @@ class MarineConditions {
   /// Atmospheric pressure (hPa).
   final double atmosphericPressure;
 
+  /// Precipitation amount (mm).
+  ///
+  /// Null for construction paths that predate this field (mocks, legacy
+  /// mappers) — callers must treat null as "unknown".
+  final double? precipitation;
+
+  /// Forecast probability of precipitation (%).
+  ///
+  /// Null for construction paths that predate this field (mocks, legacy
+  /// mappers) — callers must treat null as "unknown".
+  final double? precipitationProbability;
+
   /// Tide height (m).
   final double tideHeight;
 
@@ -70,6 +82,8 @@ class MarineConditions {
     required this.waterTemperature,
     required this.airTemperature,
     required this.atmosphericPressure,
+    this.precipitation,
+    this.precipitationProbability,
     required this.tideHeight,
     required this.tideState,
     this.canonicalTideState,
@@ -88,6 +102,8 @@ class MarineConditions {
     double? waterTemperature,
     double? airTemperature,
     double? atmosphericPressure,
+    double? precipitation,
+    double? precipitationProbability,
     double? tideHeight,
     String? tideState,
     TideState? canonicalTideState,
@@ -106,6 +122,9 @@ class MarineConditions {
       airTemperature: airTemperature ?? this.airTemperature,
       atmosphericPressure:
       atmosphericPressure ?? this.atmosphericPressure,
+      precipitation: precipitation ?? this.precipitation,
+      precipitationProbability:
+      precipitationProbability ?? this.precipitationProbability,
       tideHeight: tideHeight ?? this.tideHeight,
       tideState: tideState ?? this.tideState,
       canonicalTideState: canonicalTideState ?? this.canonicalTideState,

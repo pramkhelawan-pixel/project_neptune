@@ -72,6 +72,26 @@ class MarineConditionsCard extends StatelessWidget {
             const Divider(),
 
             _ConditionRow(
+              icon: Icons.grain,
+              label: 'Rainfall',
+              value: conditions.precipitation != null
+                  ? '${conditions.precipitation!.toStringAsFixed(1)} mm'
+                  : '--',
+            ),
+
+            const Divider(),
+
+            _ConditionRow(
+              icon: Icons.umbrella,
+              label: 'Rain Chance',
+              value: conditions.precipitationProbability != null
+                  ? '${conditions.precipitationProbability!.toStringAsFixed(0)}%'
+                  : '--',
+            ),
+
+            const Divider(),
+
+            _ConditionRow(
               icon: Icons.waves,
               label: 'Swell',
               value:

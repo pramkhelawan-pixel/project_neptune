@@ -69,10 +69,15 @@ class EnvironmentalEvaluator {
     }
 
     // Moon
+    //
+    // Profile entries use short-form phase names (e.g. 'Full', 'New') while
+    // conditions.moonPhase carries the full display name (e.g. 'Full Moon'),
+    // so containment rather than equality is required to match.
     if (profile.preferredMoonPhases.any(
           (moon) =>
-      conditions.moonPhase.toLowerCase() ==
+      conditions.moonPhase.toLowerCase().contains(
           moon.toLowerCase(),
+      ),
     )) {
       score += 20;
       reasons.add(

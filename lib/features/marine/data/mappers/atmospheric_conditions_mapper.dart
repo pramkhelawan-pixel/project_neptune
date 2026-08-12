@@ -26,6 +26,8 @@ class AtmosphericConditionsMapper {
       airTemperature: dto.airTemperature,
       visibility: dto.visibility,
       cloudCover: _mapCloudCover(dto.cloudCover),
+      precipitation: dto.precipitation,
+      precipitationProbability: dto.precipitationProbability,
     );
   }
 

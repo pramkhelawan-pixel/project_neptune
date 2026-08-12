@@ -48,7 +48,9 @@ class OpenMeteoApiDataSource implements OpenMeteoDataSource {
             'relative_humidity_2m,'
             'pressure_msl,'
             'visibility,'
-            'cloud_cover',
+            'cloud_cover,'
+            'precipitation,'
+            'precipitation_probability',
         'daily': 'sunrise,sunset',
         'timezone': 'Africa/Johannesburg',
         'forecast_days': 1,
