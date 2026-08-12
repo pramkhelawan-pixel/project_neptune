@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:share_plus/share_plus.dart';
 
+import '../../../../core/providers/app_providers.dart';
+import '../../../../core/services/share/recommend_friend_content.dart';
 import '../../../../core/services/supabase_service.dart';
 import '../../../authentication/presentation/providers/auth_controller.dart';
 
@@ -86,6 +89,27 @@ class ProfilePage extends ConsumerWidget {
 
           const SizedBox(height: 20),
 
+          Card(
+            elevation: 1,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(18),
+            ),
+            child: Builder(
+              builder: (tileContext) => ListTile(
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 4,
+                ),
+                leading: const Icon(Icons.ios_share),
+                title: const Text('Recommend a Friend'),
+                trailing: const Icon(Icons.chevron_right),
+                onTap: () => _recommendAFriend(tileContext, ref),
+              ),
+            ),
+          ),
+
+          const SizedBox(height: 20),
+
           FilledButton.icon(
             onPressed: authState.isLoading
                 ? null
@@ -105,6 +129,26 @@ class ProfilePage extends ConsumerWidget {
         ],
       ),
     );
+  }
+
+  Future<void> _recommendAFriend(BuildContext context, WidgetRef ref) async {
+    final box = context.findRenderObject() as RenderBox?;
+
+    final result = await ref.read(shareServiceProvider).shareText(
+      text: RecommendFriendContent.shareText,
+      sharePositionOrigin:
+          box != null ? box.localToGlobal(Offset.zero) & box.size : null,
+    );
+
+    if (!context.mounted) return;
+
+    if (result.status == ShareResultStatus.unavailable) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Couldn't open the share sheet. Please try again."),
+        ),
+      );
+    }
   }
 
   String _initials(String? email) {
