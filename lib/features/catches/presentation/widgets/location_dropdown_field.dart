@@ -103,9 +103,10 @@ List<DropdownMenuEntry<String>> _buildEntries(
 /// mechanism [SpeciesDropdownField] uses for its Edible/Non-Edible split).
 ///
 /// The directory is premium-gated by RLS, so this widget checks
-/// [currentProfileProvider] before rendering the dropdown at all: signed-out
-/// or not-premium users see an inline upgrade prompt instead of a silently
-/// empty list.
+/// [currentProfileProvider] before rendering the catalog dropdown: signed-out
+/// or not-premium users instead get a plain manual-entry text field, so a
+/// location (and therefore a catch) can always be saved regardless of
+/// premium status.
 ///
 /// Selecting a catalog spot resolves both the spot's id (the live
 /// `fishing_spots` FK target) and its name. "Other" free text has no
@@ -141,12 +142,16 @@ class _LocationDropdownFieldState
     super.dispose();
   }
 
+  void _notifyManualValue() {
+    final typed = _otherController.text.trim();
+    widget.onChanged(
+      typed.isEmpty ? null : LocationSelection(locationName: typed),
+    );
+  }
+
   void _notifyResolvedValue() {
     if (_isOther) {
-      final typed = _otherController.text.trim();
-      widget.onChanged(
-        typed.isEmpty ? null : LocationSelection(locationName: typed),
-      );
+      _notifyManualValue();
       return;
     }
 
@@ -186,15 +191,44 @@ class _LocationDropdownFieldState
       ),
       data: (profile) {
         if (profile == null || !profile.isPremium) {
-          return const _MessageField(
-            icon: Icons.workspace_premium_outlined,
-            message:
-                'Upgrade to premium to pick from the fishing spot directory.',
-          );
+          return _buildManualField(context);
         }
 
         return _buildSpotDropdown(context);
       },
+    );
+  }
+
+  /// Free-text-only location entry for signed-out/non-premium users, who
+  /// can't see the (premium, RLS-gated) fishing spot directory. Always
+  /// available so a catch can always be saved with a manually-typed
+  /// location, regardless of premium status.
+  Widget _buildManualField(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        TextFormField(
+          controller: _otherController,
+          decoration: const InputDecoration(
+            labelText: 'Location name',
+            hintText: 'Type the location name',
+          ),
+          validator: (value) {
+            if (value == null || value.trim().isEmpty) {
+              return 'Please type the location name.';
+            }
+            return null;
+          },
+          onChanged: (_) => _notifyManualValue(),
+        ),
+        const SizedBox(height: 4),
+        Text(
+          'Upgrade to premium to pick from the fishing spot directory.',
+          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+            color: Theme.of(context).colorScheme.onSurfaceVariant,
+          ),
+        ),
+      ],
     );
   }
 
