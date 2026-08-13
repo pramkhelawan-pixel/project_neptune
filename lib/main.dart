@@ -20,9 +20,21 @@ Future<void> main() async {
   AppConfig.validate();
 
   // Initialise Supabase.
+  //
+  // authFlowType is set to implicit rather than the package default (pkce)
+  // because password recovery is completed on a different device/browser
+  // than the one that requested it (app -> email -> GitHub Pages page).
+  // PKCE's code exchange requires a verifier stored on the requesting
+  // client, which the recovery browser never has access to; implicit
+  // embeds the session directly in the redirect URL instead, so it works
+  // across devices. This app has no OAuth/magic-link flows, so the only
+  // thing this affects is password recovery.
   await Supabase.initialize(
     url: AppConfig.supabaseUrl,
     publishableKey: AppConfig.supabaseAnonKey,
+    authOptions: const FlutterAuthClientOptions(
+      authFlowType: AuthFlowType.implicit,
+    ),
   );
 
   // Initialise Firebase + Crashlytics. Web is not configured (see

@@ -31,6 +31,23 @@ class _LoginPageState extends ConsumerState<LoginPage> {
     super.dispose();
   }
 
+  Future<void> _showForgotPasswordDialog() async {
+    final emailController = TextEditingController(
+      text: _emailController.text.trim(),
+    );
+    final formKey = GlobalKey<FormState>();
+
+    await showDialog<void>(
+      context: context,
+      builder: (dialogContext) => _ForgotPasswordDialog(
+        formKey: formKey,
+        emailController: emailController,
+      ),
+    );
+
+    emailController.dispose();
+  }
+
   Future<void> _signIn() async {
     if (!_formKey.currentState!.validate()) return;
 
@@ -134,7 +151,22 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                       },
                     ),
 
-                    const SizedBox(height: 24),
+                    const SizedBox(height: 4),
+
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: TextButton(
+                        style: TextButton.styleFrom(
+                          padding: EdgeInsets.zero,
+                          minimumSize: Size.zero,
+                          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        ),
+                        onPressed: _showForgotPasswordDialog,
+                        child: const Text('Forgot password?'),
+                      ),
+                    ),
+
+                    const SizedBox(height: 16),
 
                     PrimaryButton(
                       text: 'Sign In',
@@ -157,6 +189,134 @@ class _LoginPageState extends ConsumerState<LoginPage> {
           ),
         ),
       ),
+    );
+  }
+}
+
+/// Collects an email and triggers Supabase's password-reset email.
+/// Shows the same generic outcome message on success regardless of whether
+/// the address belongs to an account — Supabase's endpoint behaves the same
+/// way, so this dialog must not add an enumeration leak on top of it.
+class _ForgotPasswordDialog extends ConsumerStatefulWidget {
+  const _ForgotPasswordDialog({
+    required this.formKey,
+    required this.emailController,
+  });
+
+  final GlobalKey<FormState> formKey;
+  final TextEditingController emailController;
+
+  @override
+  ConsumerState<_ForgotPasswordDialog> createState() =>
+      _ForgotPasswordDialogState();
+}
+
+class _ForgotPasswordDialogState
+    extends ConsumerState<_ForgotPasswordDialog> {
+  bool _isSending = false;
+  bool _sent = false;
+  String? _errorMessage;
+
+  Future<void> _send() async {
+    if (!widget.formKey.currentState!.validate()) return;
+
+    setState(() {
+      _isSending = true;
+      _errorMessage = null;
+    });
+
+    await ref
+        .read(authControllerProvider.notifier)
+        .sendPasswordReset(widget.emailController.text.trim());
+
+    if (!mounted) return;
+
+    final hasError = ref.read(authControllerProvider).hasError;
+
+    setState(() {
+      _isSending = false;
+      _sent = !hasError;
+      _errorMessage = hasError
+          ? 'Something went wrong sending the reset email. Please try again in a moment.'
+          : null;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: const Text('Reset Password'),
+      content: _sent
+          ? const Text(
+              "If an account exists for that email, we've sent a link to "
+              'reset your password. Check your inbox.',
+            )
+          : Form(
+              key: widget.formKey,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Text(
+                    "Enter your email and we'll send you a link to reset "
+                    'your password.',
+                  ),
+                  const SizedBox(height: 16),
+                  AppTextField(
+                    controller: widget.emailController,
+                    label: 'Email',
+                    keyboardType: TextInputType.emailAddress,
+                    prefixIcon: Icons.email_outlined,
+                    textInputAction: TextInputAction.done,
+                    onFieldSubmitted: (_) => _send(),
+                    validator: (value) {
+                      if (value == null || value.trim().isEmpty) {
+                        return 'Please enter your email.';
+                      }
+
+                      if (!value.contains('@')) {
+                        return 'Please enter a valid email.';
+                      }
+
+                      return null;
+                    },
+                  ),
+                  if (_errorMessage != null) ...[
+                    const SizedBox(height: 12),
+                    Text(
+                      _errorMessage!,
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.error,
+                      ),
+                    ),
+                  ],
+                ],
+              ),
+            ),
+      actions: _sent
+          ? [
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: const Text('Back to Sign In'),
+              ),
+            ]
+          : [
+              TextButton(
+                onPressed: _isSending
+                    ? null
+                    : () => Navigator.of(context).pop(),
+                child: const Text('Cancel'),
+              ),
+              TextButton(
+                onPressed: _isSending ? null : _send,
+                child: _isSending
+                    ? const SizedBox(
+                        width: 16,
+                        height: 16,
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      )
+                    : const Text('Send Reset Link'),
+              ),
+            ],
     );
   }
 }

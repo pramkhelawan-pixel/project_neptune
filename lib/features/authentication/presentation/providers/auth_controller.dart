@@ -59,4 +59,14 @@ class AuthController extends _$AuthController {
       await repository.signOut();
     });
   }
+
+  Future<void> sendPasswordReset(String email) async {
+    state = const AsyncLoading();
+
+    state = await AsyncValue.guard(() async {
+      final repository = ref.read(authRepositoryProvider);
+
+      await repository.resetPasswordForEmail(email);
+    });
+  }
 }
