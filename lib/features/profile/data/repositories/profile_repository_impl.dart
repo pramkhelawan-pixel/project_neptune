@@ -1,6 +1,7 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../../core/auth/not_authenticated_exception.dart';
+import '../../../../core/network/network_exception.dart';
 import '../../../../core/services/supabase_service.dart';
 import '../../../authentication/data/auth_repository.dart';
 import '../../domain/entities/profile.dart';
@@ -50,5 +51,27 @@ class ProfileRepositoryImpl implements ProfileRepository {
     return ProfileMapper.toDomain(
       ProfileDto.fromJson(row),
     );
+  }
+
+  @override
+  Future<void> deleteAccount() async {
+    _requireUserId();
+
+    try {
+      final response = await _client.functions.invoke('delete-account');
+
+      final data = response.data;
+      final succeeded = data is Map && data['success'] == true;
+
+      if (!succeeded) {
+        final serverMessage =
+            data is Map ? data['error'] as String? : null;
+        throw NetworkException(
+          serverMessage ?? 'Failed to delete account. Please try again.',
+        );
+      }
+    } on FunctionException catch (e) {
+      throw NetworkException.fromFunctionException(e);
+    }
   }
 }

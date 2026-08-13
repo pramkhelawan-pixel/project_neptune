@@ -6,6 +6,7 @@ import '../../../../core/providers/app_providers.dart';
 import '../../../../core/services/share/recommend_friend_content.dart';
 import '../../../../core/services/supabase_service.dart';
 import '../../../authentication/presentation/providers/auth_controller.dart';
+import '../providers/profile_repository_provider.dart';
 
 class ProfilePage extends ConsumerWidget {
   const ProfilePage({super.key});
@@ -126,8 +127,25 @@ class ProfilePage extends ConsumerWidget {
               backgroundColor: Theme.of(context).colorScheme.error,
             ),
           ),
+
+          const SizedBox(height: 12),
+
+          TextButton(
+            onPressed: () => _showDeleteAccountDialog(context),
+            style: TextButton.styleFrom(
+              foregroundColor: Theme.of(context).colorScheme.error,
+            ),
+            child: const Text('Delete Account'),
+          ),
         ],
       ),
+    );
+  }
+
+  Future<void> _showDeleteAccountDialog(BuildContext context) async {
+    await showDialog<void>(
+      context: context,
+      builder: (dialogContext) => const _DeleteAccountDialog(),
     );
   }
 
@@ -157,5 +175,92 @@ class ProfilePage extends ConsumerWidget {
     }
 
     return email[0].toUpperCase();
+  }
+}
+
+/// Warns the user that deletion is permanent, requires an explicit
+/// destructive confirmation (not just "OK"), then deletes the account via
+/// the `delete-account` Edge Function and signs out locally. `AppRouter`'s
+/// existing redirect (session == null -> /login) handles returning to the
+/// login screen once sign-out completes -- no navigation call needed here.
+class _DeleteAccountDialog extends ConsumerStatefulWidget {
+  const _DeleteAccountDialog();
+
+  @override
+  ConsumerState<_DeleteAccountDialog> createState() =>
+      _DeleteAccountDialogState();
+}
+
+class _DeleteAccountDialogState extends ConsumerState<_DeleteAccountDialog> {
+  bool _isDeleting = false;
+  String? _errorMessage;
+
+  Future<void> _confirmDelete() async {
+    setState(() {
+      _isDeleting = true;
+      _errorMessage = null;
+    });
+
+    try {
+      await ref.read(profileRepositoryProvider).deleteAccount();
+
+      if (!mounted) return;
+
+      await ref.read(authControllerProvider.notifier).signOut();
+    } catch (error) {
+      if (!mounted) return;
+
+      setState(() {
+        _isDeleting = false;
+        _errorMessage = error.toString();
+      });
+      return;
+    }
+
+    if (!mounted) return;
+    Navigator.of(context).pop();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: const Text('Delete Account'),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            'This permanently deletes your Neptune account, including your '
+            'catch history and fishing sessions. This cannot be undone.',
+          ),
+          if (_errorMessage != null) ...[
+            const SizedBox(height: 12),
+            Text(
+              _errorMessage!,
+              style: TextStyle(color: Theme.of(context).colorScheme.error),
+            ),
+          ],
+        ],
+      ),
+      actions: [
+        TextButton(
+          onPressed: _isDeleting ? null : () => Navigator.of(context).pop(),
+          child: const Text('Cancel'),
+        ),
+        TextButton(
+          onPressed: _isDeleting ? null : _confirmDelete,
+          style: TextButton.styleFrom(
+            foregroundColor: Theme.of(context).colorScheme.error,
+          ),
+          child: _isDeleting
+              ? const SizedBox(
+                  width: 16,
+                  height: 16,
+                  child: CircularProgressIndicator(strokeWidth: 2),
+                )
+              : const Text('Delete My Account'),
+        ),
+      ],
+    );
   }
 }
