@@ -19,6 +19,10 @@ class CatchHistoryPage extends ConsumerWidget {
         title: const Text('Catch History'),
       ),
       floatingActionButton: FloatingActionButton(
+        // MainShellPage's IndexedStack keeps every tab mounted at once, so
+        // an unset heroTag collides with any other tab's default-tagged
+        // FAB (MapsPage) -- "multiple heroes share the same tag".
+        heroTag: 'catch-history-fab',
         onPressed: () {
           Navigator.of(context).push(
             MaterialPageRoute(

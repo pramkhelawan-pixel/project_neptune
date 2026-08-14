@@ -147,6 +147,11 @@ class _MapsPageState extends State<MapsPage> {
           bottom: 20,
           right: 20,
           child: FloatingActionButton(
+            // MainShellPage's IndexedStack keeps every tab mounted at once,
+            // so an unset heroTag collides with any other tab's
+            // default-tagged FAB (CatchHistoryPage) -- "multiple heroes
+            // share the same tag".
+            heroTag: 'maps-locate-fab',
             onPressed: _locating
                 ? null
                 : () => _userPosition != null
