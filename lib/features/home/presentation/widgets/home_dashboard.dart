@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../location/presentation/providers/user_location_provider.dart';
 import '../../../marine/presentation/providers/marine_provider.dart';
 import '../../../outlook/domain/fishing_outlook_engine.dart';
 import '../../../outlook/presentation/widgets/fishing_outlook_card.dart';
@@ -41,9 +42,23 @@ class HomeDashboard extends ConsumerWidget {
       error: (error, stackTrace) => Center(
         child: Padding(
           padding: const EdgeInsets.all(24),
-          child: Text(
-            'Unable to load marine conditions.\n\n$error',
-            textAlign: TextAlign.center,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                'Unable to load marine conditions.\n\n$error',
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 16),
+              // Recovers from a failed/denied/timed-out GPS resolution
+              // (e.g. a slow first-run permission dialog) without ever
+              // falling back to a fixed location — mirrors the retry
+              // pattern already used by Maps' locate FAB.
+              ElevatedButton(
+                onPressed: () => ref.invalidate(userLocationProvider),
+                child: const Text('Try Again'),
+              ),
+            ],
           ),
         ),
       ),

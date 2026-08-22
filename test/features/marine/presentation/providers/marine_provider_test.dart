@@ -19,6 +19,23 @@ class FakeUserLocationService implements UserLocationService {
   Future<UserLocationState> getCurrentLocation() async => _result;
 }
 
+/// Returns a different, pre-scripted result on each successive call —
+/// models a real device where the first GPS attempt fails (e.g. a slow
+/// permission dialog) and a later, retried attempt succeeds.
+class SequencedUserLocationService implements UserLocationService {
+  SequencedUserLocationService(this._results);
+
+  final List<UserLocationState> _results;
+  int _callCount = 0;
+
+  @override
+  Future<UserLocationState> getCurrentLocation() async {
+    final result = _results[_callCount.clamp(0, _results.length - 1)];
+    _callCount++;
+    return result;
+  }
+}
+
 class MockMarineRepository extends Mock implements MarineRepository {}
 
 class _FakeLocationConditions extends Fake implements LocationConditions {}
@@ -169,6 +186,72 @@ void main() {
             location: any(named: 'location'),
           ),
         );
+      },
+    );
+
+    test(
+      'a failed location resolution recovers after userLocationProvider is '
+      'invalidated (the Home retry action), and the retried attempt reaches '
+      'the repository with the real, newly-resolved coordinates',
+      () async {
+        final locationService = SequencedUserLocationService([
+          const UserLocationError("Couldn't get your location. Try again."),
+          const UserLocationAvailable(
+            latitude: -33.9249,
+            longitude: 18.4241,
+          ),
+        ]);
+
+        LocationConditions? captured;
+        final mockRepository = MockMarineRepository();
+        when(
+          () => mockRepository.getCurrentConditions(
+            location: any(named: 'location'),
+          ),
+        ).thenAnswer((invocation) async {
+          captured =
+              invocation.namedArguments[#location] as LocationConditions;
+          throw Exception('stub: not returning real marine data');
+        });
+
+        final container = ProviderContainer(
+          overrides: [
+            userLocationServiceProvider.overrideWithValue(locationService),
+            marineRepositoryProvider.overrideWithValue(mockRepository),
+          ],
+        );
+        addTearDown(container.dispose);
+
+        // First attempt: location fails, so marineConditionsProvider must
+        // fail too, without ever reaching the repository.
+        await expectLater(
+          () => container.read(marineConditionsProvider.future),
+          throwsException,
+        );
+        verifyNever(
+          () => mockRepository.getCurrentConditions(
+            location: any(named: 'location'),
+          ),
+        );
+
+        // The retry action (see HomeDashboard's error state) invalidates
+        // userLocationProvider — this is the exact call under test.
+        container.invalidate(userLocationProvider);
+
+        // The retried location resolution now succeeds, so
+        // marineConditionsProvider must naturally recover and reach the
+        // repository with the real, newly-resolved coordinates — never a
+        // Durban/default fallback.
+        await expectLater(
+          () => container.read(marineConditionsProvider.future),
+          throwsException, // still the repository stub's own thrown error
+        );
+
+        expect(captured, isNotNull);
+        expect(captured!.latitude, -33.9249);
+        expect(captured!.longitude, 18.4241);
+        expect(captured!.latitude, isNot(-29.8587));
+        expect(captured!.longitude, isNot(31.0218));
       },
     );
   });
