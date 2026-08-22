@@ -3,10 +3,38 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:latlong2/latlong.dart';
 
+import '../../../fishing_spots/domain/entities/fishing_spot.dart';
+import '../../../fishing_spots/presentation/providers/fishing_spot_repository_provider.dart';
 import '../../../location/data/all_locations.dart';
-import '../../../location/domain/location.dart';
 import '../../../location/domain/user_location_state.dart';
 import '../../../location/presentation/providers/user_location_provider.dart';
+
+/// Builds one marker per fishing spot. Extracted from [MapsPage.build] so
+/// the coordinate → marker conversion can be tested directly without
+/// standing up a full `FlutterMap` widget tree (which would otherwise pull
+/// in real tile-network requests during tests).
+@visibleForTesting
+List<Marker> buildFishingSpotMarkers(
+  List<FishingSpot> spots, {
+  required void Function(FishingSpot spot) onTap,
+}) {
+  return [
+    for (final spot in spots)
+      Marker(
+        point: LatLng(spot.latitude, spot.longitude),
+        width: 44,
+        height: 44,
+        child: GestureDetector(
+          onTap: () => onTap(spot),
+          child: const Icon(
+            Icons.location_on,
+            color: Colors.red,
+            size: 40,
+          ),
+        ),
+      ),
+  ];
+}
 
 class MapsPage extends ConsumerStatefulWidget {
   const MapsPage({super.key});
@@ -73,13 +101,13 @@ class _MapsPageState extends ConsumerState<MapsPage> {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
   }
 
-  void _showLocationDetails(Location location) {
+  void _showFishingSpotDetails(FishingSpot spot) {
     showModalBottomSheet(
       context: context,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
-      builder: (context) => _LocationDetailsSheet(location: location),
+      builder: (context) => _FishingSpotDetailsSheet(spot: spot),
     );
   }
 
@@ -93,6 +121,13 @@ class _MapsPageState extends ConsumerState<MapsPage> {
         LatLng(latitude, longitude),
       _ => null,
     };
+
+    // Loading and error both resolve to an empty spot list here rather than
+    // surfacing a full-screen state: the map (tiles + GPS) stays fully
+    // usable either way, and no fake/placeholder spots are ever shown in
+    // their place.
+    final fishingSpots =
+        ref.watch(fishingSpotsProvider).valueOrNull ?? const <FishingSpot>[];
 
     return Stack(
       children: [
@@ -109,20 +144,10 @@ class _MapsPageState extends ConsumerState<MapsPage> {
             ),
             MarkerLayer(
               markers: [
-                for (final location in allLocations)
-                  Marker(
-                    point: LatLng(location.latitude, location.longitude),
-                    width: 44,
-                    height: 44,
-                    child: GestureDetector(
-                      onTap: () => _showLocationDetails(location),
-                      child: const Icon(
-                        Icons.location_on,
-                        color: Colors.red,
-                        size: 40,
-                      ),
-                    ),
-                  ),
+                ...buildFishingSpotMarkers(
+                  fishingSpots,
+                  onTap: _showFishingSpotDetails,
+                ),
                 if (userPosition != null)
                   Marker(
                     point: userPosition,
@@ -164,10 +189,10 @@ class _MapsPageState extends ConsumerState<MapsPage> {
   }
 }
 
-class _LocationDetailsSheet extends StatelessWidget {
-  final Location location;
+class _FishingSpotDetailsSheet extends StatelessWidget {
+  final FishingSpot spot;
 
-  const _LocationDetailsSheet({required this.location});
+  const _FishingSpotDetailsSheet({required this.spot});
 
   @override
   Widget build(BuildContext context) {
@@ -179,7 +204,7 @@ class _LocationDetailsSheet extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              location.name,
+              spot.name,
               style: const TextStyle(
                 fontSize: 22,
                 fontWeight: FontWeight.bold,
@@ -187,13 +212,18 @@ class _LocationDetailsSheet extends StatelessWidget {
             ),
 
             Text(
-              location.province,
+              '${spot.region}, ${spot.province}',
               style: Theme.of(context).textTheme.bodyMedium,
             ),
 
             const SizedBox(height: 12),
 
-            Text(location.description),
+            Text(spot.spotType),
+
+            if (spot.accessNotes != null) ...[
+              const SizedBox(height: 8),
+              Text(spot.accessNotes!),
+            ],
 
             const SizedBox(height: 16),
 
@@ -201,40 +231,44 @@ class _LocationDetailsSheet extends StatelessWidget {
               spacing: 8,
               runSpacing: 8,
               children: [
-                if (location.riverMouth) const Chip(label: Text('River Mouth')),
-                if (location.reef) const Chip(label: Text('Reef')),
-                if (location.sandbanks) const Chip(label: Text('Sandbanks')),
-                if (location.gullies) const Chip(label: Text('Gullies')),
-                Chip(
-                  label: Text(
-                    location.safeAtNight ? 'Safe at Night' : 'Caution at Night',
+                if (spot.isMpa)
+                  Chip(
+                    label: Text(spot.mpaName ?? 'Marine Protected Area'),
                   ),
-                  backgroundColor: location.safeAtNight
-                      ? Colors.green.shade100
-                      : Colors.orange.shade100,
+                if (spot.isNoTake)
+                  Chip(
+                    label: const Text('No-Take Zone'),
+                    backgroundColor: Colors.red.shade100,
+                  ),
+                for (final flag in spot.safetyFlags)
+                  Chip(
+                    label: Text(flag),
+                    backgroundColor: Colors.orange.shade100,
+                  ),
+              ],
+            ),
+
+            if (spot.targetSpecies.isNotEmpty) ...[
+              const SizedBox(height: 16),
+
+              Text(
+                'Target Species',
+                style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                  fontWeight: FontWeight.bold,
                 ),
-              ],
-            ),
-
-            const SizedBox(height: 16),
-
-            Text(
-              'Target Species',
-              style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                fontWeight: FontWeight.bold,
               ),
-            ),
 
-            const SizedBox(height: 8),
+              const SizedBox(height: 8),
 
-            Wrap(
-              spacing: 8,
-              runSpacing: 8,
-              children: [
-                for (final species in location.targetSpecies)
-                  Chip(label: Text(species)),
-              ],
-            ),
+              Wrap(
+                spacing: 8,
+                runSpacing: 8,
+                children: [
+                  for (final species in spot.targetSpecies)
+                    Chip(label: Text(species)),
+                ],
+              ),
+            ],
           ],
         ),
       ),
