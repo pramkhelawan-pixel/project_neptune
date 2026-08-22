@@ -22,9 +22,7 @@ class WaterConditionsMapper {
       MarineWeatherDto dto,
       ) {
     return WaterConditions(
-      // Open-Meteo marine currently does not expose sea
-      // surface temperature through the configured endpoint.
-      temperature: 20.0,
+      temperature: dto.seaSurfaceTemperature,
 
       // Water clarity provider planned.
       clarity: 2.0,

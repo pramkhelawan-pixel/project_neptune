@@ -55,7 +55,7 @@ class OpenMeteoRemoteDataSource implements MarineRemoteDataSource {
       queryParameters: {
         'latitude': latitude,
         'longitude': longitude,
-        'hourly': 'wave_height,wave_period',
+        'hourly': 'wave_height,wave_period,sea_surface_temperature',
         'timezone': 'Africa/Johannesburg',
         'forecast_days': 1,
       },

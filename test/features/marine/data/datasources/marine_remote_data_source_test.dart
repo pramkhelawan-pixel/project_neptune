@@ -4,6 +4,7 @@ import 'package:mocktail/mocktail.dart';
 
 import 'package:project_neptune/core/network/api_client.dart';
 import 'package:project_neptune/features/marine/data/datasources/marine_remote_data_source.dart';
+import 'package:project_neptune/features/marine/data/mappers/water_conditions_mapper.dart';
 
 class MockApiClient extends Mock implements ApiClient {}
 
@@ -31,13 +32,14 @@ Response<dynamic> _weatherResponse() {
   );
 }
 
-Response<dynamic> _marineResponse() {
+Response<dynamic> _marineResponse({double seaSurfaceTemperature = 16.4}) {
   return Response(
     requestOptions: RequestOptions(path: '/marine'),
     data: {
       'hourly': {
         'wave_height': [1.2],
         'wave_period': [8.0],
+        'sea_surface_temperature': [seaSurfaceTemperature],
       },
     },
   );
@@ -126,6 +128,81 @@ void main() {
         await dataSource.getMarineConditions(latitude: 51.5, longitude: -0.1);
 
         expect(capturedLatitudes, containsAll(<double>[1.0, 51.5]));
+      },
+    );
+
+    test(
+      'requests sea_surface_temperature alongside wave_height/wave_period '
+      'on the existing marine endpoint - no second request is made',
+      () async {
+        final mockApiClient = MockApiClient();
+        final dataSource = OpenMeteoRemoteDataSource(
+          apiClient: mockApiClient,
+        );
+
+        final requestedEndpoints = <String>[];
+        String? marineHourlyParam;
+
+        when(
+          () => mockApiClient.getFromBaseUrl(
+            baseUrl: any(named: 'baseUrl'),
+            endpoint: any(named: 'endpoint'),
+            queryParameters: any(named: 'queryParameters'),
+          ),
+        ).thenAnswer((invocation) async {
+          final endpoint = invocation.namedArguments[#endpoint] as String;
+          requestedEndpoints.add(endpoint);
+
+          if (endpoint == '/marine') {
+            final params = invocation.namedArguments[#queryParameters]
+                as Map<String, dynamic>;
+            marineHourlyParam = params['hourly'] as String;
+          }
+
+          return endpoint == '/forecast' ? _weatherResponse() : _marineResponse();
+        });
+
+        await dataSource.getMarineConditions(latitude: -33.9249, longitude: 18.4241);
+
+        // Still exactly one weather call and one marine call - SST must not
+        // introduce a third request.
+        expect(requestedEndpoints, ['/forecast', '/marine']);
+        expect(marineHourlyParam, contains('sea_surface_temperature'));
+      },
+    );
+
+    test(
+      'a supplied sea_surface_temperature value flows all the way through '
+      'to WaterConditionsMapper - never the old hardcoded 20.0',
+      () async {
+        final mockApiClient = MockApiClient();
+        final dataSource = OpenMeteoRemoteDataSource(
+          apiClient: mockApiClient,
+        );
+
+        when(
+          () => mockApiClient.getFromBaseUrl(
+            baseUrl: any(named: 'baseUrl'),
+            endpoint: any(named: 'endpoint'),
+            queryParameters: any(named: 'queryParameters'),
+          ),
+        ).thenAnswer((invocation) async {
+          final endpoint = invocation.namedArguments[#endpoint] as String;
+          return endpoint == '/forecast'
+              ? _weatherResponse()
+              : _marineResponse(seaSurfaceTemperature: 14.7);
+        });
+
+        final response = await dataSource.getMarineConditions(
+          latitude: -33.9249,
+          longitude: 18.4241,
+        );
+
+        expect(response.marine.seaSurfaceTemperature, 14.7);
+
+        final water = WaterConditionsMapper.toDomain(response.marine);
+        expect(water.temperature, 14.7);
+        expect(water.temperature, isNot(20.0));
       },
     );
   });
