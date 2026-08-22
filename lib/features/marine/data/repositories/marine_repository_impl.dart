@@ -52,40 +52,63 @@ class MarineRepositoryImpl implements MarineRepository {
                   client: SupabaseService.client,
                 );
 
+  /// The last successfully retrieved conditions, held only for the lifetime
+  /// of this repository instance — never persisted, never survives an app
+  /// restart. Served back on a subsequent fetch failure so a transient
+  /// Open-Meteo/tide outage doesn't take down an otherwise-working screen;
+  /// its original [ObservationMetadata.observedAt] is preserved untouched
+  /// so callers can tell it's stale rather than mistaking it for a fresh
+  /// observation.
+  MarineConditions? _lastKnownGood;
+
   @override
   Future<MarineConditions> getCurrentConditions({
     required LocationConditions location,
   }) async {
-    final response = await marineRemoteDataSource.getMarineConditions(
-      latitude: location.latitude,
-      longitude: location.longitude,
-    );
-
-    final tideDto = await tideRemoteDataSource.getTides(
-      latitude: location.latitude,
-      longitude: location.longitude,
-    );
-
-    return MarineConditionsAssembler.assemble(
-      wind: WindConditionsMapper.toDomain(response.weather),
-      tide: TideConditionsMapper.toDomain(tideDto),
-      swell: SwellConditionsMapper.toDomain(response.marine),
-      current: CurrentConditionsMapper.toDomain(),
-      water: WaterConditionsMapper.toDomain(response.marine),
-      atmosphere: AtmosphericConditionsMapper.toDomain(response.weather),
-      moon: LunarConditionsMapper.toDomain(DateTime.now()),
-      sun: SolarConditionsMapper.toDomain(response.weather),
-      location: LocationConditionsMapper.toDomain(
+    try {
+      final response = await marineRemoteDataSource.getMarineConditions(
         latitude: location.latitude,
         longitude: location.longitude,
-      ),
-      metadata: ObservationMetadata(
-        observedAt: DateTime.now(),
-        publishedAt: DateTime.now(),
-        provider: 'Open-Meteo / WorldTides',
-        confidence: 95.0,
-      ),
-    );
+      );
+
+      final tideDto = await tideRemoteDataSource.getTides(
+        latitude: location.latitude,
+        longitude: location.longitude,
+      );
+
+      final conditions = MarineConditionsAssembler.assemble(
+        wind: WindConditionsMapper.toDomain(response.weather),
+        tide: TideConditionsMapper.toDomain(tideDto),
+        swell: SwellConditionsMapper.toDomain(response.marine),
+        current: CurrentConditionsMapper.toDomain(),
+        water: WaterConditionsMapper.toDomain(response.marine),
+        atmosphere: AtmosphericConditionsMapper.toDomain(response.weather),
+        moon: LunarConditionsMapper.toDomain(DateTime.now()),
+        sun: SolarConditionsMapper.toDomain(response.weather),
+        location: LocationConditionsMapper.toDomain(
+          latitude: location.latitude,
+          longitude: location.longitude,
+        ),
+        metadata: ObservationMetadata(
+          observedAt: DateTime.now(),
+          publishedAt: DateTime.now(),
+          provider: 'Open-Meteo / WorldTides',
+          confidence: 95.0,
+        ),
+      );
+
+      _lastKnownGood = conditions;
+
+      return conditions;
+    } catch (_) {
+      final cached = _lastKnownGood;
+
+      if (cached != null) {
+        return cached;
+      }
+
+      rethrow;
+    }
   }
 
   @override

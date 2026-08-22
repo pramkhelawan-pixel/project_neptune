@@ -40,6 +40,23 @@ class MarineConditionsCard extends StatelessWidget {
     return '${minutes}m';
   }
 
+  String _freshnessLabel() {
+    final observedAt = conditions.observedAt;
+
+    if (observedAt == null) {
+      return 'Using last known conditions';
+    }
+
+    final age = DateTime.now().difference(observedAt);
+    final minutes = age.inMinutes;
+    final ageText =
+        age.inHours > 0 ? '${age.inHours}h ${minutes.remainder(60)}m' : '${minutes}m';
+
+    return conditions.isStale
+        ? 'Using last known conditions · $ageText old'
+        : 'Last updated $ageText ago';
+  }
+
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -60,7 +77,17 @@ class MarineConditionsCard extends StatelessWidget {
               ),
             ),
 
-            const SizedBox(height: 20),
+            const SizedBox(height: 4),
+
+            Text(
+              _freshnessLabel(),
+              style: TextStyle(
+                fontSize: 12,
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+              ),
+            ),
+
+            const SizedBox(height: 16),
 
             _ConditionRow(
               icon: Icons.air,

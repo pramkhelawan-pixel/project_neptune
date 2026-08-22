@@ -80,6 +80,14 @@ class MarineConditions {
   /// Sunset.
   final DateTime sunset;
 
+  /// When these conditions were actually observed.
+  ///
+  /// Set on every real fetch (fresh or last-known-good fallback — see
+  /// MarineRepositoryImpl). Null only for construction paths that predate
+  /// this field (mocks, legacy fixtures) — callers must treat null as
+  /// "unknown", not "fresh".
+  final DateTime? observedAt;
+
   const MarineConditions({
     required this.windSpeed,
     required this.windDirection,
@@ -99,6 +107,7 @@ class MarineConditions {
     required this.moonPhase,
     required this.sunrise,
     required this.sunset,
+    this.observedAt,
   });
 
   MarineConditions copyWith({
@@ -120,6 +129,7 @@ class MarineConditions {
     String? moonPhase,
     DateTime? sunrise,
     DateTime? sunset,
+    DateTime? observedAt,
   }) {
     return MarineConditions(
       windSpeed: windSpeed ?? this.windSpeed,
@@ -142,6 +152,15 @@ class MarineConditions {
       moonPhase: moonPhase ?? this.moonPhase,
       sunrise: sunrise ?? this.sunrise,
       sunset: sunset ?? this.sunset,
+      observedAt: observedAt ?? this.observedAt,
     );
   }
+
+  /// True when [observedAt] is missing or older than the 6-hour threshold
+  /// used by [ObservationMetadata.isRecent] on the canonical entity this
+  /// model is mapped from. Expressed locally (not imported) because this
+  /// legacy model does not depend on the canonical value-object layer.
+  bool get isStale =>
+      observedAt == null ||
+      DateTime.now().difference(observedAt!).inHours > 6;
 }

@@ -99,4 +99,18 @@ void main() {
       expect(result.swellDirection, 'NE');
     });
   });
+
+  group('MarineConditionsLegacyMapper.toLegacy - observedAt', () {
+    test(
+      'metadata.observedAt survives the transition into the legacy '
+      'MarineConditions model',
+      () {
+        final source = _canonicalConditions(swellDirection: 'SW');
+
+        final result = MarineConditionsLegacyMapper.toLegacy(source);
+
+        expect(result.observedAt, source.metadata.observedAt);
+      },
+    );
+  });
 }
