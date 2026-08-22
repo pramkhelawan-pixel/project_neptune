@@ -1,80 +1,68 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:geolocator/geolocator.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:latlong2/latlong.dart';
 
 import '../../../location/data/all_locations.dart';
 import '../../../location/domain/location.dart';
+import '../../../location/domain/user_location_state.dart';
+import '../../../location/presentation/providers/user_location_provider.dart';
 
-class MapsPage extends StatefulWidget {
+class MapsPage extends ConsumerStatefulWidget {
   const MapsPage({super.key});
 
   @override
-  State<MapsPage> createState() => _MapsPageState();
+  ConsumerState<MapsPage> createState() => _MapsPageState();
 }
 
-class _MapsPageState extends State<MapsPage> {
+class _MapsPageState extends ConsumerState<MapsPage> {
   final MapController _mapController = MapController();
-
-  LatLng? _userPosition;
-
-  bool _locating = false;
 
   static final LatLng _defaultCenter = LatLng(
     allLocations.first.latitude,
     allLocations.first.longitude,
   );
 
-  Future<void> _loadUserPosition() async {
-    if (_locating) {
+  /// Tapping the locate FAB: recenter immediately if we already have a
+  /// position, otherwise (re)attempt resolution and react to the outcome.
+  /// Mirrors the original per-tap retry behaviour, just sourced from the
+  /// shared provider instead of a private GPS fetch.
+  Future<void> _onLocateTap() async {
+    final current = ref.read(userLocationProvider).valueOrNull;
+
+    if (current is UserLocationAvailable) {
+      _mapController.move(
+        LatLng(current.latitude, current.longitude),
+        13,
+      );
       return;
     }
 
-    setState(() => _locating = true);
+    ref.invalidate(userLocationProvider);
 
+    UserLocationState result;
     try {
-      if (!await Geolocator.isLocationServiceEnabled()) {
-        _showMessage('Enable location services to use this.');
-        return;
-      }
-
-      var permission = await Geolocator.checkPermission().timeout(
-        const Duration(seconds: 10),
-      );
-
-      if (permission == LocationPermission.denied) {
-        permission = await Geolocator.requestPermission().timeout(
-          const Duration(seconds: 30),
-        );
-      }
-
-      if (permission == LocationPermission.denied ||
-          permission == LocationPermission.deniedForever) {
-        _showMessage('Location permission denied.');
-        return;
-      }
-
-      final position = await Geolocator.getCurrentPosition(
-        locationSettings: const LocationSettings(
-          timeLimit: Duration(seconds: 10),
-        ),
-      );
-
-      if (!mounted) {
-        return;
-      }
-
-      setState(() {
-        _userPosition = LatLng(position.latitude, position.longitude);
-      });
-
-      _mapController.move(_userPosition!, 13);
+      result = await ref.read(userLocationProvider.future);
     } catch (_) {
-      _showMessage("Couldn't get your location. Try again.");
-    } finally {
       if (mounted) {
-        setState(() => _locating = false);
+        _showMessage("Couldn't get your location. Try again.");
       }
+      return;
+    }
+
+    if (!mounted) {
+      return;
+    }
+
+    switch (result) {
+      case UserLocationAvailable(:final latitude, :final longitude):
+        _mapController.move(LatLng(latitude, longitude), 13);
+      case UserLocationPermissionDenied():
+        _showMessage('Location permission denied.');
+      case UserLocationUnavailable(:final message):
+        _showMessage(message);
+      case UserLocationError(:final message):
+        _showMessage(message);
     }
   }
 
@@ -97,6 +85,15 @@ class _MapsPageState extends State<MapsPage> {
 
   @override
   Widget build(BuildContext context) {
+    final locationAsync = ref.watch(userLocationProvider);
+    final isLoading = locationAsync.isLoading;
+
+    final userPosition = switch (locationAsync.valueOrNull) {
+      UserLocationAvailable(:final latitude, :final longitude) =>
+        LatLng(latitude, longitude),
+      _ => null,
+    };
+
     return Stack(
       children: [
         FlutterMap(
@@ -126,9 +123,9 @@ class _MapsPageState extends State<MapsPage> {
                       ),
                     ),
                   ),
-                if (_userPosition != null)
+                if (userPosition != null)
                   Marker(
-                    point: _userPosition!,
+                    point: userPosition,
                     width: 24,
                     height: 24,
                     child: Container(
@@ -152,12 +149,8 @@ class _MapsPageState extends State<MapsPage> {
             // default-tagged FAB (CatchHistoryPage) -- "multiple heroes
             // share the same tag".
             heroTag: 'maps-locate-fab',
-            onPressed: _locating
-                ? null
-                : () => _userPosition != null
-                ? _mapController.move(_userPosition!, 13)
-                : _loadUserPosition(),
-            child: _locating
+            onPressed: isLoading ? null : _onLocateTap,
+            child: isLoading
                 ? const SizedBox(
               width: 20,
               height: 20,

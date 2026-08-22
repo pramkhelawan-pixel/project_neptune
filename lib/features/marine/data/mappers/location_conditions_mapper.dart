@@ -17,11 +17,14 @@ class LocationConditionsMapper {
     required double latitude,
     required double longitude,
   }) {
+    // No reverse geocoding is available in this app, so this deliberately
+    // never labels a real GPS position with a fixed place name (e.g.
+    // "Durban") that would be false for any other location.
     return LocationConditions(
-      country: 'South Africa',
-      province: 'KwaZulu-Natal',
-      region: 'Durban',
-      beach: 'Durban',
+      country: '',
+      province: '',
+      region: '',
+      beach: 'Current Location',
       latitude: latitude,
       longitude: longitude,
     );

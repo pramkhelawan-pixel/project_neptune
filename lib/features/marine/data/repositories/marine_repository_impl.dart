@@ -56,7 +56,10 @@ class MarineRepositoryImpl implements MarineRepository {
   Future<MarineConditions> getCurrentConditions({
     required LocationConditions location,
   }) async {
-    final response = await marineRemoteDataSource.getMarineConditions();
+    final response = await marineRemoteDataSource.getMarineConditions(
+      latitude: location.latitude,
+      longitude: location.longitude,
+    );
 
     final tideDto = await tideRemoteDataSource.getTides(
       latitude: location.latitude,

@@ -7,7 +7,10 @@ import '../models/weather_dto.dart';
 
 /// Defines how marine data is retrieved.
 abstract class MarineRemoteDataSource {
-  Future<OpenMeteoResponseDto> getMarineConditions();
+  Future<OpenMeteoResponseDto> getMarineConditions({
+    required double latitude,
+    required double longitude,
+  });
 }
 
 /// Retrieves live weather and marine observations from Open-Meteo.
@@ -19,13 +22,16 @@ class OpenMeteoRemoteDataSource implements MarineRemoteDataSource {
   });
 
   @override
-  Future<OpenMeteoResponseDto> getMarineConditions() async {
+  Future<OpenMeteoResponseDto> getMarineConditions({
+    required double latitude,
+    required double longitude,
+  }) async {
     final weatherResponse = await apiClient.getFromBaseUrl(
       baseUrl: ApiConstants.weatherBaseUrl,
       endpoint: ApiConstants.weatherForecast,
       queryParameters: {
-        'latitude': ApiConstants.durbanLatitude,
-        'longitude': ApiConstants.durbanLongitude,
+        'latitude': latitude,
+        'longitude': longitude,
         'hourly':
         'wind_speed_10m,'
             'wind_direction_10m,'
@@ -47,8 +53,8 @@ class OpenMeteoRemoteDataSource implements MarineRemoteDataSource {
       baseUrl: ApiConstants.marineBaseUrl,
       endpoint: ApiConstants.marineForecast,
       queryParameters: {
-        'latitude': ApiConstants.durbanLatitude,
-        'longitude': ApiConstants.durbanLongitude,
+        'latitude': latitude,
+        'longitude': longitude,
         'hourly': 'wave_height,wave_period',
         'timezone': 'Africa/Johannesburg',
         'forecast_days': 1,

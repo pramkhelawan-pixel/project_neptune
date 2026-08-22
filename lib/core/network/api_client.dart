@@ -21,9 +21,13 @@ class ApiClient {
     );
 
     _dio.interceptors.add(
+      // request/requestHeader stay off: request URLs now carry the user's
+      // real GPS coordinates as query parameters (see
+      // OpenMeteoRemoteDataSource), and this interceptor must never log
+      // precise location data.
       LogInterceptor(
-        request: true,
-        requestHeader: true,
+        request: false,
+        requestHeader: false,
         requestBody: false,
         responseHeader: false,
         responseBody: false,
