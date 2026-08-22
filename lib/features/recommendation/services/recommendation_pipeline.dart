@@ -32,7 +32,7 @@ class RecommendationPipeline {
       bait: seed.bait,
       location: request.location,
       bestTime: seed.bestTime,
-      weights: seed.weights,
+      environmentalScore: seed.environmentalScore,
       reasons: seed.reasons,
     );
 

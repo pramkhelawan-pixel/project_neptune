@@ -16,15 +16,16 @@ class RecommendationEngine {
     required String bait,
     required String location,
     required String bestTime,
-    required List<int> weights,
+    required int environmentalScore,
     required List<String> reasons,
   }) {
-    final score = scoreEngine.calculate(
-      weights,
-    );
-
+    // environmentalScore is already an aggregated 0-100 match score (see
+    // EnvironmentalEvaluator), so it goes straight to ConfidenceEngine.
+    // Do not route it through ScoreEngine.calculate() as a single-element
+    // weights list - that collapses ScoreEngine's `weights.length * 20`
+    // denominator to a fixed 20, saturating any score >= 20 to 100.
     final confidence = confidenceEngine.calculate(
-      score,
+      environmentalScore,
     );
 
     return Recommendation(
@@ -32,7 +33,7 @@ class RecommendationEngine {
       bait: bait,
       location: location,
       bestTime: bestTime,
-      score: score,
+      score: environmentalScore,
       confidence: confidence,
       reasons: reasons,
     );

@@ -12,7 +12,7 @@ class RecommendationSeed {
   final String leader;
   final String presentation;
   final String bestTime;
-  final List<int> weights;
+  final int environmentalScore;
   final List<String> reasons;
 
   const RecommendationSeed({
@@ -21,7 +21,7 @@ class RecommendationSeed {
     required this.leader,
     required this.presentation,
     required this.bestTime,
-    required this.weights,
+    required this.environmentalScore,
     required this.reasons,
   });
 }
@@ -72,7 +72,7 @@ class RecommendationSeedProvider {
       leader: leader?.title ?? 'No leader available',
       presentation: presentation?.title ?? 'No presentation available',
       bestTime: 'Sunrise',
-      weights: [evaluation.score],
+      environmentalScore: evaluation.score,
       reasons: evaluation.reasons,
     );
   }
