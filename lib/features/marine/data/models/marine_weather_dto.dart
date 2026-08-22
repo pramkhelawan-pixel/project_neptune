@@ -2,11 +2,15 @@ class MarineWeatherDto {
   final double waveHeight;
   final double wavePeriod;
   final double seaSurfaceTemperature;
+  final double swellWaveHeight;
+  final double swellWavePeriod;
 
   const MarineWeatherDto({
     required this.waveHeight,
     required this.wavePeriod,
     required this.seaSurfaceTemperature,
+    required this.swellWaveHeight,
+    required this.swellWavePeriod,
   });
 
   factory MarineWeatherDto.fromJson(
@@ -33,6 +37,8 @@ class MarineWeatherDto {
       waveHeight: firstValue('wave_height'),
       wavePeriod: firstValue('wave_period'),
       seaSurfaceTemperature: firstValue('sea_surface_temperature'),
+      swellWaveHeight: firstValue('swell_wave_height'),
+      swellWavePeriod: firstValue('swell_wave_period'),
     );
   }
 }

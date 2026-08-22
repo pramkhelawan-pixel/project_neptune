@@ -20,8 +20,8 @@ class SwellConditionsMapper {
       MarineWeatherDto dto,
       ) {
     return SwellConditions(
-      height: dto.waveHeight,
-      period: dto.wavePeriod,
+      height: dto.swellWaveHeight,
+      period: dto.swellWavePeriod,
 
       // Open-Meteo does not currently provide swell direction
       // in the configured endpoint.

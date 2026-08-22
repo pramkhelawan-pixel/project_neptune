@@ -8,6 +8,8 @@ MarineWeatherDto _dto(double seaSurfaceTemperature) {
     waveHeight: 1.2,
     wavePeriod: 8.0,
     seaSurfaceTemperature: seaSurfaceTemperature,
+    swellWaveHeight: 1.0,
+    swellWavePeriod: 7.0,
   );
 }
 
