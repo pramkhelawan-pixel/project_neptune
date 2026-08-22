@@ -5,12 +5,16 @@ class MarineWeatherDto {
   final double swellWaveHeight;
   final double swellWavePeriod;
 
+  /// Swell direction in degrees (0-360, meteorological convention).
+  final double swellWaveDirection;
+
   const MarineWeatherDto({
     required this.waveHeight,
     required this.wavePeriod,
     required this.seaSurfaceTemperature,
     required this.swellWaveHeight,
     required this.swellWavePeriod,
+    required this.swellWaveDirection,
   });
 
   factory MarineWeatherDto.fromJson(
@@ -39,6 +43,7 @@ class MarineWeatherDto {
       seaSurfaceTemperature: firstValue('sea_surface_temperature'),
       swellWaveHeight: firstValue('swell_wave_height'),
       swellWavePeriod: firstValue('swell_wave_period'),
+      swellWaveDirection: firstValue('swell_wave_direction'),
     );
   }
 }

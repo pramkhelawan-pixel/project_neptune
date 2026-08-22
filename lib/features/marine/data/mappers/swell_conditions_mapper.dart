@@ -22,10 +22,45 @@ class SwellConditionsMapper {
     return SwellConditions(
       height: dto.swellWaveHeight,
       period: dto.swellWavePeriod,
-
-      // Open-Meteo does not currently provide swell direction
-      // in the configured endpoint.
-      direction: 'Unknown',
+      direction: _directionFromDegrees(dto.swellWaveDirection),
     );
+  }
+
+  /// Converts a meteorological degree bearing (0-360) to an 8-point compass
+  /// abbreviation. Same bucket convention as
+  /// `WindConditionsMapper._directionFromDegrees` (45° buckets centred on
+  /// each compass point), so 0°/360° both resolve to 'N'.
+  static String _directionFromDegrees(
+      double degrees,
+      ) {
+    if (degrees >= 337.5 || degrees < 22.5) {
+      return 'N';
+    }
+
+    if (degrees < 67.5) {
+      return 'NE';
+    }
+
+    if (degrees < 112.5) {
+      return 'E';
+    }
+
+    if (degrees < 157.5) {
+      return 'SE';
+    }
+
+    if (degrees < 202.5) {
+      return 'S';
+    }
+
+    if (degrees < 247.5) {
+      return 'SW';
+    }
+
+    if (degrees < 292.5) {
+      return 'W';
+    }
+
+    return 'NW';
   }
 }

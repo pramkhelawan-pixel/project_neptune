@@ -21,6 +21,7 @@ class MarineConditionsLegacyMapper {
       windDirection: source.wind.direction.abbreviation,
       swellHeight: source.swell.height,
       swellPeriod: source.swell.period,
+      swellDirection: source.swell.direction,
       waterTemperature: source.water.temperature,
       airTemperature: source.atmosphere.airTemperature,
       atmosphericPressure: source.atmosphere.pressure,

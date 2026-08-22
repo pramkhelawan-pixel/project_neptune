@@ -4,10 +4,11 @@ import 'package:project_neptune/features/marine/data/mappers/swell_conditions_ma
 import 'package:project_neptune/features/marine/data/models/marine_weather_dto.dart';
 
 MarineWeatherDto _dto({
-  required double waveHeight,
-  required double wavePeriod,
+  double waveHeight = 2.0,
+  double wavePeriod = 10.2,
   required double swellWaveHeight,
   required double swellWavePeriod,
+  double swellWaveDirection = 0.0,
 }) {
   return MarineWeatherDto(
     waveHeight: waveHeight,
@@ -15,6 +16,7 @@ MarineWeatherDto _dto({
     seaSurfaceTemperature: 16.0,
     swellWaveHeight: swellWaveHeight,
     swellWavePeriod: swellWavePeriod,
+    swellWaveDirection: swellWaveDirection,
   );
 }
 
@@ -68,17 +70,55 @@ void main() {
       },
     );
 
-    test('direction remains "Unknown" - out of scope for this change', () {
-      final dto = _dto(
-        waveHeight: 2.0,
-        wavePeriod: 10.2,
-        swellWaveHeight: 1.76,
-        swellWavePeriod: 7.65,
-      );
+    group('direction - degrees to compass conversion', () {
+      // (input degrees, expected compass abbreviation)
+      const cases = <(double, String)>[
+        (0, 'N'),
+        (45, 'NE'),
+        (90, 'E'),
+        (135, 'SE'),
+        (180, 'S'),
+        (225, 'SW'),
+        (270, 'W'),
+        (315, 'NW'),
+        // Boundary values either side of each bucket edge.
+        (22.4, 'N'),
+        (22.5, 'NE'),
+        (337.4, 'NW'),
+        (337.5, 'N'),
+        (360, 'N'),
+      ];
 
-      final result = SwellConditionsMapper.toDomain(dto);
+      for (final (degrees, expected) in cases) {
+        test('$degrees° -> $expected', () {
+          final dto = _dto(
+            swellWaveHeight: 1.5,
+            swellWavePeriod: 8.0,
+            swellWaveDirection: degrees,
+          );
 
-      expect(result.direction, 'Unknown');
+          final result = SwellConditionsMapper.toDomain(dto);
+
+          expect(result.direction, expected);
+        });
+      }
     });
+
+    test(
+      'direction is a real compass value, no longer the hardcoded '
+      '"Unknown"',
+      () {
+        final dto = _dto(
+          swellWaveHeight: 1.5,
+          swellWavePeriod: 8.0,
+          swellWaveDirection: 227,
+        );
+
+        final result = SwellConditionsMapper.toDomain(dto);
+
+        expect(result.direction, isNot('Unknown'));
+        expect(result.direction, 'SW');
+      },
+    );
   });
 }

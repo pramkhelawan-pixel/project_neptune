@@ -25,6 +25,12 @@ class MarineConditions {
   /// Swell period (seconds).
   final double swellPeriod;
 
+  /// Swell direction (e.g. N, NE, SW).
+  ///
+  /// Null for construction paths that predate this field (mocks, legacy
+  /// mappers) — callers must treat null as "unknown".
+  final String? swellDirection;
+
   /// Sea surface temperature (°C).
   final double waterTemperature;
 
@@ -79,6 +85,7 @@ class MarineConditions {
     required this.windDirection,
     required this.swellHeight,
     required this.swellPeriod,
+    this.swellDirection,
     required this.waterTemperature,
     required this.airTemperature,
     required this.atmosphericPressure,
@@ -99,6 +106,7 @@ class MarineConditions {
     String? windDirection,
     double? swellHeight,
     double? swellPeriod,
+    String? swellDirection,
     double? waterTemperature,
     double? airTemperature,
     double? atmosphericPressure,
@@ -118,6 +126,7 @@ class MarineConditions {
       windDirection: windDirection ?? this.windDirection,
       swellHeight: swellHeight ?? this.swellHeight,
       swellPeriod: swellPeriod ?? this.swellPeriod,
+      swellDirection: swellDirection ?? this.swellDirection,
       waterTemperature: waterTemperature ?? this.waterTemperature,
       airTemperature: airTemperature ?? this.airTemperature,
       atmosphericPressure:
