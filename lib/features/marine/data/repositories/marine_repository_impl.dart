@@ -73,7 +73,7 @@ class MarineRepositoryImpl implements MarineRepository {
       current: CurrentConditionsMapper.toDomain(),
       water: WaterConditionsMapper.toDomain(response.marine),
       atmosphere: AtmosphericConditionsMapper.toDomain(response.weather),
-      moon: LunarConditionsMapper.toDomain(),
+      moon: LunarConditionsMapper.toDomain(DateTime.now()),
       sun: SolarConditionsMapper.toDomain(response.weather),
       location: LocationConditionsMapper.toDomain(
         latitude: location.latitude,
