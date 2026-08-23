@@ -6,6 +6,9 @@ import '../../../../core/providers/app_providers.dart';
 import '../../../../core/services/share/recommend_friend_content.dart';
 import '../../../../core/services/supabase_service.dart';
 import '../../../authentication/presentation/providers/auth_controller.dart';
+import '../../../licence/presentation/licence_copy.dart';
+import '../../../licence/presentation/pages/licence_page.dart';
+import '../../../licence/presentation/providers/licence_provider.dart';
 import '../providers/profile_repository_provider.dart';
 
 class ProfilePage extends ConsumerWidget {
@@ -17,6 +20,8 @@ class ProfilePage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final user = SupabaseService.client.auth.currentUser;
     final authState = ref.watch(authControllerProvider);
+    final hasLicenceAccess =
+        ref.watch(licenceEntitlementProvider).valueOrNull ?? false;
 
     return SafeArea(
       child: ListView(
@@ -106,6 +111,38 @@ class ProfilePage extends ConsumerWidget {
                 trailing: const Icon(Icons.chevron_right),
                 onTap: () => _recommendAFriend(tileContext, ref),
               ),
+            ),
+          ),
+
+          const SizedBox(height: 20),
+
+          Card(
+            elevation: 1,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(18),
+            ),
+            child: ListTile(
+              contentPadding: const EdgeInsets.symmetric(
+                horizontal: 16,
+                vertical: 4,
+              ),
+              leading: Icon(
+                hasLicenceAccess ? Icons.badge_outlined : Icons.lock_outline,
+              ),
+              title: Text(
+                hasLicenceAccess
+                    ? kLicenceVaultName
+                    : '🔒 $kLicenceVaultName',
+              ),
+              subtitle: hasLicenceAccess ? null : const Text('Premium'),
+              trailing: const Icon(Icons.chevron_right),
+              onTap: hasLicenceAccess
+                  ? () => Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (_) => const LicencePage(),
+                        ),
+                      )
+                  : null,
             ),
           ),
 
