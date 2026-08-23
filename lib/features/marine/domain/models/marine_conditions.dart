@@ -10,6 +10,8 @@
 // This model is designed to evolve as Neptune's prediction engine grows.
 // -----------------------------------------------------------------------------
 
+import '../../../lunar/domain/solunar_period.dart';
+
 import '../enums/tide_state.dart';
 
 class MarineConditions {
@@ -80,6 +82,29 @@ class MarineConditions {
   /// Sunset.
   final DateTime sunset;
 
+  /// Locally-calculated moonrise for the observation date/location.
+  ///
+  /// Null when the Moon does not rise within that calendar day — a real,
+  /// non-error astronomical outcome (see [SolunarPeriod]) — callers must
+  /// treat null as "no moonrise today", not "unknown".
+  final DateTime? moonrise;
+
+  /// Locally-calculated moonset for the observation date/location.
+  ///
+  /// Null when the Moon does not set within that calendar day — a real,
+  /// non-error astronomical outcome — callers must treat null as "no
+  /// moonset today", not "unknown".
+  final DateTime? moonset;
+
+  /// Solunar major feeding periods (moon transit and antitransit ± 1h).
+  /// Always two entries when populated by [MarineConditionsLegacyMapper];
+  /// empty for construction paths that predate this field.
+  final List<SolunarPeriod> majorPeriods;
+
+  /// Solunar minor feeding periods (moonrise and moonset ± 1h). Zero, one,
+  /// or two entries depending on which events occur that day.
+  final List<SolunarPeriod> minorPeriods;
+
   /// When these conditions were actually observed.
   ///
   /// Set on every real fetch (fresh or last-known-good fallback — see
@@ -107,6 +132,10 @@ class MarineConditions {
     required this.moonPhase,
     required this.sunrise,
     required this.sunset,
+    this.moonrise,
+    this.moonset,
+    this.majorPeriods = const [],
+    this.minorPeriods = const [],
     this.observedAt,
   });
 
@@ -129,6 +158,10 @@ class MarineConditions {
     String? moonPhase,
     DateTime? sunrise,
     DateTime? sunset,
+    DateTime? moonrise,
+    DateTime? moonset,
+    List<SolunarPeriod>? majorPeriods,
+    List<SolunarPeriod>? minorPeriods,
     DateTime? observedAt,
   }) {
     return MarineConditions(
@@ -152,6 +185,10 @@ class MarineConditions {
       moonPhase: moonPhase ?? this.moonPhase,
       sunrise: sunrise ?? this.sunrise,
       sunset: sunset ?? this.sunset,
+      moonrise: moonrise ?? this.moonrise,
+      moonset: moonset ?? this.moonset,
+      majorPeriods: majorPeriods ?? this.majorPeriods,
+      minorPeriods: minorPeriods ?? this.minorPeriods,
       observedAt: observedAt ?? this.observedAt,
     );
   }

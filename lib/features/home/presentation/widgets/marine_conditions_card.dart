@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
+import '../../../lunar/domain/solunar_period.dart';
 import '../../../marine/domain/models/marine_conditions.dart';
+import '../../../profile/presentation/providers/profile_repository_provider.dart';
 
-class MarineConditionsCard extends StatelessWidget {
+class MarineConditionsCard extends ConsumerWidget {
   final MarineConditions conditions;
 
   const MarineConditionsCard({
@@ -40,6 +43,18 @@ class MarineConditionsCard extends StatelessWidget {
     return '${minutes}m';
   }
 
+  /// Renders a list of Solunar periods as "HH:mm–HH:mm" ranges, or '--'
+  /// when the list is empty — never invents a period for a missing event.
+  String _formatPeriods(List<SolunarPeriod> periods) {
+    if (periods.isEmpty) {
+      return '--';
+    }
+
+    return periods
+        .map((period) => '${_formatTime(period.start)}–${_formatTime(period.end)}')
+        .join(', ');
+  }
+
   String _freshnessLabel() {
     final observedAt = conditions.observedAt;
 
@@ -58,7 +73,14 @@ class MarineConditionsCard extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    // Only an explicit `true` grants Premium Solunar access. Unauthenticated,
+    // null-profile, still-loading, and lookup-failure cases all fall
+    // through `valueOrNull` to `null`, and are treated as free/locked by
+    // the `?? false` below — never as an error state to work around.
+    final isPremium =
+        ref.watch(currentProfileProvider).valueOrNull?.isPremium ?? false;
+
     return Card(
       elevation: 2,
       shape: RoundedRectangleBorder(
@@ -183,6 +205,62 @@ class MarineConditionsCard extends StatelessWidget {
               label: 'Sunset',
               value: _formatTime(conditions.sunset),
             ),
+
+            if (isPremium) ...[
+              const Divider(),
+
+              _ConditionRow(
+                icon: Icons.nightlight,
+                label: 'Moonrise',
+                value: _formatTime(conditions.moonrise),
+              ),
+
+              const Divider(),
+
+              _ConditionRow(
+                icon: Icons.dark_mode_outlined,
+                label: 'Moonset',
+                value: _formatTime(conditions.moonset),
+              ),
+
+              const Divider(),
+
+              _ConditionRow(
+                icon: Icons.access_time_filled,
+                label: 'Major Periods',
+                value: _formatPeriods(conditions.majorPeriods),
+              ),
+
+              const Divider(),
+
+              _ConditionRow(
+                icon: Icons.access_time,
+                label: 'Minor Periods',
+                value: _formatPeriods(conditions.minorPeriods),
+              ),
+            ] else ...[
+              const Divider(),
+
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 7),
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.lock_outline,
+                      size: 20,
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+
+                    const SizedBox(width: 12),
+
+                    const Text(
+                      'Solunar Intelligence — Premium',
+                      style: TextStyle(fontWeight: FontWeight.w600),
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ],
         ),
       ),

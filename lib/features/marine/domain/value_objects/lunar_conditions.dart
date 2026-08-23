@@ -11,6 +11,8 @@
 //
 // -----------------------------------------------------------------------------
 
+import '../../../lunar/domain/solunar_period.dart';
+
 import '../enums/moon_phase.dart';
 
 class LunarConditions {
@@ -20,9 +22,29 @@ class LunarConditions {
   /// Moon illumination percentage.
   final double illumination;
 
+  /// Locally-calculated moonrise for the observation date/location. Null
+  /// when the Moon does not rise that day (possible at high latitudes).
+  final DateTime? moonrise;
+
+  /// Locally-calculated moonset for the observation date/location. Null
+  /// when the Moon does not set that day (possible at high latitudes).
+  final DateTime? moonset;
+
+  /// Solunar major feeding periods (moon transit and antitransit ± 1h).
+  /// Always two entries.
+  final List<SolunarPeriod> majorPeriods;
+
+  /// Solunar minor feeding periods (moonrise and moonset ± 1h). Zero, one,
+  /// or two entries depending on which events occur that day.
+  final List<SolunarPeriod> minorPeriods;
+
   const LunarConditions({
     required this.phase,
     required this.illumination,
+    this.moonrise,
+    this.moonset,
+    this.majorPeriods = const [],
+    this.minorPeriods = const [],
   });
 
   /// Returns true when the moon is new.
@@ -46,20 +68,43 @@ class LunarConditions {
 
     return other is LunarConditions &&
         other.phase == phase &&
-        other.illumination == illumination;
+        other.illumination == illumination &&
+        other.moonrise == moonrise &&
+        other.moonset == moonset &&
+        _periodsEqual(other.majorPeriods, majorPeriods) &&
+        _periodsEqual(other.minorPeriods, minorPeriods);
   }
 
   @override
   int get hashCode => Object.hash(
     phase,
     illumination,
+    moonrise,
+    moonset,
+    Object.hashAll(majorPeriods),
+    Object.hashAll(minorPeriods),
   );
+
+  static bool _periodsEqual(
+    List<SolunarPeriod> a,
+    List<SolunarPeriod> b,
+  ) {
+    if (a.length != b.length) return false;
+
+    for (var i = 0; i < a.length; i++) {
+      if (a[i] != b[i]) return false;
+    }
+
+    return true;
+  }
 
   @override
   String toString() {
     return 'LunarConditions('
         'phase: ${phase.displayName}, '
-        'illumination: ${illumination.toStringAsFixed(0)}%'
+        'illumination: ${illumination.toStringAsFixed(0)}%, '
+        'moonrise: $moonrise, '
+        'moonset: $moonset'
         ')';
   }
 }

@@ -35,6 +35,10 @@ class MarineConditionsLegacyMapper {
       moonPhase: source.moon.phase.displayName,
       sunrise: source.sun.sunrise,
       sunset: source.sun.sunset,
+      moonrise: source.moon.moonrise,
+      moonset: source.moon.moonset,
+      majorPeriods: source.moon.majorPeriods,
+      minorPeriods: source.moon.minorPeriods,
       observedAt: source.metadata.observedAt,
     );
   }

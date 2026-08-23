@@ -10,6 +10,7 @@
 
 import '../../../lunar/domain/lunar_engine.dart';
 import '../../../lunar/domain/moon_phase.dart' as lunar;
+import '../../../lunar/domain/solunar_engine.dart';
 
 import '../../domain/enums/moon_phase.dart';
 import '../../domain/value_objects/lunar_conditions.dart';
@@ -18,13 +19,31 @@ class LunarConditionsMapper {
   const LunarConditionsMapper._();
 
   static const _lunarEngine = LunarEngine();
+  static const _solunarEngine = SolunarEngine();
 
-  static LunarConditions toDomain(DateTime date) {
+  /// [latitude] and [longitude] drive moonrise/moonset/major/minor-period
+  /// calculation only — [LunarEngine]'s phase/illumination calculation
+  /// remains location-independent, as it astronomically should be.
+  static LunarConditions toDomain(
+    DateTime date, {
+    required double latitude,
+    required double longitude,
+  }) {
     final lunarData = _lunarEngine.calculate(date);
+
+    final solunarData = _solunarEngine.calculate(
+      date,
+      latitude: latitude,
+      longitude: longitude,
+    );
 
     return LunarConditions(
       phase: _toMarineDomain(lunarData.phase),
       illumination: lunarData.illumination,
+      moonrise: solunarData.moonrise,
+      moonset: solunarData.moonset,
+      majorPeriods: solunarData.majorPeriods,
+      minorPeriods: solunarData.minorPeriods,
     );
   }
 

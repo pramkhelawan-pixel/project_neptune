@@ -2,6 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 import 'package:project_neptune/features/marine/data/mappers/lunar_conditions_mapper.dart';
 import 'package:project_neptune/features/marine/domain/enums/moon_phase.dart';
+import 'package:project_neptune/features/marine/domain/value_objects/lunar_conditions.dart';
 
 void main() {
   // Same reference point LunarEngine anchors its calculation to (see
@@ -15,12 +16,24 @@ void main() {
     ),
   );
 
+  // Durban, South Africa — a fixed Southern Hemisphere reference location
+  // (same coordinates as the Blue Lagoon fishing-spot fixture) used
+  // throughout these tests.
+  const latitude = -29.7919;
+  const longitude = 31.0446;
+
+  LunarConditions toDomain(DateTime date) => LunarConditionsMapper.toDomain(
+        date,
+        latitude: latitude,
+        longitude: longitude,
+      );
+
   group('LunarConditionsMapper.toDomain', () {
     test(
       'no longer always returns Full Moon - a new-moon date maps to '
       'MoonPhase.newMoon',
       () {
-        final result = LunarConditionsMapper.toDomain(knownNewMoon);
+        final result = toDomain(knownNewMoon);
 
         expect(result.phase, isNot(MoonPhase.fullMoon));
         expect(result.phase, MoonPhase.newMoon);
@@ -28,22 +41,22 @@ void main() {
     );
 
     test('a genuinely full-moon date maps to MoonPhase.fullMoon', () {
-      final result = LunarConditionsMapper.toDomain(knownFullMoon);
+      final result = toDomain(knownFullMoon);
 
       expect(result.phase, MoonPhase.fullMoon);
     });
 
     test('different dates produce different phases (not a constant)', () {
-      final newMoonResult = LunarConditionsMapper.toDomain(knownNewMoon);
-      final fullMoonResult = LunarConditionsMapper.toDomain(knownFullMoon);
+      final newMoonResult = toDomain(knownNewMoon);
+      final fullMoonResult = toDomain(knownFullMoon);
 
       expect(newMoonResult.phase, isNot(fullMoonResult.phase));
     });
 
     test('illumination is passed through from LunarEngine, not fixed at '
         '100', () {
-      final newMoonResult = LunarConditionsMapper.toDomain(knownNewMoon);
-      final fullMoonResult = LunarConditionsMapper.toDomain(knownFullMoon);
+      final newMoonResult = toDomain(knownNewMoon);
+      final fullMoonResult = toDomain(knownFullMoon);
 
       expect(newMoonResult.illumination, lessThan(5.0));
       expect(fullMoonResult.illumination, greaterThan(95.0));
@@ -63,7 +76,7 @@ void main() {
 
         for (var i = 0; i <= 30; i++) {
           final date = knownNewMoon.add(Duration(days: i));
-          final result = LunarConditionsMapper.toDomain(date);
+          final result = toDomain(date);
           phasesSeen.add(result.phase);
         }
 
@@ -72,5 +85,37 @@ void main() {
         expect(phasesSeen, hasLength(8));
       },
     );
+
+    test(
+      'phase/illumination are unaffected by location (location only drives '
+      'moonrise/moonset/period calculation)',
+      () {
+        final durban = LunarConditionsMapper.toDomain(
+          knownFullMoon,
+          latitude: -29.7919,
+          longitude: 31.0446,
+        );
+
+        final reykjavik = LunarConditionsMapper.toDomain(
+          knownFullMoon,
+          latitude: 64.1466,
+          longitude: -21.9426,
+        );
+
+        expect(durban.phase, reykjavik.phase);
+        expect(durban.illumination, reykjavik.illumination);
+      },
+    );
+
+    test('populates moonrise/moonset and major/minor periods for a normal '
+        'Southern Hemisphere date', () {
+      final result = toDomain(DateTime.utc(2026, 6, 15, 12));
+
+      expect(result.majorPeriods, hasLength(2));
+      expect(
+        result.minorPeriods.length,
+        anyOf(0, 1, 2),
+      );
+    });
   });
 }
