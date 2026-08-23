@@ -5,9 +5,14 @@ import '../../../location/presentation/providers/user_location_provider.dart';
 import '../../../marine/presentation/providers/marine_provider.dart';
 import '../../../outlook/domain/fishing_outlook_engine.dart';
 import '../../../outlook/presentation/widgets/fishing_outlook_card.dart';
+import '../../../profile/presentation/providers/profile_repository_provider.dart';
 import '../../../readiness/domain/readiness_engine.dart';
+import '../../../recommendation/data/species_environment_profiles.dart';
+import '../../../recommendation/domain/species_environment_profile.dart';
 import '../../../recommendation/presentation/providers/recommendation_provider.dart';
+import '../../../recommendation/presentation/widgets/best_fishing_window_card.dart';
 import '../../../recommendation/presentation/widgets/neptune_recommendation_card.dart';
+import '../../../recommendation/services/best_fishing_window_engine.dart';
 import '../../../species/domain/species_engine.dart';
 import '../../../species/presentation/widgets/species_recommendation_card.dart';
 import 'marine_conditions_card.dart';
@@ -30,10 +35,28 @@ class HomeDashboard extends ConsumerWidget {
     return '🌊 Good Evening';
   }
 
+  /// Looks up the environment profile for [species], falling back to Shad
+  /// -- mirrors the existing lookup in `RecommendationSeedProvider`, kept
+  /// separate rather than reusing that class directly since it is scoped
+  /// to seeding bait/hook/leader recommendations, not window evaluation.
+  SpeciesEnvironmentProfile _profileForSpecies(String species) {
+    return environmentProfiles.firstWhere(
+      (profile) => profile.species.toLowerCase() == species.toLowerCase(),
+      orElse: () => shadEnvironmentProfile,
+    );
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final marineAsync = ref.watch(marineConditionsProvider);
     final recommendationAsync = ref.watch(recommendationProvider);
+
+    // Only an explicit `true` unlocks the Solunar tiebreak below -- loading,
+    // null-profile, and lookup-failure cases all fall through to `false`,
+    // matching the same fail-closed pattern already used by
+    // MarineConditionsCard's Solunar gate.
+    final isPremium =
+        ref.watch(currentProfileProvider).valueOrNull?.isPremium ?? false;
 
     return marineAsync.when(
       loading: () => const Center(
@@ -125,10 +148,22 @@ class HomeDashboard extends ConsumerWidget {
                       ),
                     ),
                   ),
-                  data: (recommendation) =>
+                  data: (recommendation) => Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
                       NeptuneRecommendationCard(
                         recommendation: recommendation,
                       ),
+                      const SizedBox(height: 20),
+                      BestFishingWindowCard(
+                        result: const BestFishingWindowEngine().evaluate(
+                          conditions: conditions,
+                          profile: _profileForSpecies(recommendation.species),
+                          includeSolunarTiebreak: isPremium,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
 
                 const SizedBox(height: 20),
