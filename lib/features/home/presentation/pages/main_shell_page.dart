@@ -17,17 +17,29 @@ class MainShellPage extends StatefulWidget {
 class _MainShellPageState extends State<MainShellPage> {
   int _selectedIndex = 0;
 
-  late final List<Widget> _pages = const [
-    HomeDashboard(),
-    MarinePage(),
-    CatchHistoryPage(),
-    SpeciesListPage(),
-    MapsPage(),
-    ProfilePage(),
+  final List<Widget Function()> _pageBuilders = [
+    () => const HomeDashboard(),
+    () => const MarinePage(),
+    () => const CatchHistoryPage(),
+    () => const SpeciesListPage(),
+    () => const MapsPage(),
+    () => const ProfilePage(),
   ];
+
+  // Built lazily, one slot per tab: a tab's page is only constructed the
+  // first time it's selected, then kept here (and stays in IndexedStack's
+  // children below) so its state survives switching away and back. This is
+  // what stops all six tabs' providers (GPS, Supabase, live map tiles) from
+  // firing at once immediately after login.
+  late final List<Widget?> _pages =
+      List<Widget?>.filled(_pageBuilders.length, null);
+
+  Widget _tabAt(int index) => _pages[index] ??= _pageBuilders[index]();
 
   @override
   Widget build(BuildContext context) {
+    _tabAt(_selectedIndex);
+
     return Scaffold(
       appBar: AppBar(
         title: Text(_titleForIndex(_selectedIndex)),
@@ -35,7 +47,9 @@ class _MainShellPageState extends State<MainShellPage> {
       ),
       body: IndexedStack(
         index: _selectedIndex,
-        children: _pages,
+        children: [
+          for (final page in _pages) page ?? const SizedBox.shrink(),
+        ],
       ),
       bottomNavigationBar: NavigationBar(
         selectedIndex: _selectedIndex,
