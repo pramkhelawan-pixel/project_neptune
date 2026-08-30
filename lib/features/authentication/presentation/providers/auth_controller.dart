@@ -37,6 +37,7 @@ class AuthController extends _$AuthController {
   Future<void> signUp({
     required String email,
     required String password,
+    required bool acceptedLegalTerms,
   }) async {
     state = const AsyncLoading();
 
@@ -46,6 +47,7 @@ class AuthController extends _$AuthController {
       await repository.signUp(
         email: email,
         password: password,
+        acceptedLegalTerms: acceptedLegalTerms,
       );
     });
   }
