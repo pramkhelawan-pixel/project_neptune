@@ -5,6 +5,13 @@ class AuthRepository {
 
   final SupabaseClient _client;
 
+  /// Version identifiers for the documents a user agrees to at signup.
+  /// Passed through to Supabase Auth as signup metadata so the
+  /// `handle_new_user` trigger can record acceptance atomically with
+  /// account creation -- see the `legal_acceptances` migration.
+  static const currentTermsVersion = '1.0';
+  static const currentPrivacyVersion = '1.0';
+
   Future<AuthResponse> signIn({
     required String email,
     required String password,
@@ -15,13 +22,29 @@ class AuthRepository {
     );
   }
 
+  /// [acceptedLegalTerms] must be true -- callers are expected to have
+  /// already gated this on the user explicitly checking the consent
+  /// checkbox; this is a defensive assertion, not the enforcement point.
   Future<AuthResponse> signUp({
     required String email,
     required String password,
+    required bool acceptedLegalTerms,
   }) {
+    assert(
+      acceptedLegalTerms,
+      'signUp() must not be called before the user accepts the Terms & '
+      'Conditions and Privacy Policy.',
+    );
+
     return _client.auth.signUp(
       email: email,
       password: password,
+      emailRedirectTo:
+          'https://pramkhelawan-pixel.github.io/project_neptune/confirm-email.html',
+      data: {
+        'terms_version': currentTermsVersion,
+        'privacy_version': currentPrivacyVersion,
+      },
     );
   }
 

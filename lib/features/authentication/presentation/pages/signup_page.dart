@@ -1,9 +1,19 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../core/router/app_routes.dart';
 import '../providers/auth_controller.dart';
+
+/// Public, production URLs for the legal documents -- served via GitHub
+/// Pages from this repo's docs/ folder (see auth_repository.dart's
+/// confirm-email/reset-password redirects for the same pattern).
+const _termsUrl =
+    'https://pramkhelawan-pixel.github.io/project_neptune/terms-and-conditions.html';
+const _privacyUrl =
+    'https://pramkhelawan-pixel.github.io/project_neptune/privacy-policy.html';
 
 class SignUpPage extends ConsumerStatefulWidget {
   const SignUpPage({super.key});
@@ -19,20 +29,42 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
 
+  final _termsTapRecognizer = TapGestureRecognizer();
+  final _privacyTapRecognizer = TapGestureRecognizer();
+
+  // Never pre-selected under any code path -- consent must be an explicit,
+  // affirmative action by the user.
+  bool _acceptedLegalTerms = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _termsTapRecognizer.onTap = () => _openUrl(_termsUrl);
+    _privacyTapRecognizer.onTap = () => _openUrl(_privacyUrl);
+  }
+
   @override
   void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
     _confirmPasswordController.dispose();
+    _termsTapRecognizer.dispose();
+    _privacyTapRecognizer.dispose();
     super.dispose();
+  }
+
+  Future<void> _openUrl(String url) async {
+    await launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication);
   }
 
   Future<void> _signUp() async {
     if (!_formKey.currentState!.validate()) return;
+    if (!_acceptedLegalTerms) return;
 
     await ref.read(authControllerProvider.notifier).signUp(
       email: _emailController.text.trim(),
       password: _passwordController.text,
+      acceptedLegalTerms: _acceptedLegalTerms,
     );
 
     if (!mounted) return;
@@ -46,15 +78,20 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
         );
       },
       data: (_) {
+        final hasSession =
+            ref.read(authRepositoryProvider).currentSession != null;
+
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
+          SnackBar(
             content: Text(
-              'Account created successfully.',
+              hasSession
+                  ? 'Account created successfully.'
+                  : 'Account created. Please check your email to verify your account.',
             ),
           ),
         );
 
-        context.go(AppRoutes.login);
+        context.go(hasSession ? AppRoutes.home : AppRoutes.login);
       },
     );
   }
@@ -122,12 +159,57 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
                       return null;
                     },
                   ),
-                  const SizedBox(height: 24),
+                  const SizedBox(height: 16),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Checkbox(
+                        value: _acceptedLegalTerms,
+                        onChanged: (value) {
+                          setState(() {
+                            _acceptedLegalTerms = value ?? false;
+                          });
+                        },
+                      ),
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 12),
+                          child: RichText(
+                            text: TextSpan(
+                              style: DefaultTextStyle.of(context).style,
+                              children: [
+                                const TextSpan(text: 'I agree to the '),
+                                TextSpan(
+                                  text: 'Terms & Conditions',
+                                  style: const TextStyle(
+                                    decoration: TextDecoration.underline,
+                                  ),
+                                  recognizer: _termsTapRecognizer,
+                                ),
+                                const TextSpan(text: ' and '),
+                                TextSpan(
+                                  text: 'Privacy Policy',
+                                  style: const TextStyle(
+                                    decoration: TextDecoration.underline,
+                                  ),
+                                  recognizer: _privacyTapRecognizer,
+                                ),
+                                const TextSpan(text: '.'),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 8),
                   SizedBox(
                     width: double.infinity,
                     height: 50,
                     child: ElevatedButton(
-                      onPressed: authState.isLoading ? null : _signUp,
+                      onPressed: (authState.isLoading || !_acceptedLegalTerms)
+                          ? null
+                          : _signUp,
                       child: authState.isLoading
                           ? const CircularProgressIndicator()
                           : const Text('Create Account'),
