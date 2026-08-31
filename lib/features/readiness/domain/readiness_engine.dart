@@ -29,13 +29,13 @@ class ReadinessEngine {
     //-----------------------------------
 
     if (conditions.windSpeed <= 10) {
-      score += 20;
+      score += 29;
       reasons.add('Light wind');
     } else if (conditions.windSpeed <= 20) {
-      score += 15;
+      score += 22;
       reasons.add('Moderate wind');
     } else {
-      score += 5;
+      score += 7;
       reasons.add('Strong wind');
     }
 
@@ -45,13 +45,13 @@ class ReadinessEngine {
 
     if (conditions.swellHeight >= 1 &&
         conditions.swellHeight <= 2) {
-      score += 25;
+      score += 36;
       reasons.add('Ideal swell');
     } else if (conditions.swellHeight <= 3) {
-      score += 15;
+      score += 22;
       reasons.add('Fishable swell');
     } else {
-      score += 5;
+      score += 7;
       reasons.add('Large swell');
     }
 
@@ -62,19 +62,19 @@ class ReadinessEngine {
     final tideState = conditions.canonicalTideState;
 
     if (tideState != null && tideState.isIncoming) {
-      score += 25;
+      score += 35;
       reasons.add('Incoming tide');
     } else if (tideState != null && tideState.isHigh) {
-      score += 20;
+      score += 28;
       reasons.add('High tide');
     } else if (tideState != null && tideState.isOutgoing) {
-      score += 10;
+      score += 14;
       reasons.add('Outgoing tide');
     } else if (tideState != null && tideState.isLow) {
-      score += 10;
+      score += 14;
       reasons.add('Low tide');
     } else {
-      score += 5;
+      score += 7;
       reasons.add('Unknown tide');
     }
 
