@@ -117,6 +117,21 @@ class _LengthWeightCalculatorFormState
                 DropdownMenuEntry(
                   value: species.speciesId,
                   label: species.displayName,
+                  labelWidget: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(species.displayName),
+                      Text(
+                        species.scientificName,
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                              fontStyle: FontStyle.italic,
+                              color:
+                                  Theme.of(context).colorScheme.onSurfaceVariant,
+                            ),
+                      ),
+                    ],
+                  ),
                 ),
             ],
             onSelected: (speciesId) {
@@ -128,6 +143,16 @@ class _LengthWeightCalculatorFormState
                 _result = null;
               });
             },
+          ),
+
+          const SizedBox(height: 4),
+
+          Text(
+            _selectedSpecies.scientificName,
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  fontStyle: FontStyle.italic,
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                ),
           ),
 
           const SizedBox(height: 16),

@@ -23,4 +23,4 @@ const kLengthWeightScientificDisclaimer =
 const kLengthWeightSourceAttribution =
     'Source: Harrison, T.D. (2001), "Length-weight relationships of '
     'fishes from South African estuaries", Journal of Applied '
-    'Ichthyology 17:46-48. DOI: 10.1046/j.1439-0426.2001.00277.x';
+    'Ichthyology, 17(1), 46–48. DOI: 10.1046/j.1439-0426.2001.00277.x';

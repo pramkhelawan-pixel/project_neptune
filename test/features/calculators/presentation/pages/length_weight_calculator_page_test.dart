@@ -82,7 +82,7 @@ void main() {
       await pumpUntilResolved(tester);
 
       expect(find.text(kLengthWeightCalculatorSubtitle), findsOneWidget);
-      expect(find.text('Stumpnose'), findsOneWidget);
+      expect(find.text('Cape Stumpnose'), findsOneWidget);
       expect(find.byType(TextFormField), findsOneWidget);
       expect(find.text('cm'), findsOneWidget);
       expect(find.text('in'), findsOneWidget);
@@ -118,7 +118,7 @@ void main() {
 
   group('LengthWeightCalculatorPage - valid calculation', () {
     testWidgets('cm input produces the correct estimated weight for the '
-        'default species (Stumpnose)', (tester) async {
+        'default species (Cape Stumpnose)', (tester) async {
       await tester.pumpWidget(harness(isPremium: true));
       await pumpUntilResolved(tester);
 
@@ -146,14 +146,14 @@ void main() {
       expect(find.text('Estimated weight: 0.07 kg'), findsOneWidget);
     });
 
-    testWidgets('selecting a different species (Grunter) uses that '
+    testWidgets('selecting a different species (Spotted Grunter) uses that '
         "species' coefficients", (tester) async {
       await tester.pumpWidget(harness(isPremium: true));
       await pumpUntilResolved(tester);
 
-      await tester.tap(find.text('Stumpnose'));
+      await tester.tap(find.text('Cape Stumpnose'));
       await tester.pumpAndSettle();
-      await tester.tap(find.text('Grunter').last);
+      await tester.tap(find.text('Spotted Grunter').last);
       await tester.pumpAndSettle();
 
       await tester.enterText(find.byType(TextFormField), '10');
@@ -230,7 +230,7 @@ void main() {
   group('LengthWeightCalculatorPage - range validation, no extrapolation',
       () {
     testWidgets('a length above the validated range shows a warning and '
-        'no weight, for the default species (Stumpnose, max 24cm)',
+        'no weight, for the default species (Cape Stumpnose, max 24cm)',
         (tester) async {
       await tester.pumpWidget(harness(isPremium: true));
       await pumpUntilResolved(tester);

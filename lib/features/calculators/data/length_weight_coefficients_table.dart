@@ -2,7 +2,7 @@ import '../domain/entities/length_type.dart';
 import '../domain/entities/length_weight_coefficients.dart';
 
 /// Harrison, T.D. (2001), "Length-weight relationships of fishes from
-/// South African estuaries", Journal of Applied Ichthyology 17:46-48.
+/// South African estuaries", Journal of Applied Ichthyology, 17(1), 46–48.
 /// DOI: 10.1046/j.1439-0426.2001.00277.x. Table 1, pp.46-48.
 ///
 /// Verified directly against the primary-source full text (CSIR
@@ -11,8 +11,8 @@ import '../domain/entities/length_weight_coefficients.dart';
 /// paper's own table, not taken second-hand from a compiled database.
 const kHarrison2001Citation =
     'Harrison, T.D. (2001), "Length-weight relationships of fishes from '
-    'South African estuaries", Journal of Applied Ichthyology 17:46-48. '
-    'DOI: 10.1046/j.1439-0426.2001.00277.x';
+    'South African estuaries", Journal of Applied Ichthyology, 17(1), '
+    '46–48. DOI: 10.1046/j.1439-0426.2001.00277.x';
 
 /// Every length-weight relationship Neptune's calculator currently
 /// supports. Only add a species here once its equation has been verified
@@ -26,7 +26,7 @@ const List<LengthWeightCoefficients> lengthWeightCoefficientsTable = [
   LengthWeightCoefficients(
     speciesId: 'stumpnose',
     scientificName: 'Rhabdosargus holubi',
-    displayName: 'Stumpnose',
+    displayName: 'Cape Stumpnose',
     a: 0.0272,
     b: 3.087,
     lengthType: LengthType.standardLength,
@@ -41,7 +41,7 @@ const List<LengthWeightCoefficients> lengthWeightCoefficientsTable = [
   LengthWeightCoefficients(
     speciesId: 'grunter',
     scientificName: 'Pomadasys commersonnii',
-    displayName: 'Grunter',
+    displayName: 'Spotted Grunter',
     a: 0.0209,
     b: 3.001,
     lengthType: LengthType.standardLength,
