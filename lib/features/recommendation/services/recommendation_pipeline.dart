@@ -45,6 +45,7 @@ class RecommendationPipeline {
       location: recommendation.location,
       bestTime: recommendation.bestTime,
       confidence: recommendation.confidence.toDouble(),
+      score: recommendation.score,
       explanations: recommendation.reasons,
     );
   }

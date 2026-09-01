@@ -129,6 +129,17 @@ class NeptuneRecommendationCard extends StatelessWidget {
               color: _confidenceColor(),
             ),
 
+            const SizedBox(height: 8),
+
+            const Text(
+              'Reflects how well current conditions match this species\' '
+              'known preferences -- not a chance of catching fish.',
+              style: TextStyle(
+                fontSize: 12,
+                fontStyle: FontStyle.italic,
+              ),
+            ),
+
             const SizedBox(height: 24),
 
             const Divider(),

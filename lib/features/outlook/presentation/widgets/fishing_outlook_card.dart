@@ -109,6 +109,17 @@ class FishingOutlookCard extends StatelessWidget {
                 Text('${outlook.confidence}%'),
               ],
             ),
+
+            const SizedBox(height: 8),
+
+            const Text(
+              'Reflects how well current wind, swell and tide match '
+              'favourable fishing conditions -- not a chance of catching fish.',
+              style: TextStyle(
+                fontSize: 12,
+                fontStyle: FontStyle.italic,
+              ),
+            ),
           ],
         ),
       ),

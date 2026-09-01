@@ -15,6 +15,14 @@ class RecommendationResponse {
 
   final double confidence;
 
+  /// The raw environmental condition-match score (see [EnvironmentalEvaluator])
+  /// that [confidence] was derived from. Distinct from [confidence]: this is
+  /// the actual factor-match count, not the confidence lookup's transformed
+  /// value. Kept separate so a screen showing both never redisplays the same
+  /// underlying number under two different labels as if they were
+  /// independent measurements.
+  final int score;
+
   final List<String> explanations;
 
   const RecommendationResponse({
@@ -26,6 +34,7 @@ class RecommendationResponse {
     required this.location,
     required this.bestTime,
     required this.confidence,
+    required this.score,
     required this.explanations,
   });
 }

@@ -16,9 +16,15 @@ class RecommendationDetailsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // recommendation.score is the raw environmental condition-match count
+    // (see EnvironmentalEvaluator) -- NOT recommendation.confidence, which
+    // is a separate lookup-derived value already shown elsewhere on this
+    // page. Feeding confidence in here would silently redisplay the same
+    // number under a second, differently-labelled card as if it were an
+    // independent assessment.
     final readiness =
     const EnvironmentalReadinessCalculator().calculate(
-      environmentalScore: recommendation.confidence.round(),
+      environmentalScore: recommendation.score,
       reasons: recommendation.explanations,
     );
 

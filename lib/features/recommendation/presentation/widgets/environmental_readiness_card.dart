@@ -82,6 +82,19 @@ class EnvironmentalReadinessCard extends StatelessWidget {
               color: _statusColor(),
             ),
 
+            const SizedBox(height: 12),
+
+            const Text(
+              'Based on the same wind, swell, tide, moon and temperature '
+              'match used to calculate the recommendation above -- not a '
+              'separate or independent measurement.',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 12,
+                fontStyle: FontStyle.italic,
+              ),
+            ),
+
             const SizedBox(height: 24),
 
             const Divider(),
