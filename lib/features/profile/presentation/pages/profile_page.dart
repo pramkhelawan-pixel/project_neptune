@@ -279,6 +279,14 @@ class _DeleteAccountDialogState extends ConsumerState<_DeleteAccountDialog> {
 
       if (!mounted) return;
 
+      // Local cleanup failing must never surface as an account-deletion
+      // failure -- the server-side deletion above has already succeeded.
+      try {
+        await ref.read(licenceRepositoryProvider).deleteLicence();
+        await ref.read(licenceEntitlementRepositoryProvider)
+            .clearPremiumConfirmation();
+      } catch (_) {}
+
       await ref.read(authControllerProvider.notifier).signOut();
     } catch (error) {
       if (!mounted) return;
