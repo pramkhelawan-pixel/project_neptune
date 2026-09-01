@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../fishing_spots/domain/entities/fishing_spot.dart';
 import '../../../fishing_spots/presentation/providers/fishing_spot_repository_provider.dart';
@@ -161,6 +162,17 @@ class _MapsPageState extends ConsumerState<MapsPage> {
                       ),
                     ),
                   ),
+              ],
+            ),
+            RichAttributionWidget(
+              attributions: [
+                TextSourceAttribution(
+                  '© OpenStreetMap contributors',
+                  onTap: () => launchUrl(
+                    Uri.parse('https://www.openstreetmap.org/copyright'),
+                    mode: LaunchMode.externalApplication,
+                  ),
+                ),
               ],
             ),
           ],

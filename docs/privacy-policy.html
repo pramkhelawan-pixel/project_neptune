@@ -176,6 +176,7 @@
 
   <h3>1.2 Location Information</h3>
   <p>Neptune uses your device's precise location, with your permission, to power the Maps feature, to show you fishing spots near your current position, and to fetch tide, weather, and marine condition information relevant to where you are (for example, on the home screen). You can decline location access; some features will be limited as a result. Location is only accessed while you are actively using the app — we do not track your location in the background, and your device's coordinates are not stored as part of your account or catch history. The fishing-spot locations shown on the map are a fixed, curated directory maintained by Neptune; they are not derived from, or a record of, your own location history.</p>
+  <p>The Maps feature displays map imagery using OpenStreetMap. When the map is shown, your device requests map tiles directly from OpenStreetMap's servers based on the area of the map currently in view. When the map is centered on your own position (for example, after you tap the locate-me button), this reveals your approximate location, at a resolution determined by the map's zoom level, to OpenStreetMap; your device's IP address is also visible to OpenStreetMap's servers as part of these requests, as with any direct web request. OpenStreetMap does not receive your Neptune account information and has no means of linking these tile requests to your identity.</p>
 
   <h3>1.3 User-Generated Content</h3>
   <p>When you log a catch, we store the information you provide, including species, location, weight, length, bait, hook, trace, notes, and the date/time of your catch. This data is linked to your account and is used to build your personal catch history. The location you log is a place name — either selected from our fishing-spot directory or entered by you — not your device's raw GPS coordinates.</p>
@@ -224,6 +225,11 @@
           <td>Open-Meteo</td>
           <td>Weather and marine conditions</td>
           <td>Location coordinates (not linked to identity)</td>
+        </tr>
+        <tr>
+          <td>OpenStreetMap</td>
+          <td>Map tile imagery for the Maps feature</td>
+          <td>Approximate location (via map viewport) and IP address, only when the Maps feature is in use (not linked to identity)</td>
         </tr>
         <tr>
           <td>WorldTides</td>
