@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
+import 'package:project_neptune/core/theme/app_colors.dart';
+import 'package:project_neptune/core/theme/app_theme.dart';
 import 'package:project_neptune/features/fishing_spots/domain/entities/fishing_spot.dart';
 import 'package:project_neptune/features/fishing_spots/domain/repositories/fishing_spot_repository.dart';
 import 'package:project_neptune/features/fishing_spots/presentation/providers/fishing_spot_repository_provider.dart';
@@ -103,6 +105,170 @@ void main() {
 
       expect(tapped, spotB);
     });
+  });
+
+  group('FishingSpotDetailsSheet - text contrast', () {
+    Future<void> pumpSheet(WidgetTester tester, FishingSpot spot) {
+      return tester.pumpWidget(
+        MaterialApp(
+          theme: AppTheme.neptune,
+          home: Scaffold(
+            body: FishingSpotDetailsSheet(spot: spot),
+          ),
+        ),
+      );
+    }
+
+    testWidgets(
+      'the No-Take Zone chip renders dark, readable text on its pale '
+      'background rather than the theme\'s near-white chip label default',
+      (tester) async {
+        final spot = _spot(
+          id: 'NO-TAKE',
+          name: 'Kosi Bay Mouth',
+          latitude: -26.9,
+          longitude: 32.85,
+        );
+        final noTakeSpot = FishingSpot(
+          id: spot.id,
+          province: spot.province,
+          region: spot.region,
+          name: spot.name,
+          latitude: spot.latitude,
+          longitude: spot.longitude,
+          spotType: spot.spotType,
+          accessNotes: 'Estuary mouth, tidal access only.',
+          targetSpecies: spot.targetSpecies,
+          isMpa: true,
+          mpaName: 'Kosi Bay Marine Reserve',
+          isNoTake: true,
+          safetyFlags: const ['Strong currents'],
+          createdAt: spot.createdAt,
+        );
+
+        await pumpSheet(tester, noTakeSpot);
+
+        final noTakeText = tester.widget<Text>(find.text('No-Take Zone'));
+        expect(noTakeText.style?.color, Colors.black87);
+
+        final safetyFlagText = tester.widget<Text>(find.text('Strong currents'));
+        expect(safetyFlagText.style?.color, Colors.black87);
+      },
+    );
+
+    testWidgets(
+      'the location name, spot type, and access notes all use an '
+      'explicit high-contrast theme text style rather than an unstyled '
+      '(accidentally muted) default',
+      (tester) async {
+        final spot = _spot(
+          id: 'DESC',
+          name: 'Kosi Bay Mouth',
+          latitude: -26.9,
+          longitude: 32.85,
+        );
+        final described = FishingSpot(
+          id: spot.id,
+          province: spot.province,
+          region: spot.region,
+          name: spot.name,
+          latitude: spot.latitude,
+          longitude: spot.longitude,
+          spotType: 'Estuary',
+          accessNotes: 'Accessible via 4x4 track only.',
+          targetSpecies: spot.targetSpecies,
+          isMpa: false,
+          isNoTake: false,
+          safetyFlags: const [],
+          createdAt: spot.createdAt,
+        );
+
+        await pumpSheet(tester, described);
+
+        final nameText = tester.widget<Text>(find.text('Kosi Bay Mouth'));
+        expect(nameText.style?.color, AppColors.textPrimary);
+
+        final spotTypeText = tester.widget<Text>(find.text('Estuary'));
+        expect(spotTypeText.style?.color, AppColors.textPrimary);
+
+        final notesText =
+            tester.widget<Text>(find.text('Accessible via 4x4 track only.'));
+        expect(notesText.style?.color, AppColors.textPrimary);
+      },
+    );
+  });
+
+  group('FishingSpotDetailsSheet - vertical overflow', () {
+    testWidgets(
+      'a spot with a long access note, several safety flags, and a full '
+      'target-species list does not overflow when the sheet has limited '
+      'vertical space (regression for "BOTTOM OVERFLOWED BY 56 PIXELS")',
+      (tester) async {
+        final base = _spot(
+          id: 'KOSI-BAY-MOUTH',
+          name: 'Kosi Bay Mouth',
+          latitude: -26.9,
+          longitude: 32.85,
+        );
+        final busySpot = FishingSpot(
+          id: base.id,
+          province: base.province,
+          region: base.region,
+          name: base.name,
+          latitude: base.latitude,
+          longitude: base.longitude,
+          spotType: 'Estuary mouth',
+          accessNotes: 'Estuary mouth with tidal access only; a 4x4 track '
+              'is recommended in wet conditions and the crossing should '
+              'be timed around low tide for safety.',
+          targetSpecies: const [
+            'Kingfish',
+            'Grunter',
+            'Springer',
+            'Perch',
+            'Snapper',
+            'Shad',
+            'Garrick',
+          ],
+          isMpa: true,
+          mpaName: 'Kosi Bay Marine Reserve',
+          isNoTake: true,
+          safetyFlags: const [
+            'Strong currents',
+            'Crocodiles present',
+            'Slippery rocks',
+          ],
+          createdAt: base.createdAt,
+        );
+
+        // A small fixed height stands in for a small-device modal bottom
+        // sheet, so content that doesn't fit must scroll rather than
+        // overflow the render box.
+        await tester.pumpWidget(
+          MaterialApp(
+            theme: AppTheme.neptune,
+            home: Scaffold(
+              body: SizedBox(
+                height: 300,
+                child: FishingSpotDetailsSheet(spot: busySpot),
+              ),
+            ),
+          ),
+        );
+
+        expect(tester.takeException(), isNull);
+
+        // Nothing was dropped to make it fit -- the last section is still
+        // in the tree, just off-screen until scrolled to.
+        expect(find.text('Target Species'), findsOneWidget);
+        await tester.dragUntilVisible(
+          find.text('Garrick'),
+          find.byType(SingleChildScrollView),
+          const Offset(0, -50),
+        );
+        expect(find.text('Garrick'), findsOneWidget);
+      },
+    );
   });
 
   group('fishingSpotsProvider - failure and empty handling (as consumed by '

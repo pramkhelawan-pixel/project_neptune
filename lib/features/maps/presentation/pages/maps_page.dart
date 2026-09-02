@@ -105,10 +105,19 @@ class _MapsPageState extends ConsumerState<MapsPage> {
   void _showFishingSpotDetails(FishingSpot spot) {
     showModalBottomSheet(
       context: context,
+      // Spots with a long access-notes blob, several safety flags, and a
+      // full target-species list can be taller than the default (roughly
+      // half-screen) modal bottom sheet height, which has no scrolling of
+      // its own -- that combination is what produced the
+      // "BOTTOM OVERFLOWED" error. isScrollControlled lets the sheet grow
+      // to the full available height first; FishingSpotDetailsSheet's own
+      // SingleChildScrollView (see below) handles whatever still doesn't
+      // fit, including on small devices.
+      isScrollControlled: true,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
-      builder: (context) => _FishingSpotDetailsSheet(spot: spot),
+      builder: (context) => FishingSpotDetailsSheet(spot: spot),
     );
   }
 
@@ -201,15 +210,24 @@ class _MapsPageState extends ConsumerState<MapsPage> {
   }
 }
 
-class _FishingSpotDetailsSheet extends StatelessWidget {
+@visibleForTesting
+class FishingSpotDetailsSheet extends StatelessWidget {
   final FishingSpot spot;
 
-  const _FishingSpotDetailsSheet({required this.spot});
+  const FishingSpotDetailsSheet({super.key, required this.spot});
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+
+    // Chip.labelStyle in AppTheme is tuned for the app's dark navy chips
+    // (near-white text). These two chips deliberately use a pale Material
+    // background instead, so they need their own dark, high-contrast label
+    // color rather than inheriting the (unreadable-on-pale) theme default.
+    const paleChipLabelStyle = TextStyle(color: Colors.black87);
+
     return SafeArea(
-      child: Padding(
+      child: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -217,24 +235,21 @@ class _FishingSpotDetailsSheet extends StatelessWidget {
           children: [
             Text(
               spot.name,
-              style: const TextStyle(
-                fontSize: 22,
-                fontWeight: FontWeight.bold,
-              ),
+              style: textTheme.headlineSmall,
             ),
 
             Text(
               '${spot.region}, ${spot.province}',
-              style: Theme.of(context).textTheme.bodyMedium,
+              style: textTheme.bodyMedium,
             ),
 
             const SizedBox(height: 12),
 
-            Text(spot.spotType),
+            Text(spot.spotType, style: textTheme.bodyLarge),
 
             if (spot.accessNotes != null) ...[
               const SizedBox(height: 8),
-              Text(spot.accessNotes!),
+              Text(spot.accessNotes!, style: textTheme.bodyLarge),
             ],
 
             const SizedBox(height: 16),
@@ -249,12 +264,15 @@ class _FishingSpotDetailsSheet extends StatelessWidget {
                   ),
                 if (spot.isNoTake)
                   Chip(
-                    label: const Text('No-Take Zone'),
+                    label: const Text(
+                      'No-Take Zone',
+                      style: paleChipLabelStyle,
+                    ),
                     backgroundColor: Colors.red.shade100,
                   ),
                 for (final flag in spot.safetyFlags)
                   Chip(
-                    label: Text(flag),
+                    label: Text(flag, style: paleChipLabelStyle),
                     backgroundColor: Colors.orange.shade100,
                   ),
               ],
