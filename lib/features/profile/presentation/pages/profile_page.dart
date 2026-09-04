@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../../../../core/providers/app_providers.dart';
+import '../../../../core/theme/pelav_colors.dart';
 import '../../../../core/services/share/recommend_friend_content.dart';
 import '../../../../core/services/supabase_service.dart';
 import '../../../authentication/presentation/providers/auth_controller.dart';
@@ -26,6 +27,7 @@ class ProfilePage extends ConsumerWidget {
         ref.watch(licenceEntitlementProvider).valueOrNull ?? false;
     final isPremium =
         ref.watch(currentProfileProvider).valueOrNull?.isPremium ?? false;
+    final colors = context.colors;
 
     return SafeArea(
       child: ListView(
@@ -68,7 +70,7 @@ class ProfilePage extends ConsumerWidget {
                         const SizedBox(height: 4),
 
                         Text(
-                          'Neptune angler',
+                          'PELAV angler',
                           style: Theme.of(context).textTheme.bodySmall,
                         ),
                       ],
@@ -91,7 +93,7 @@ class ProfilePage extends ConsumerWidget {
                 horizontal: 16,
                 vertical: 4,
               ),
-              leading: const Icon(Icons.info_outline),
+              leading: Icon(Icons.info_outline, color: colors.primaryForeground),
               title: const Text('App Version'),
               trailing: const Text(_appVersion),
             ),
@@ -110,7 +112,7 @@ class ProfilePage extends ConsumerWidget {
                   horizontal: 16,
                   vertical: 4,
                 ),
-                leading: const Icon(Icons.ios_share),
+                leading: Icon(Icons.ios_share, color: colors.primaryForeground),
                 title: const Text('Recommend a Friend'),
                 trailing: const Icon(Icons.chevron_right),
                 onTap: () => _recommendAFriend(tileContext, ref),
@@ -132,14 +134,16 @@ class ProfilePage extends ConsumerWidget {
               ),
               leading: Icon(
                 hasLicenceAccess ? Icons.badge_outlined : Icons.lock_outline,
+                color: colors.primaryForeground,
               ),
-              title: Text(
-                hasLicenceAccess
-                    ? kLicenceVaultName
-                    : '🔒 $kLicenceVaultName',
-              ),
+              title: const Text(kLicenceVaultName),
               subtitle: hasLicenceAccess ? null : const Text('Premium'),
-              trailing: const Icon(Icons.chevron_right),
+              // The leading icon alone communicates locked/unlocked state --
+              // no separate lock emoji, and no chevron when the row is
+              // genuinely non-interactive (onTap is null below).
+              trailing: hasLicenceAccess
+                  ? const Icon(Icons.chevron_right)
+                  : null,
               onTap: hasLicenceAccess
                   ? () => Navigator.of(context).push(
                         MaterialPageRoute(
@@ -164,14 +168,14 @@ class ProfilePage extends ConsumerWidget {
               ),
               leading: Icon(
                 isPremium ? Icons.calculate_outlined : Icons.lock_outline,
+                color: colors.primaryForeground,
               ),
-              title: Text(
-                isPremium
-                    ? kLengthWeightCalculatorName
-                    : '🔒 $kLengthWeightCalculatorName',
-              ),
+              title: const Text(kLengthWeightCalculatorName),
               subtitle: isPremium ? null : const Text('Premium'),
-              trailing: const Icon(Icons.chevron_right),
+              // The leading icon alone communicates locked/unlocked state --
+              // no separate lock emoji, and no chevron when the row is
+              // genuinely non-interactive (onTap is null below).
+              trailing: isPremium ? const Icon(Icons.chevron_right) : null,
               onTap: isPremium
                   ? () => Navigator.of(context).push(
                         MaterialPageRoute(
@@ -196,8 +200,12 @@ class ProfilePage extends ConsumerWidget {
             )
                 : const Icon(Icons.logout),
             label: const Text('Sign Out'),
+            // Neutral treatment, not Critical/Error red -- signing out is a
+            // safe, fully reversible action, unlike Delete Account below,
+            // which correctly keeps the destructive colour.
             style: FilledButton.styleFrom(
-              backgroundColor: Theme.of(context).colorScheme.error,
+              backgroundColor: colors.surface2,
+              foregroundColor: colors.textSecondary,
             ),
           ),
 
@@ -311,7 +319,7 @@ class _DeleteAccountDialogState extends ConsumerState<_DeleteAccountDialog> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Text(
-            'This permanently deletes your Neptune account, including your '
+            'This permanently deletes your PELAV account, including your '
             'catch history and fishing sessions. This cannot be undone.',
           ),
           if (_errorMessage != null) ...[

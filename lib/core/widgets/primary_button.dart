@@ -19,24 +19,31 @@ class PrimaryButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // The button's fill is always AppColors.primary (Sand Gold) in both
+    // themes -- see AppColorsLight's class doc. Its ink (spinner/icon/text)
+    // is colorScheme.onPrimary, which app_theme.dart pins to deep navy in
+    // both themes too, so this reads correctly without depending on
+    // PelavColors at all.
+    final onPrimary = Theme.of(context).colorScheme.onPrimary;
+
     return SizedBox(
       width: double.infinity,
       height: 56,
       child: ElevatedButton.icon(
         onPressed: isLoading ? null : onPressed,
         icon: isLoading
-            ? const SizedBox(
+            ? SizedBox(
           width: 20,
           height: 20,
           child: CircularProgressIndicator(
             strokeWidth: 2,
-            valueColor: AlwaysStoppedAnimation<Color>(AppColors.base),
+            valueColor: AlwaysStoppedAnimation<Color>(onPrimary),
           ),
         )
             : icon != null
             ? Icon(
           icon,
-          color: AppColors.base,
+          color: onPrimary,
         )
             : const SizedBox.shrink(),
         label: Text(
@@ -45,9 +52,9 @@ class PrimaryButton extends StatelessWidget {
         ),
         style: ElevatedButton.styleFrom(
           backgroundColor: AppColors.primary,
-          foregroundColor: AppColors.base,
+          foregroundColor: onPrimary,
           disabledBackgroundColor: AppColors.primary.withValues(alpha: 0.55),
-          disabledForegroundColor: AppColors.base.withValues(alpha: 0.6),
+          disabledForegroundColor: onPrimary.withValues(alpha: 0.6),
           elevation: 0,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(14),

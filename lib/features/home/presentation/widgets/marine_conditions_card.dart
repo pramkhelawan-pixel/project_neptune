@@ -81,11 +81,10 @@ class MarineConditionsCard extends ConsumerWidget {
     final isPremium =
         ref.watch(currentProfileProvider).valueOrNull?.isPremium ?? false;
 
+    // Background/border/radius/elevation are inherited from CardThemeData
+    // (surface1, 1px hairline, 18px radius, elevation 0) rather than
+    // repeated here.
     return Card(
-      elevation: 2,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(18),
-      ),
       child: Padding(
         padding: const EdgeInsets.all(20),
         child: Column(

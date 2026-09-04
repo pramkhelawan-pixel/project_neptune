@@ -84,7 +84,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Project Neptune'),
+        title: const Text('PELAV'),
       ),
       body: Center(
         child: SingleChildScrollView(

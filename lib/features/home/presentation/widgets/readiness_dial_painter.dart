@@ -2,20 +2,34 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
-import '../../../../core/theme/app_colors.dart';
-
 /// Paints the Readiness dial's ring, glow, and tick marks — the score/rating
 /// text is layered on top separately (see [ReadinessCard]) rather than
 /// painted here, so it stays crisp and themeable.
 ///
-/// The fill ring is always [AppColors.brass], never color-coded by score —
+/// The fill ring is always the brand gold, never color-coded by score —
 /// deliberate, per the approved Abyssal Gold pitch: "the dial's brass never
 /// changes hue; it's the instrument's material, always premium." Only the
 /// status pill next to the dial carries the semantic rating color.
+///
+/// Colours are passed in (from [ReadinessCard], which reads
+/// `context.colors`) rather than read from a static [AppColors] here, so
+/// the dial renders correctly in both light and dark mode without this
+/// painter needing a [BuildContext] of its own. Geometry (radius, arc,
+/// stroke widths, tick count) is unchanged from the pre-theming version.
 class ReadinessDialPainter extends CustomPainter {
   final double sweepFraction;
+  final Color trackColor;
+  final Color tickColor;
+  final Color glowColor;
+  final Color fillColor;
 
-  const ReadinessDialPainter({required this.sweepFraction});
+  const ReadinessDialPainter({
+    required this.sweepFraction,
+    required this.trackColor,
+    required this.tickColor,
+    required this.glowColor,
+    required this.fillColor,
+  });
 
   static const double _ringRadius = 92;
   static const double _canvasRadius = 110;
@@ -28,13 +42,13 @@ class ReadinessDialPainter extends CustomPainter {
     final radius = _ringRadius * scale;
 
     final trackPaint = Paint()
-      ..color = AppColors.surface3
+      ..color = trackColor
       ..style = PaintingStyle.stroke
       ..strokeWidth = 10 * scale;
     canvas.drawCircle(center, radius, trackPaint);
 
     final tickPaint = Paint()
-      ..color = AppColors.textTertiary.withValues(alpha: 0.5)
+      ..color = tickColor.withValues(alpha: 0.5)
       ..style = PaintingStyle.stroke;
 
     for (int i = 0; i < _tickCount; i++) {
@@ -67,7 +81,7 @@ class ReadinessDialPainter extends CustomPainter {
     const startAngle = -pi / 2;
 
     final glowPaint = Paint()
-      ..color = AppColors.brassBright
+      ..color = glowColor
       ..style = PaintingStyle.stroke
       ..strokeWidth = 14 * scale
       ..strokeCap = StrokeCap.round
@@ -75,7 +89,7 @@ class ReadinessDialPainter extends CustomPainter {
     canvas.drawArc(rect, startAngle, sweepAngle, false, glowPaint);
 
     final fillPaint = Paint()
-      ..color = AppColors.brass
+      ..color = fillColor
       ..style = PaintingStyle.stroke
       ..strokeWidth = 10 * scale
       ..strokeCap = StrokeCap.round;
@@ -84,5 +98,9 @@ class ReadinessDialPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant ReadinessDialPainter oldDelegate) =>
-      oldDelegate.sweepFraction != sweepFraction;
+      oldDelegate.sweepFraction != sweepFraction ||
+      oldDelegate.trackColor != trackColor ||
+      oldDelegate.tickColor != tickColor ||
+      oldDelegate.glowColor != glowColor ||
+      oldDelegate.fillColor != fillColor;
 }

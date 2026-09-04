@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../../core/theme/pelav_colors.dart';
 import '../../data/all_species_profiles.dart';
 import '../../domain/species.dart';
 import 'species_detail_page.dart';
@@ -65,10 +66,17 @@ class _SpeciesTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Deliberate compact-list exception: this is a dense navigation row,
+    // not a content card, so it keeps its own tighter 14px radius and
+    // ListTile padding rather than the 18px/20px content-card system.
+    // Elevation is still dropped (no shadows anywhere in this app) and a
+    // hairline border is added in its place -- without one, an
+    // elevation-less, colour-less Card would be visually indistinguishable
+    // from the page background.
     return Card(
-      elevation: 1,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(14),
+        side: BorderSide(color: context.colors.hairline, width: 1),
       ),
       child: ListTile(
         contentPadding: const EdgeInsets.symmetric(

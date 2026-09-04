@@ -97,7 +97,7 @@ class _MainShellPageState extends State<MainShellPage> {
   String _titleForIndex(int index) {
     switch (index) {
       case 0:
-        return 'Neptune';
+        return 'PELAV';
       case 1:
         return 'Marine';
       case 2:
@@ -109,7 +109,7 @@ class _MainShellPageState extends State<MainShellPage> {
       case 5:
         return 'Profile';
       default:
-        return 'Neptune';
+        return 'PELAV';
     }
   }
 }

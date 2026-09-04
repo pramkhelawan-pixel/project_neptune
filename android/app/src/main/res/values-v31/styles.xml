@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- API 31+ (Android 12+) reads the platform SplashScreen API's own
+         android:windowSplashScreenBackground attribute for the pre-Flutter-
+         attach splash; it does NOT fall back to android:windowBackground
+         (the pre-12 mechanism set below and in values/styles.xml and
+         values-night/styles.xml). Without this override, the system used
+         its own default background (white) regardless of the device's
+         day/night setting, which is what caused the reported defect: a
+         white flash before the correct navy launch_background drawable
+         (still set below, for the moment after the platform splash phase
+         ends and before Flutter's first frame) ever appeared.
+
+         This app is dark-only for the MVP, so a single values-v31 file
+         (no separate values-night-v31 variant) intentionally applies the
+         same Deep Navy splash regardless of the system's day/night
+         setting, matching the app's own enforced dark-only behaviour
+         rather than following the OS setting. Parent theme mirrors
+         values-night/styles.xml's Theme.Black.NoTitleBar for the same
+         reason. -->
+    <style name="LaunchTheme" parent="@android:style/Theme.Black.NoTitleBar">
+        <item name="android:windowSplashScreenBackground">@color/splash_background</item>
+        <item name="android:windowBackground">@drawable/launch_background</item>
+    </style>
+    <style name="NormalTheme" parent="@android:style/Theme.Black.NoTitleBar">
+        <item name="android:windowBackground">?android:colorBackground</item>
+    </style>
+</resources>

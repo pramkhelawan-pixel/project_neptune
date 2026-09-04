@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../../core/theme/pelav_colors.dart';
 import '../../domain/environmental_readiness.dart';
 
 class EnvironmentalBreakdownCard extends StatelessWidget {
@@ -12,13 +13,14 @@ class EnvironmentalBreakdownCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
+
+    // Background/border/radius/elevation are inherited from CardThemeData
+    // (surface1, 1px hairline, 18px radius, elevation 0) rather than
+    // repeated here.
     return Card(
-      elevation: 3,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20),
-      ),
       child: Padding(
-        padding: const EdgeInsets.all(24),
+        padding: const EdgeInsets.all(20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -50,9 +52,9 @@ class EnvironmentalBreakdownCard extends StatelessWidget {
               ...readiness.strengths.map(
                     (item) => ListTile(
                   dense: true,
-                  leading: const Icon(
+                  leading: Icon(
                     Icons.check_circle,
-                    color: Colors.green,
+                    color: colors.success,
                   ),
                   title: Text(item),
                 ),
@@ -82,9 +84,9 @@ class EnvironmentalBreakdownCard extends StatelessWidget {
               ...readiness.weaknesses.map(
                     (item) => ListTile(
                   dense: true,
-                  leading: const Icon(
+                  leading: Icon(
                     Icons.warning_amber_rounded,
-                    color: Colors.orange,
+                    color: colors.warning,
                   ),
                   title: Text(item),
                 ),

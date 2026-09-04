@@ -9,7 +9,7 @@ const kLicenceVaultName = 'Digital Fishing Licence Vault';
 
 const kLicenceDisclaimer =
     'Important: This is a privately stored digital copy of the fishing '
-    'licence/document provided by the user. Neptune does not issue, '
+    'licence/document provided by the user. PELAV does not issue, '
     'verify, renew, or replace the official fishing licence. The '
     'original licence and any requirements of the relevant authority '
     'remain applicable.';

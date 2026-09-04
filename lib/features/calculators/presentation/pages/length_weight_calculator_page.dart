@@ -270,7 +270,7 @@ class _ResultCard extends StatelessWidget {
               '${coefficients.lengthUnit} '
               '${coefficients.lengthType.abbreviation}). '
               "Estimating outside that range would mean extrapolating "
-              "beyond the study's data, so Neptune won't show a weight "
+              "beyond the study's data, so PELAV won't show a weight "
               'for this length.',
         );
 

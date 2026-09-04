@@ -5,6 +5,10 @@ import 'package:go_router/go_router.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../core/router/app_routes.dart';
+import '../../../../core/theme/pelav_colors.dart';
+import '../../../../core/widgets/app_text_field.dart';
+import '../../../../core/widgets/auth_card.dart';
+import '../../../../core/widgets/primary_button.dart';
 import '../providers/auth_controller.dart';
 
 /// Public, production URLs for the legal documents -- served via GitHub
@@ -109,113 +113,124 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
           padding: const EdgeInsets.all(24),
           child: ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 420),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                children: [
-                  TextFormField(
-                    controller: _emailController,
-                    decoration: const InputDecoration(
-                      labelText: 'Email',
-                      border: OutlineInputBorder(),
+            child: AuthCard(
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    AppTextField(
+                      controller: _emailController,
+                      label: 'Email',
+                      keyboardType: TextInputType.emailAddress,
+                      prefixIcon: Icons.email_outlined,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter your email.';
+                        }
+                        if (!value.contains('@')) {
+                          return 'Please enter a valid email.';
+                        }
+                        return null;
+                      },
                     ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter your email.';
-                      }
-                      if (!value.contains('@')) {
-                        return 'Please enter a valid email.';
-                      }
-                      return null;
-                    },
-                  ),
-                  const SizedBox(height: 16),
-                  TextFormField(
-                    controller: _passwordController,
-                    obscureText: true,
-                    decoration: const InputDecoration(
-                      labelText: 'Password',
-                      border: OutlineInputBorder(),
+                    const SizedBox(height: 16),
+                    // Always obscured, no visibility toggle -- unlike
+                    // Login's password field, this is a deliberate
+                    // visual-only migration and doesn't introduce the
+                    // extra toggle interaction Login has.
+                    AppTextField(
+                      controller: _passwordController,
+                      label: 'Password',
+                      obscureText: true,
+                      prefixIcon: Icons.lock_outline,
+                      validator: (value) {
+                        if (value == null || value.length < 6) {
+                          return 'Password must be at least 6 characters.';
+                        }
+                        return null;
+                      },
                     ),
-                    validator: (value) {
-                      if (value == null || value.length < 6) {
-                        return 'Password must be at least 6 characters.';
-                      }
-                      return null;
-                    },
-                  ),
-                  const SizedBox(height: 16),
-                  TextFormField(
-                    controller: _confirmPasswordController,
-                    obscureText: true,
-                    decoration: const InputDecoration(
-                      labelText: 'Confirm Password',
-                      border: OutlineInputBorder(),
+                    const SizedBox(height: 16),
+                    AppTextField(
+                      controller: _confirmPasswordController,
+                      label: 'Confirm Password',
+                      obscureText: true,
+                      prefixIcon: Icons.lock_outline,
+                      validator: (value) {
+                        if (value != _passwordController.text) {
+                          return 'Passwords do not match.';
+                        }
+                        return null;
+                      },
                     ),
-                    validator: (value) {
-                      if (value != _passwordController.text) {
-                        return 'Passwords do not match.';
-                      }
-                      return null;
-                    },
-                  ),
-                  const SizedBox(height: 16),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Checkbox(
-                        value: _acceptedLegalTerms,
-                        onChanged: (value) {
-                          setState(() {
-                            _acceptedLegalTerms = value ?? false;
-                          });
-                        },
-                      ),
-                      Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.only(top: 12),
-                          child: RichText(
-                            text: TextSpan(
-                              style: DefaultTextStyle.of(context).style,
-                              children: [
-                                const TextSpan(text: 'I agree to the '),
-                                TextSpan(
-                                  text: 'Terms & Conditions',
-                                  style: const TextStyle(
-                                    decoration: TextDecoration.underline,
+                    const SizedBox(height: 16),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Checkbox(
+                          value: _acceptedLegalTerms,
+                          onChanged: (value) {
+                            setState(() {
+                              _acceptedLegalTerms = value ?? false;
+                            });
+                          },
+                        ),
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 12),
+                            child: RichText(
+                              text: TextSpan(
+                                style: Theme.of(context).textTheme.bodyMedium,
+                                children: [
+                                  const TextSpan(text: 'I agree to the '),
+                                  TextSpan(
+                                    text: 'Terms & Conditions',
+                                    style: TextStyle(
+                                      color: context.colors.primaryForeground,
+                                      decoration: TextDecoration.underline,
+                                    ),
+                                    recognizer: _termsTapRecognizer,
                                   ),
-                                  recognizer: _termsTapRecognizer,
-                                ),
-                                const TextSpan(text: ' and '),
-                                TextSpan(
-                                  text: 'Privacy Policy',
-                                  style: const TextStyle(
-                                    decoration: TextDecoration.underline,
+                                  const TextSpan(text: ' and '),
+                                  TextSpan(
+                                    text: 'Privacy Policy',
+                                    style: TextStyle(
+                                      color: context.colors.primaryForeground,
+                                      decoration: TextDecoration.underline,
+                                    ),
+                                    recognizer: _privacyTapRecognizer,
                                   ),
-                                  recognizer: _privacyTapRecognizer,
-                                ),
-                                const TextSpan(text: '.'),
-                              ],
+                                  const TextSpan(text: '.'),
+                                ],
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 8),
-                  SizedBox(
-                    width: double.infinity,
-                    height: 50,
-                    child: ElevatedButton(
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+                    PrimaryButton(
+                      text: 'Create Account',
+                      isLoading: authState.isLoading,
                       onPressed: (authState.isLoading || !_acceptedLegalTerms)
                           ? null
                           : _signUp,
-                      child: authState.isLoading
-                          ? const CircularProgressIndicator()
-                          : const Text('Create Account'),
                     ),
-                  ),
-                ],
+                    const SizedBox(height: 16),
+                    Wrap(
+                      alignment: WrapAlignment.center,
+                      crossAxisAlignment: WrapCrossAlignment.center,
+                      children: [
+                        const Text('Already have an account?'),
+                        TextButton(
+                          onPressed: () => context.go(AppRoutes.login),
+                          child: const Text('Sign In'),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

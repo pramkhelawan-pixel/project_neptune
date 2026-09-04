@@ -149,10 +149,10 @@ void main() {
         await pumpSheet(tester, noTakeSpot);
 
         final noTakeText = tester.widget<Text>(find.text('No-Take Zone'));
-        expect(noTakeText.style?.color, Colors.black87);
+        expect(noTakeText.style?.color, AppColors.paleChipText);
 
         final safetyFlagText = tester.widget<Text>(find.text('Strong currents'));
-        expect(safetyFlagText.style?.color, Colors.black87);
+        expect(safetyFlagText.style?.color, AppColors.paleChipText);
       },
     );
 

@@ -31,7 +31,7 @@ class RecommendationDetailsPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Neptune Intelligence',
+          'PELAV Intelligence',
         ),
       ),
       body: SafeArea(

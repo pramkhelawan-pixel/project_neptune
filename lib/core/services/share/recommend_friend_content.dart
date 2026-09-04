@@ -9,14 +9,15 @@ class RecommendFriendContent {
   const RecommendFriendContent._();
 
   static const String _message =
-      'Try Neptune — smarter fishing for the South African coast. '
+      'Try PELAV — smarter fishing for the South African coast. '
       'Check out the app and see the marine conditions, tides, species '
       'information and fishing tools.';
 
-  // TODO(neptune): This is the real, final Play Store URL — deterministically
-  // derived from the Android applicationId (com.continuumdataguard.neptune).
-  // It will 404 until the app is published; no code change needed at launch,
-  // just delete this comment once the listing is confirmed live.
+  // TODO(pelav): This URL still points at the old Android applicationId
+  // (com.continuumdataguard.neptune) and is not the real PELAV Play Store
+  // listing. It already 404s and will keep doing so until it's replaced with
+  // the actual PELAV listing URL once the app is published under
+  // com.continuumdataguard.pelav — do not fabricate that URL ahead of time.
   static const String playStoreUrl =
       'https://play.google.com/store/apps/details?id=com.continuumdataguard.neptune';
 

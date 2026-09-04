@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/pelav_colors.dart';
 import '../../../readiness/domain/readiness_engine.dart';
 import 'readiness_dial_painter.dart';
 
@@ -14,41 +14,39 @@ class ReadinessCard extends StatelessWidget {
 
   static const Curve _dialCurve = Cubic(0.22, 0.9, 0.3, 1.0);
 
-  Color _ratingColor() {
+  Color _ratingColor(PelavColors colors) {
     if (result.score >= 70) {
-      return AppColors.success;
+      return colors.success;
     }
 
     if (result.score >= 50) {
-      return AppColors.warning;
+      return colors.warning;
     }
 
-    return AppColors.critical;
+    return colors.critical;
   }
 
   @override
   Widget build(BuildContext context) {
-    final ratingColor = _ratingColor();
+    final colors = context.colors;
+    final ratingColor = _ratingColor(colors);
 
+    // Background/border/radius/elevation are inherited from CardThemeData
+    // (surface1, 1px hairline, 18px radius, elevation 0) rather than
+    // repeated here.
     return Card(
-      color: AppColors.surface1,
-      elevation: 0,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20),
-        side: const BorderSide(color: AppColors.hairline),
-      ),
       child: Padding(
-        padding: const EdgeInsets.all(24),
+        padding: const EdgeInsets.all(20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const Text(
-              'Neptune Readiness',
+            Text(
+              'PELAV Readiness',
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 22,
                 fontWeight: FontWeight.bold,
-                color: AppColors.textPrimary,
+                color: colors.textPrimary,
               ),
             ),
 
@@ -70,6 +68,10 @@ class ReadinessCard extends StatelessWidget {
                           size: const Size(220, 220),
                           painter: ReadinessDialPainter(
                             sweepFraction: sweepFraction,
+                            trackColor: colors.surface3,
+                            tickColor: colors.textTertiary,
+                            glowColor: colors.primaryBright,
+                            fillColor: colors.primaryForeground,
                           ),
                         );
                       },
@@ -79,10 +81,10 @@ class ReadinessCard extends StatelessWidget {
                       children: [
                         Text(
                           '${result.score}%',
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 36,
                             fontWeight: FontWeight.bold,
-                            color: AppColors.textPrimary,
+                            color: colors.textPrimary,
                           ),
                         ),
                         const SizedBox(height: 4),
@@ -106,24 +108,24 @@ class ReadinessCard extends StatelessWidget {
             Text(
               result.recommendation,
               textAlign: TextAlign.center,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 16,
-                color: AppColors.textSecondary,
+                color: colors.textSecondary,
               ),
             ),
 
             const SizedBox(height: 24),
 
-            const Divider(color: AppColors.hairline),
+            Divider(color: colors.hairline),
 
             const SizedBox(height: 8),
 
-            const Text(
+            Text(
               'Why?',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 17,
-                color: AppColors.textPrimary,
+                color: colors.textPrimary,
               ),
             ),
 
@@ -134,17 +136,17 @@ class ReadinessCard extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(vertical: 4),
                 child: Row(
                   children: [
-                    const Icon(
+                    Icon(
                       Icons.check_circle,
-                      color: AppColors.brass,
+                      color: colors.primaryForeground,
                       size: 18,
                     ),
                     const SizedBox(width: 10),
                     Expanded(
                       child: Text(
                         reason,
-                        style: const TextStyle(
-                          color: AppColors.textSecondary,
+                        style: TextStyle(
+                          color: colors.textSecondary,
                         ),
                       ),
                     ),

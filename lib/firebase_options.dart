@@ -54,7 +54,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyDML6gbzjOiBAnNH6rvGdG0BPMVoy8RI1o',
-    appId: '1:1060555391970:android:48ac5bb23773baaf212fbb',
+    appId: '1:1060555391970:android:3d83877f5cd31716212fbb',
     messagingSenderId: '1060555391970',
     projectId: 'continuum-dataguard',
     storageBucket: 'continuum-dataguard.firebasestorage.app',

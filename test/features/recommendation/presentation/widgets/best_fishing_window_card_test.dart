@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import 'package:project_neptune/core/theme/app_theme.dart';
 import 'package:project_neptune/features/marine/domain/enums/tide_state.dart';
 import 'package:project_neptune/features/recommendation/presentation/widgets/best_fishing_window_card.dart';
 import 'package:project_neptune/features/recommendation/services/best_fishing_window_engine.dart';
 
 void main() {
-  Widget wrap(Widget child) => MaterialApp(home: Scaffold(body: child));
+  Widget wrap(Widget child) => MaterialApp(
+        theme: AppTheme.neptune,
+        home: Scaffold(body: child),
+      );
 
   testWidgets('renders the formatted window, qualitative level, and reasons', (
     tester,

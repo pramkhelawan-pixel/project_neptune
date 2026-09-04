@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../../core/theme/pelav_colors.dart';
 import '../../domain/fishing_outlook.dart';
 
 class FishingOutlookCard extends StatelessWidget {
@@ -12,11 +13,12 @@ class FishingOutlookCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
+
+    // Background/border/radius/elevation are inherited from CardThemeData
+    // (surface1, 1px hairline, 18px radius, elevation 0) rather than
+    // repeated here.
     return Card(
-      elevation: 2,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(18),
-      ),
       child: Padding(
         padding: const EdgeInsets.all(20),
         child: Column(
@@ -58,9 +60,9 @@ class FishingOutlookCard extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(vertical: 5),
                 child: Row(
                   children: [
-                    const Icon(
+                    Icon(
                       Icons.check_circle,
-                      color: Colors.green,
+                      color: colors.success,
                       size: 18,
                     ),
                     const SizedBox(width: 10),
@@ -80,7 +82,7 @@ class FishingOutlookCard extends StatelessWidget {
 
             Row(
               children: [
-                const Icon(Icons.schedule),
+                Icon(Icons.schedule, color: colors.primaryForeground),
                 const SizedBox(width: 10),
                 const Text(
                   'Best Window',
@@ -97,7 +99,7 @@ class FishingOutlookCard extends StatelessWidget {
 
             Row(
               children: [
-                const Icon(Icons.analytics),
+                Icon(Icons.analytics, color: colors.primaryForeground),
                 const SizedBox(width: 10),
                 const Text(
                   'Confidence',

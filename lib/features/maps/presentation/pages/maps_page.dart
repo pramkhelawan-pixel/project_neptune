@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../../../core/theme/pelav_colors.dart';
 import '../../../fishing_spots/domain/entities/fishing_spot.dart';
 import '../../../fishing_spots/presentation/providers/fishing_spot_repository_provider.dart';
 import '../../../location/data/all_locations.dart';
@@ -150,7 +151,7 @@ class _MapsPageState extends ConsumerState<MapsPage> {
           children: [
             TileLayer(
               urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-              userAgentPackageName: 'com.continuumdataguard.neptune',
+              userAgentPackageName: 'com.continuumdataguard.pelav',
             ),
             MarkerLayer(
               markers: [
@@ -173,7 +174,13 @@ class _MapsPageState extends ConsumerState<MapsPage> {
                   ),
               ],
             ),
+            // bottomLeft, not the default bottomRight -- the locate FAB
+            // (Positioned bottom:20, right:20, below) already occupies that
+            // corner, and the two were visually colliding there. Purely a
+            // positioning correction: attribution text/URL, tile source,
+            // and user agent are all unchanged.
             RichAttributionWidget(
+              alignment: AttributionAlignment.bottomLeft,
               attributions: [
                 TextSourceAttribution(
                   '© OpenStreetMap contributors',
@@ -220,11 +227,18 @@ class FishingSpotDetailsSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
 
-    // Chip.labelStyle in AppTheme is tuned for the app's dark navy chips
-    // (near-white text). These two chips deliberately use a pale Material
-    // background instead, so they need their own dark, high-contrast label
-    // color rather than inheriting the (unreadable-on-pale) theme default.
-    const paleChipLabelStyle = TextStyle(color: Colors.black87);
+    final colors = context.colors;
+
+    // Chip.labelStyle in AppTheme is tuned for the app's default chip
+    // colours. These two chips deliberately use a pale background instead,
+    // so they need their own dark, high-contrast label color rather than
+    // inheriting the (unreadable-on-pale) theme default. colors.paleChipText
+    // (not warningStrong/critical) is the approved token for this exact
+    // pairing -- warningStrong on paleWarningBg and critical on
+    // paleCriticalBg both fail WCAG AA outright in both themes, while
+    // paleChipText measures >12:1 on either (see app_colors.dart /
+    // app_colors_light.dart).
+    final paleChipLabelStyle = TextStyle(color: colors.paleChipText);
 
     return SafeArea(
       child: SingleChildScrollView(
@@ -264,16 +278,16 @@ class FishingSpotDetailsSheet extends StatelessWidget {
                   ),
                 if (spot.isNoTake)
                   Chip(
-                    label: const Text(
+                    label: Text(
                       'No-Take Zone',
                       style: paleChipLabelStyle,
                     ),
-                    backgroundColor: Colors.red.shade100,
+                    backgroundColor: colors.paleCriticalBg,
                   ),
                 for (final flag in spot.safetyFlags)
                   Chip(
                     label: Text(flag, style: paleChipLabelStyle),
-                    backgroundColor: Colors.orange.shade100,
+                    backgroundColor: colors.paleWarningBg,
                   ),
               ],
             ),

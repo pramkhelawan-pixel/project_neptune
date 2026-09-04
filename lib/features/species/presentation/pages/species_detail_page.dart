@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/pelav_colors.dart';
 import '../../../knowledge/domain/entities/knowledge_record.dart';
 import '../../../knowledge/domain/enums/knowledge_category.dart';
 import '../../domain/species.dart';
@@ -126,8 +126,8 @@ class _HeaderCard extends StatelessWidget {
                   ...species.distribution.map(
                         (region) => Chip(
                       label: Text(region),
-                      backgroundColor: AppColors.brassWash,
-                      side: const BorderSide(color: AppColors.hairline),
+                      backgroundColor: context.colors.goldWash,
+                      side: BorderSide(color: context.colors.hairline),
                     ),
                   ),
                 ],
@@ -352,7 +352,18 @@ class _RegulatoryNoticeSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final accent = Colors.amber.shade800;
+    // Was Colors.amber.shade800/900/50 -- the original app_colors.dart
+    // comment documented that warning/warningStrong were deliberately held
+    // identical to this exact amber800/900 pairing. PELAV's warning tokens
+    // now use different hex values, so the raw Material shades are
+    // migrated to the semantic tokens directly rather than left
+    // hardcoded. The pale-background text below intentionally uses
+    // paleChipText (dark navy), not warningStrong -- warningStrong on
+    // paleWarningBg fails WCAG AA outright in both themes (see
+    // app_colors.dart / app_colors_light.dart); paleChipText on the same
+    // background measures >12:1 in both.
+    final colors = context.colors;
+    final accent = colors.warning;
 
     return Padding(
       padding: const EdgeInsets.only(bottom: 16),
@@ -379,7 +390,7 @@ class _RegulatoryNoticeSection extends StatelessWidget {
               margin: const EdgeInsets.only(bottom: 8),
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: Colors.amber.shade50,
+                color: colors.paleWarningBg,
                 borderRadius: BorderRadius.circular(14),
                 border: Border(
                   left: BorderSide(color: accent, width: 4),
@@ -392,13 +403,13 @@ class _RegulatoryNoticeSection extends StatelessWidget {
                     record.title,
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
-                      color: Colors.amber.shade900,
+                      color: colors.paleChipText,
                     ),
                   ),
                   const SizedBox(height: 6),
                   Text(
                     record.description,
-                    style: TextStyle(color: Colors.amber.shade900),
+                    style: TextStyle(color: colors.paleChipText),
                   ),
                 ],
               ),
@@ -434,12 +445,19 @@ class _KnowledgeSection extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 10),
+          // Deliberate compact-list exception: each record is a repeated
+          // unit in a potentially long stack, so it keeps its own tighter
+          // 14px radius/16px padding rather than the 18px/20px
+          // content-card system. Elevation is still dropped (no shadows
+          // anywhere in this app) and a hairline border is added in its
+          // place -- without one, an elevation-less, colour-less Card
+          // would be visually indistinguishable from the page background.
           ...records.map(
                 (record) => Card(
-              elevation: 1,
               margin: const EdgeInsets.only(bottom: 8),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(14),
+                side: BorderSide(color: context.colors.hairline, width: 1),
               ),
               child: Padding(
                 padding: const EdgeInsets.all(16),
@@ -513,7 +531,7 @@ class _InfoRow extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(icon, size: 20),
+          Icon(icon, size: 20, color: context.colors.primaryForeground),
           const SizedBox(width: 12),
           Expanded(
             child: Column(

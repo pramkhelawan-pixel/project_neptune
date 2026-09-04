@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:url_launcher_platform_interface/link.dart';
 import 'package:url_launcher_platform_interface/url_launcher_platform_interface.dart';
 
+import 'package:project_neptune/core/theme/app_theme.dart';
 import 'package:project_neptune/features/authentication/presentation/pages/signup_page.dart';
 
 /// Records every URL the page attempts to open, instead of touching a real
@@ -39,7 +40,10 @@ Future<void> _pumpSignUpPage(
 
   await tester.pumpWidget(
     ProviderScope(
-      child: MaterialApp.router(routerConfig: router),
+      child: MaterialApp.router(
+        theme: AppTheme.neptune,
+        routerConfig: router,
+      ),
     ),
   );
 }

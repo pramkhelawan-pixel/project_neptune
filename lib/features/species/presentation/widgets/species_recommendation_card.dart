@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../../core/theme/pelav_colors.dart';
+import '../../../../core/theme/status_tier.dart';
 import '../../domain/species_recommendation.dart';
 
 class SpeciesRecommendationCard extends StatelessWidget {
@@ -10,16 +12,15 @@ class SpeciesRecommendationCard extends StatelessWidget {
     required this.recommendation,
   });
 
-  Color _scoreColor(int score) {
-    if (score >= 80) {
-      return Colors.green;
-    }
-
-    if (score >= 60) {
-      return Colors.orange;
-    }
-
-    return Colors.red;
+  /// Preserves the existing 80/60/40 cutoffs exactly; only the colour
+  /// mapping changed (via StatusTier.forSpeciesScore) so it stops
+  /// contradicting [_rating]'s 4-tier label with a 3-colour scheme -- Fair
+  /// (40-59) and Poor (<40) previously rendered identically coloured
+  /// despite having different labels. Uses [StatusTier.resolve] (not
+  /// [StatusTier.color]) so this renders correctly in both light and dark
+  /// mode.
+  Color _scoreColor(BuildContext context, int score) {
+    return StatusTier.forSpeciesScore(score).resolve(context);
   }
 
   String _rating(int score) {
@@ -40,13 +41,12 @@ class SpeciesRecommendationCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = _scoreColor(recommendation.score);
+    final color = _scoreColor(context, recommendation.score);
 
+    // Background/border/radius/elevation are inherited from CardThemeData
+    // (surface1, 1px hairline, 18px radius, elevation 0) rather than
+    // repeated here.
     return Card(
-      elevation: 3,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(18),
-      ),
       child: Padding(
         padding: const EdgeInsets.all(20),
         child: Column(
@@ -142,9 +142,9 @@ class SpeciesRecommendationCard extends StatelessWidget {
                 ),
                 child: Row(
                   children: [
-                    const Icon(
+                    Icon(
                       Icons.check_circle,
-                      color: Colors.green,
+                      color: context.colors.success,
                       size: 18,
                     ),
                     const SizedBox(width: 10),

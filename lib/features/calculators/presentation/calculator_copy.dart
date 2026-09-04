@@ -14,7 +14,7 @@ const kLengthWeightMeasurementDisclaimer =
 const kLengthWeightScientificDisclaimer =
     'This is a statistical estimate, not a measured weight. It is only '
     "shown within the length range the underlying study actually "
-    "observed -- Neptune does not extrapolate beyond it. This is not a "
+    "observed -- PELAV does not extrapolate beyond it. This is not a "
     'substitute for weighing the fish.';
 
 /// Source attribution shown alongside the disclaimers above -- the exact

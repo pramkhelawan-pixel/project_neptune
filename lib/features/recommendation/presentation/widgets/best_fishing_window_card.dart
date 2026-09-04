@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import '../../../../core/theme/pelav_colors.dart';
 import '../../services/best_fishing_window_engine.dart';
 
 /// Displays Neptune's Best Fishing Window for the current session.
@@ -22,31 +23,36 @@ class BestFishingWindowCard extends StatelessWidget {
     return '${formatter.format(start.toLocal())} – ${formatter.format(end.toLocal())}';
   }
 
-  Color _levelColor(String level) {
+  /// Preserves every existing qualitative label exactly (which strings map
+  /// to which tier is unchanged); only the emitted colour now comes from
+  /// the three approved semantic tokens instead of raw Material colours --
+  /// 'Good' collapses into `success` alongside 'Excellent'/'Very Good',
+  /// since no separate "successBright" token is approved.
+  Color _levelColor(BuildContext context, String level) {
+    final colors = context.colors;
     switch (level) {
       case 'Excellent':
       case 'Very Good':
-        return Colors.green;
       case 'Good':
-        return Colors.lightGreen;
+        return colors.success;
       case 'Fair':
-        return Colors.orange;
+        return colors.warning;
       default:
-        return Colors.red;
+        return colors.critical;
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
     final best = result.best;
 
+    // Background/border/radius/elevation are inherited from CardThemeData
+    // (surface1, 1px hairline, 18px radius, elevation 0) rather than
+    // repeated here.
     return Card(
-      elevation: 3,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20),
-      ),
       child: Padding(
-        padding: const EdgeInsets.all(24),
+        padding: const EdgeInsets.all(20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -85,7 +91,7 @@ class BestFishingWindowCard extends StatelessWidget {
                     best.qualitativeLevel,
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
-                      color: _levelColor(best.qualitativeLevel),
+                      color: _levelColor(context, best.qualitativeLevel),
                     ),
                   ),
                 ],
@@ -105,9 +111,9 @@ class BestFishingWindowCard extends StatelessWidget {
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Icon(
+                        Icon(
                           Icons.check_circle,
-                          color: Colors.green,
+                          color: colors.success,
                           size: 16,
                         ),
                         const SizedBox(width: 8),

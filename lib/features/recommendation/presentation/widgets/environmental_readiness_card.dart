@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../../core/theme/pelav_colors.dart';
 import '../../domain/environmental_readiness.dart';
 
 class EnvironmentalReadinessCard extends StatelessWidget {
@@ -10,31 +11,33 @@ class EnvironmentalReadinessCard extends StatelessWidget {
     required this.readiness,
   });
 
-  Color _statusColor() {
-    if (readiness.score >= 90) {
-      return Colors.green;
-    }
-
+  /// Preserves the existing 90/75/60 cutoffs exactly; only the emitted
+  /// colour now comes from the three approved semantic tokens instead of
+  /// raw Material colours -- the 75-89 band collapses into `success`
+  /// alongside >=90, since no separate "successBright" token is approved.
+  Color _statusColor(BuildContext context) {
+    final colors = context.colors;
     if (readiness.score >= 75) {
-      return Colors.lightGreen;
+      return colors.success;
     }
 
     if (readiness.score >= 60) {
-      return Colors.orange;
+      return colors.warning;
     }
 
-    return Colors.red;
+    return colors.critical;
   }
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
+
+    // Background/border/radius/elevation are inherited from CardThemeData
+    // (surface1, 1px hairline, 18px radius, elevation 0) rather than
+    // repeated here.
     return Card(
-      elevation: 3,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20),
-      ),
       child: Padding(
-        padding: const EdgeInsets.all(24),
+        padding: const EdgeInsets.all(20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -55,7 +58,7 @@ class EnvironmentalReadinessCard extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 42,
                   fontWeight: FontWeight.bold,
-                  color: _statusColor(),
+                  color: _statusColor(context),
                 ),
               ),
             ),
@@ -68,7 +71,7 @@ class EnvironmentalReadinessCard extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.w600,
-                  color: _statusColor(),
+                  color: _statusColor(context),
                 ),
               ),
             ),
@@ -79,7 +82,7 @@ class EnvironmentalReadinessCard extends StatelessWidget {
               value: readiness.score / 100,
               minHeight: 12,
               borderRadius: BorderRadius.circular(10),
-              color: _statusColor(),
+              color: _statusColor(context),
             ),
 
             const SizedBox(height: 12),
@@ -117,9 +120,9 @@ class EnvironmentalReadinessCard extends StatelessWidget {
               ...readiness.strengths.map(
                     (strength) => ListTile(
                   dense: true,
-                  leading: const Icon(
+                  leading: Icon(
                     Icons.check_circle,
-                    color: Colors.green,
+                    color: colors.success,
                   ),
                   title: Text(strength),
                 ),
@@ -143,9 +146,9 @@ class EnvironmentalReadinessCard extends StatelessWidget {
               ...readiness.weaknesses.map(
                     (weakness) => ListTile(
                   dense: true,
-                  leading: const Icon(
+                  leading: Icon(
                     Icons.warning_amber_rounded,
-                    color: Colors.orange,
+                    color: colors.warning,
                   ),
                   title: Text(weakness),
                 ),

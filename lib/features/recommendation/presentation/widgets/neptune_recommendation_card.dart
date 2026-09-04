@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../../core/theme/pelav_colors.dart';
 import '../../domain/recommendation_response.dart';
 import '../pages/recommendation_details_page.dart';
 
@@ -11,36 +12,39 @@ class NeptuneRecommendationCard extends StatelessWidget {
     required this.recommendation,
   });
 
-  Color _confidenceColor() {
-    if (recommendation.confidence >= 85) {
-      return Colors.green;
-    }
-
+  /// Confidence keeps its own independent 70/50 cutoffs (unchanged) --
+  /// the former >=85 "bright green" tier is preserved as `success`, since
+  /// only success/warning/critical are approved semantic status colours
+  /// (no separate "successBright" token exists) and nothing else in this
+  /// card branches on the removed 85 boundary.
+  Color _confidenceColor(BuildContext context) {
+    final colors = context.colors;
     if (recommendation.confidence >= 70) {
-      return Colors.lightGreen;
+      return colors.success;
     }
 
     if (recommendation.confidence >= 50) {
-      return Colors.orange;
+      return colors.warning;
     }
 
-    return Colors.red;
+    return colors.critical;
   }
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
+
+    // Background/border/radius/elevation are inherited from CardThemeData
+    // (surface1, 1px hairline, 18px radius, elevation 0) rather than
+    // repeated here.
     return Card(
-      elevation: 3,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20),
-      ),
       child: Padding(
-        padding: const EdgeInsets.all(24),
+        padding: const EdgeInsets.all(20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             const Text(
-              '🎣 Neptune Recommendation',
+              '🎣 PELAV Recommendation',
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 22,
@@ -112,7 +116,7 @@ class NeptuneRecommendationCard extends StatelessWidget {
                 Text(
                   '${recommendation.confidence.toStringAsFixed(0)}%',
                   style: TextStyle(
-                    color: _confidenceColor(),
+                    color: _confidenceColor(context),
                     fontWeight: FontWeight.bold,
                     fontSize: 20,
                   ),
@@ -126,7 +130,7 @@ class NeptuneRecommendationCard extends StatelessWidget {
               value: recommendation.confidence / 100.0,
               minHeight: 10,
               borderRadius: BorderRadius.circular(10),
-              color: _confidenceColor(),
+              color: _confidenceColor(context),
             ),
 
             const SizedBox(height: 8),
@@ -147,7 +151,7 @@ class NeptuneRecommendationCard extends StatelessWidget {
             const SizedBox(height: 12),
 
             const Text(
-              'Why Neptune Recommended This',
+              'Why PELAV Recommended This',
               style: TextStyle(
                 fontSize: 17,
                 fontWeight: FontWeight.bold,
@@ -165,9 +169,9 @@ class NeptuneRecommendationCard extends StatelessWidget {
                   crossAxisAlignment:
                   CrossAxisAlignment.start,
                   children: [
-                    const Icon(
+                    Icon(
                       Icons.check_circle,
-                      color: Colors.green,
+                      color: colors.success,
                       size: 18,
                     ),
                     const SizedBox(width: 10),

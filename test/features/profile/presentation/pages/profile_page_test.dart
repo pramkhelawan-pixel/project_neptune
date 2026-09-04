@@ -7,6 +7,7 @@ import 'package:mocktail/mocktail.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import 'package:project_neptune/core/theme/app_theme.dart';
 import 'package:project_neptune/features/authentication/data/auth_repository.dart';
 import 'package:project_neptune/features/authentication/presentation/providers/auth_controller.dart';
 import 'package:project_neptune/features/licence/domain/entities/fishing_licence.dart';
@@ -113,20 +114,31 @@ Widget harness({
           .overrideWithValue(licenceEntitlementRepository),
       authRepositoryProvider.overrideWithValue(authRepository),
     ],
-    child: const MaterialApp(home: ProfilePage()),
+    child: MaterialApp(theme: AppTheme.neptune, home: const ProfilePage()),
   );
 }
 
 /// Settles the chained FutureProviders (currentProfileProvider, then
-/// licenceEntitlementProvider) -- pumpAndSettle() is deliberately avoided
-/// throughout this suite; see licence_page_test.dart for the same note.
+/// licenceEntitlementProvider) plus the independent
+/// appearanceModeControllerProvider (reads SharedPreferences, mocked empty
+/// in setUp) -- pumpAndSettle() is deliberately avoided throughout this
+/// suite; see licence_page_test.dart for the same note.
 Future<void> pumpUntilResolved(WidgetTester tester) async {
+  await tester.pump();
   await tester.pump();
   await tester.pump();
 }
 
 Future<void> openDeleteDialogAndConfirm(WidgetTester tester) async {
-  await tester.ensureVisible(find.text('Delete Account'));
+  // Delete Account now sits far enough down the list (after the Appearance
+  // section) that it isn't within ListView's initial lazy-build extent --
+  // plain ensureVisible can't locate an element that hasn't been built yet,
+  // so this scrolls incrementally, checking after each step, until it is.
+  await tester.dragUntilVisible(
+    find.text('Delete Account'),
+    find.byType(ListView),
+    const Offset(0, -200),
+  );
   await tester.pump();
   await tester.tap(find.text('Delete Account'));
   await tester.pump();

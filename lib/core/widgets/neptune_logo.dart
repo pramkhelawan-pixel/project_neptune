@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
 
-import '../theme/app_colors.dart';
 import '../theme/app_text_styles.dart';
 
+/// The PELAV wordmark treatment shown on Login. The old Neptune waves glyph
+/// that previously appeared above the wordmark has been removed -- the
+/// approved PELAV identity is wordmark-led with a distinctive geometric
+/// treatment integrated into the letter A, not a separate device mark.
+/// That production mark is not yet available in this project; until it is
+/// supplied, this widget renders the wordmark (and optional tagline) alone
+/// rather than approximating or inventing a replacement symbol.
 class NeptuneLogo extends StatelessWidget {
   const NeptuneLogo({
     super.key,
@@ -15,14 +21,8 @@ class NeptuneLogo extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        const Icon(
-          Icons.waves,
-          size: 72,
-          color: AppColors.primary,
-        ),
-        const SizedBox(height: 16),
         Text(
-          'Neptune',
+          'PELAV',
           style: AppTextStyles.displayLarge,
         ),
         if (showSubtitle) ...[

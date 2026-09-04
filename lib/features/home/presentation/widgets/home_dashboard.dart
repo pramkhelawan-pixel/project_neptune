@@ -134,7 +134,7 @@ class HomeDashboard extends ConsumerWidget {
                 recommendationAsync.when(
                   loading: () => const Card(
                     child: Padding(
-                      padding: EdgeInsets.all(24),
+                      padding: EdgeInsets.all(20),
                       child: Center(
                         child: CircularProgressIndicator(),
                       ),
@@ -142,7 +142,7 @@ class HomeDashboard extends ConsumerWidget {
                   ),
                   error: (error, stackTrace) => Card(
                     child: Padding(
-                      padding: const EdgeInsets.all(24),
+                      padding: const EdgeInsets.all(20),
                       child: Text(
                         'Unable to generate recommendation.\n\n$error',
                       ),

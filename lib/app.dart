@@ -48,9 +48,20 @@ class _NeptuneAppState extends ConsumerState<NeptuneApp>
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
-      title: 'Project Neptune',
+      title: 'PELAV',
       debugShowCheckedModeBanner: false,
+      // PELAV ships a single production visual system for the MVP: the
+      // approved dark theme, always -- regardless of the device's system
+      // appearance setting. AppTheme.light/AppColorsLight/PelavColors.light
+      // are deliberately left in place (unused, not deleted) rather than
+      // torn out, in case a light theme is revisited later; this is the
+      // only place that decides which one actually renders. theme and
+      // darkTheme are both pinned to the same dark ThemeData, and
+      // themeMode is pinned to ThemeMode.dark, so a system light *or* dark
+      // setting both resolve to the identical approved PELAV dark UI.
       theme: AppTheme.neptune,
+      darkTheme: AppTheme.neptune,
+      themeMode: ThemeMode.dark,
       routerConfig: AppRouter.router,
     );
   }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import 'package:project_neptune/core/theme/app_theme.dart';
 import 'package:project_neptune/features/recommendation/domain/recommendation_response.dart';
 import 'package:project_neptune/features/recommendation/presentation/pages/recommendation_details_page.dart';
 
@@ -32,8 +33,9 @@ void main() {
     'confidence value (80%, Very Good) redisplayed under a second label',
     (tester) async {
       await tester.pumpWidget(
-        const MaterialApp(
-          home: RecommendationDetailsPage(recommendation: response),
+        MaterialApp(
+          theme: AppTheme.neptune,
+          home: const RecommendationDetailsPage(recommendation: response),
         ),
       );
       await tester.pump();

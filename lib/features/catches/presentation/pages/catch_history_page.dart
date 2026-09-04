@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../core/theme/pelav_colors.dart';
 import '../providers/catch_provider.dart';
 import 'catch_detail_page.dart';
 import 'log_catch_page.dart';
@@ -35,9 +36,18 @@ class CatchHistoryPage extends ConsumerWidget {
       body: catches.when(
         data: (records) {
           if (records.isEmpty) {
-            return const Center(
-              child: Text(
-                'No catches logged yet.',
+            return Center(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(
+                    Icons.phishing,
+                    size: 48,
+                    color: context.colors.textTertiary.withValues(alpha: 0.5),
+                  ),
+                  const SizedBox(height: 16),
+                  const Text('No catches logged yet.'),
+                ],
               ),
             );
           }
