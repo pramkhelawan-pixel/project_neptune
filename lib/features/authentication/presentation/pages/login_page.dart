@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -32,20 +33,15 @@ class _LoginPageState extends ConsumerState<LoginPage> {
   }
 
   Future<void> _showForgotPasswordDialog() async {
-    final emailController = TextEditingController(
-      text: _emailController.text.trim(),
-    );
     final formKey = GlobalKey<FormState>();
 
     await showDialog<void>(
       context: context,
       builder: (dialogContext) => _ForgotPasswordDialog(
         formKey: formKey,
-        emailController: emailController,
+        initialEmail: _emailController.text.trim(),
       ),
     );
-
-    emailController.dispose();
   }
 
   Future<void> _signIn() async {
@@ -200,11 +196,11 @@ class _LoginPageState extends ConsumerState<LoginPage> {
 class _ForgotPasswordDialog extends ConsumerStatefulWidget {
   const _ForgotPasswordDialog({
     required this.formKey,
-    required this.emailController,
+    required this.initialEmail,
   });
 
   final GlobalKey<FormState> formKey;
-  final TextEditingController emailController;
+  final String initialEmail;
 
   @override
   ConsumerState<_ForgotPasswordDialog> createState() =>
@@ -213,9 +209,19 @@ class _ForgotPasswordDialog extends ConsumerStatefulWidget {
 
 class _ForgotPasswordDialogState
     extends ConsumerState<_ForgotPasswordDialog> {
+  late final _emailController = TextEditingController(
+    text: widget.initialEmail,
+  );
+
   bool _isSending = false;
   bool _sent = false;
   String? _errorMessage;
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    super.dispose();
+  }
 
   Future<void> _send() async {
     if (!widget.formKey.currentState!.validate()) return;
@@ -227,11 +233,22 @@ class _ForgotPasswordDialogState
 
     await ref
         .read(authControllerProvider.notifier)
-        .sendPasswordReset(widget.emailController.text.trim());
+        .sendPasswordReset(_emailController.text.trim());
 
     if (!mounted) return;
 
-    final hasError = ref.read(authControllerProvider).hasError;
+    final authState = ref.read(authControllerProvider);
+    final hasError = authState.hasError;
+
+    if (hasError && kDebugMode) {
+      // Logged for local diagnosability only -- never shown to the user
+      // (who only ever sees the generic message below; this endpoint must
+      // not leak whether an address exists or any other detail from the
+      // failure). Explicitly kDebugMode-gated: debugPrint, despite its
+      // name, still runs in release builds, which would otherwise put the
+      // caught Supabase error into the production device's system log.
+      debugPrint('sendPasswordReset failed: ${authState.error}');
+    }
 
     setState(() {
       _isSending = false;
@@ -262,7 +279,7 @@ class _ForgotPasswordDialogState
                   ),
                   const SizedBox(height: 16),
                   AppTextField(
-                    controller: widget.emailController,
+                    controller: _emailController,
                     label: 'Email',
                     keyboardType: TextInputType.emailAddress,
                     prefixIcon: Icons.email_outlined,
@@ -303,7 +320,19 @@ class _ForgotPasswordDialogState
               TextButton(
                 onPressed: _isSending
                     ? null
-                    : () => Navigator.of(context).pop(),
+                    : () {
+                        // The email field can still hold focus here (the
+                        // Form/TextFormField stay mounted on this,
+                        // error, branch -- unlike the _sent branch, which
+                        // replaces them with plain Text). Detaching focus
+                        // before the pop tears down that still-live,
+                        // still-animating subtree is what avoids the
+                        // confirmed disposed-TextEditingController crash
+                        // ('_dependents.isEmpty') that popping while it's
+                        // focused was found to trigger.
+                        FocusScope.of(context).unfocus();
+                        Navigator.of(context).pop();
+                      },
                 child: const Text('Cancel'),
               ),
               TextButton(
