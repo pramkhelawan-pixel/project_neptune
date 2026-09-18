@@ -33,34 +33,53 @@ class LogCatchController extends AsyncNotifier<bool> {
     state = await AsyncValue.guard(() async {
       const uuid = Uuid();
 
-      MarineConditions? conditions;
-      try {
-        conditions = await ref.read(marineConditionsProvider.future);
-      } catch (_) {
-        conditions = null;
+      // Gate 1: if the user has an active Full Fishing Session, this catch
+      // attaches to it instead of spawning a new session — otherwise
+      // Start/End Fishing would be disconnected from the catches logged in
+      // between. The active session keeps its one Start-time conditions
+      // snapshot; per-catch conditions are explicitly out of Gate 1 scope.
+      final activeSession =
+          await ref.read(activeSessionProvider.future);
+
+      final String sessionId;
+      final bool conditionsAttached;
+
+      if (activeSession != null && activeSession.isActive) {
+        sessionId = activeSession.id;
+        conditionsAttached = activeSession.marineConditions != null;
+      } else {
+        // Quick Catch — unchanged from pre-Gate-1 behaviour. TEMPORARY:
+        // still a 1:1 catch-session for the no-active-session case, until
+        // a later gate revisits whether Quick Catch should ever attach to
+        // anything else. See deferred-work list.
+        MarineConditions? conditions;
+        try {
+          conditions = await ref.read(marineConditionsProvider.future);
+        } catch (_) {
+          conditions = null;
+        }
+
+        final session = FishingSession(
+          id: uuid.v4(),
+          location: location,
+          targetSpecies: species,
+          dateTime: DateTime.now().toUtc(),
+          marineConditions: conditions,
+          fishingSpotId: fishingSpotId,
+        );
+
+        await ref
+            .read(fishingSessionRepositoryProvider)
+            .save(session);
+
+        sessionId = session.id;
+        conditionsAttached = conditions != null;
       }
-
-      // TEMPORARY: 1:1 catch-session until real multi-catch session UI
-      // exists. Every logged catch spawns its own dedicated FishingSession
-      // row instead of attaching to a user-initiated trip. Revisit once
-      // session-management UI is built — see deferred-work list.
-      final session = FishingSession(
-        id: uuid.v4(),
-        location: location,
-        targetSpecies: species,
-        dateTime: DateTime.now(),
-        marineConditions: conditions,
-        fishingSpotId: fishingSpotId,
-      );
-
-      await ref
-          .read(fishingSessionRepositoryProvider)
-          .save(session);
 
       final catchRecord = CatchRecord(
         id: uuid.v4(),
-        sessionId: session.id,
-        dateTime: DateTime.now(),
+        sessionId: sessionId,
+        dateTime: DateTime.now().toUtc(),
         species: species,
         location: location,
         weightKg: weightKg,
@@ -73,7 +92,7 @@ class LogCatchController extends AsyncNotifier<bool> {
 
       await ref.read(catchRepositoryProvider).save(catchRecord);
 
-      return conditions != null;
+      return conditionsAttached;
     });
   }
 }
